@@ -1,0 +1,27 @@
+{
+  "name"       : "swissspidy/oembed-api",
+  "description": "Adds oEmbed support to WordPress using the WP-API",
+  "keywords"   : [
+    "wordpress",
+    "plugin",
+    "wp-api",
+    "json",
+    "api",
+    "rest",
+    "rest-api",
+    "oembed"
+  ],
+
+  "type"    : "wordpress-plugin",
+  "homepage": "https://github.com/swissspidy/oembed-api",
+  "authors" : [
+    {
+      "name"    : "Pascal Birchler",
+      "email"   : "pascal.birchler@spinpress.com",
+      "homepage": "http://pascalbirchler.com/"
+    }
+  ],
+  "support" : {
+    "issues": "https://github.com/swissspidy/oembed-api/issues"
+  }
+}
