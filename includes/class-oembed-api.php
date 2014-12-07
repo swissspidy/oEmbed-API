@@ -108,7 +108,7 @@ class OEmbed_API {
 			'author_url'    => get_author_posts_url( $author->ID, $author->nicename ),
 			'title'         => $post->post_title,
 			'type'          => 'rich',
-			'html'          => apply_filters( 'oembed_api_response_html', $post->post_content ),
+			'html'          => apply_filters( 'the_content', $post->post_content ),
 		);
 
 		if ( has_post_thumbnail( $post->ID ) ) {
