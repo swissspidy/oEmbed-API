@@ -38,12 +38,20 @@ register_activation_hook( __FILE__, 'oembed_api_acivation' );
 function oembed_api_init( WP_JSON_Server $server ) {
 	include dirname( __FILE__ ) . '/includes/class-oembed-api.php';
 	new OEmbed_API( $server );
+}
 
+add_action( 'wp_json_server_before_serve', 'oembed_api_init' );
+
+
+/**
+ * Add our own site as an oEmbed provider for demo purposes.
+ */
+function oembed_api_add_provider() {
 	$format = apply_filters( 'oembed_api_url_format', get_home_url() . '/*' );
 	wp_oembed_add_provider( $format, get_json_url( null, 'oembed' ) );
 }
 
-add_action( 'wp_json_server_before_serve', 'oembed_api_init' );
+add_action( 'plugins_loaded', 'oembed_api_add_provider' );
 
 /**
  * Add oEmbed discovery links to single talent & product pages
