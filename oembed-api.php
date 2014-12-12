@@ -26,31 +26,9 @@ function oembed_api_acivation() {
 	if ( ! function_exists( 'get_json_url' ) ) {
 		exit( __( 'The oEmbed API plugin requires WP-API to be installed!', 'oembed-api' ) );
 	}
-
-	oembed_api_endpoint();
-	flush_rewrite_rules();
 }
 
 register_activation_hook( __FILE__, 'oembed_api_acivation' );
-
-/**
- * Plugin Deactivation
- */
-function oembed_api_deacivation() {
-	flush_rewrite_rules();
-}
-
-register_deactivation_hook( __FILE__, 'oembed_api_deacivation' );
-
-/**
- * Add the rewrite endpoint that is used to output the data.
- */
-function oembed_api_endpoint() {
-	add_rewrite_endpoint( 'embed', EP_PERMALINK );
-	do_action( 'oembed_api_add_endpoint' );
-}
-
-add_action( 'init', 'oembed_api_endpoint' );
 
 /**
  * Add our oEmbed API endpoint.
