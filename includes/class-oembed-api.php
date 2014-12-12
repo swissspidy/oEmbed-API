@@ -94,10 +94,12 @@ class OEmbed_API {
 	 *
 	 * @return array The prepared post data
 	 */
-	protected function prepare_response( $post ) {
-		$post = get_post( $post['ID'] );
+	protected function prepare_response( $post_data ) {
+		/** @var WP_Post $post */
+		$post = get_post( $post_data['ID'] );
 		setup_postdata( $post );
 
+		/** @var WP_User $author */
 		$author = get_userdata( $post->post_author );
 
 		$response = array(
