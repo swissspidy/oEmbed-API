@@ -26,6 +26,7 @@ class WP_API_oEmbed_Plugin extends WP_Stack_Plugin2 {
 	public function add_hooks() {
 		$this->hook( 'init' );
 
+		$this->hook( 'init', 'add_oembed_provider' );
 		$this->hook( 'rest_api_init', 'register_routes' );
 		$this->hook( 'wp_head', 'oembed_api_discovery_links' );
 	}
@@ -35,6 +36,14 @@ class WP_API_oEmbed_Plugin extends WP_Stack_Plugin2 {
 	 */
 	public function init() {
 		$this->load_textdomain( 'wp-api-oembed', '/languages' );
+	}
+
+	public function add_oembed_provider() {
+		if ( ! function_exists( 'get_rest_url' ) ) {
+			return;
+		}
+		
+		wp_oembed_add_provider( home_url( '/*' ), esc_url( get_rest_url( null, 'oembed/v1/oembed/' ) ) );
 	}
 
 	public function register_routes() {
