@@ -1,0 +1,29 @@
+# Default task
+default:
+- 'checktextdomain'
+- 'makepot'
+- 'replace:header'
+- 'replace:plugin'
+
+# Build task
+build:
+- 'default'
+- 'clean'
+- 'copy:main'
+- 'compress' # Can comment this out for WordPress.org plugins
+
+# Prepare a WordPress.org release
+release:prepare:
+- 'build'
+- 'copy:svn'
+- 'replace:svn_readme'
+- 'clean:svn_readme_md'
+
+# Deploy out a WordPress.org release
+release:deploy:
+- 'wp_deploy'
+
+# WordPress.org release task
+release:
+- 'release:prepare'
+- 'release:deploy'

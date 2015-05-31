@@ -1,0 +1,31 @@
+{
+  "name": "wp-api-oembed",
+  "title": "oEmbed API",
+  "description": "An oEmbed provider for WordPress using the WP-API plugin.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/swissspidy/oEmbed-API",
+  "author": {
+    "name": "Pascal Birchler",
+    "email": "support@spinpress.com",
+    "url": "https://spinpress.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/swissspidy/oEmbed-API"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-checktextdomain": "~1.0.0",
+    "grunt-contrib-clean": "~0.6.0",
+    "grunt-contrib-compress": "~0.13.0",
+    "grunt-contrib-copy": "~0.7.0",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-phpunit": "~0.3.6",
+    "grunt-text-replace": "~0.4.0",
+    "grunt-wp-i18n": "~0.5.1",
+    "grunt-wp-deploy": "~1.0.3",
+    "load-grunt-config": "~0.16.0",
+    "time-grunt": "~1.1.0"
+  },
+  "keywords": []
+}
