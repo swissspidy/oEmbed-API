@@ -139,7 +139,7 @@ class WP_API_oEmbed_Plugin extends WP_Stack_Plugin2 {
 		$output = '';
 
 		if ( is_singular() ) {
-			$output .= '<link rel="alternate" type="application/json+oembed" href="' . esc_url( get_rest_url( null, 'oembed/v1/oembed/?url=' . get_permalink() ) ) . '" />' . "\n";
+			$output .= '<link rel="alternate" type="application/json+oembed" href="' . esc_url( rest_url( 'wp/v2/oembed?url=' . get_permalink() ) ) . '" />' . "\n";
 		}
 
 		$output = apply_filters( 'rest_oembed_discovery_links', $output );
