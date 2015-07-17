@@ -97,11 +97,11 @@ class WP_API_oEmbed_Plugin extends WP_Stack_Plugin2 {
 	 * Add this site as an oEmbed provider for testing purposes.
 	 */
 	public function add_oembed_provider() {
-		if ( ! function_exists( 'get_rest_url' ) ) {
+		if ( ! function_exists( 'rest_url' ) ) {
 			return;
 		}
 
-		wp_oembed_add_provider( home_url( '/*' ), esc_url( get_rest_url( null, 'wp/v2/oembed' ) ) );
+		wp_oembed_add_provider( home_url( '/*' ), esc_url( rest_url( 'wp/v2/oembed' ) ) );
 	}
 
 	/**
