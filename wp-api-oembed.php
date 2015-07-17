@@ -36,9 +36,9 @@ include( dirname( __FILE__ ) . '/lib/requirements-check.php' );
 $wp_api_oembed_requirements_check = new WP_API_oEmbed_Requirements_Check( array(
 	'title' => 'oEmbed API',
 	'php'   => '5.3',
-	'wp'    => '4.0',
+	'wp'    => '4.3-beta2',
 	'file'  => __FILE__,
-));
+) );
 
 if ( $wp_api_oembed_requirements_check->passes() ) {
 	// Pull in the plugin classes and initialize.
