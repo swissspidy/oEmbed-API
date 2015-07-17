@@ -1,14 +1,9 @@
 {
-  "name": "wp-api-oembed",
+  "name": "oembed-api",
   "title": "oEmbed API",
   "description": "An oEmbed provider for WordPress using the WP-API plugin.",
   "version": "0.1.0",
   "homepage": "https://github.com/swissspidy/oEmbed-API",
-  "author": {
-    "name": "Pascal Birchler",
-    "email": "support@spinpress.com",
-    "url": "https://spinpress.com"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/swissspidy/oEmbed-API"

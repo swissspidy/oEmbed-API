@@ -11,9 +11,9 @@ module.exports = {
 			potHeaders     : {
 				poedit                 : true,
 				'x-poedit-keywordslist': true,
-				'report-msgid-bugs-to' : 'https://spinpress.com',
+				'report-msgid-bugs-to' : 'https://pascalbirchler.com',
 				'last-translator'      : 'Pascal Birchler',
-				'language-team'        : 'Pascal Birchler <support@spinpress.com>',
+				'language-team'        : 'Pascal Birchler <pascal@required.ch>',
 				'x-poedit-country'     : 'Switzerland'
 			},
 			processPot     : null,

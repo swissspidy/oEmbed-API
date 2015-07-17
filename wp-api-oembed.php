@@ -7,13 +7,13 @@
  * Author:      Pascal Birchler
  * Author URI:  https://spinpress.com
  * License:     GPLv2+
- * Text Domain: wp-api-oembed
+ * Text Domain: oembed-api
  * Domain Path: /languages
+ *
+ * @package WP_API_oEmbed
  */
 
 /**
- * Copyright (c) 2015 Pascal Birchler (email : support@spinpress.com)
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2 or, at
  * your discretion, any later version, as published by the Free
@@ -41,10 +41,13 @@ $wp_api_oembed_requirements_check = new WP_API_oEmbed_Requirements_Check( array(
 ));
 
 if ( $wp_api_oembed_requirements_check->passes() ) {
-	// Pull in the plugin classes and initialize
+	// Pull in the plugin classes and initialize.
 	include( dirname( __FILE__ ) . '/lib/wp-stack-plugin.php' );
 	include( dirname( __FILE__ ) . '/classes/plugin.php' );
 	WP_API_oEmbed_Plugin::start( __FILE__ );
+
+	register_activation_hook( __FILE__, array( WP_API_oEmbed_Plugin::get_instance(), 'activate_plugin' ) );
+	register_deactivation_hook( __FILE__, array( WP_API_oEmbed_Plugin::get_instance(), 'deactivate_plugin' ) );
 }
 
 unset( $wp_api_oembed_requirements_check );

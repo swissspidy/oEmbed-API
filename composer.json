@@ -1,17 +1,12 @@
 {
-  "name": "wearerequired/wp-api-oembed",
+  "name": "swissspidy/oembed-api",
   "description": "An oEmbed provider for WordPress using the WP-API plugin.",
   "version": "0.1.0",
   "type": "wordpress-plugin",
   "license": "GPL-2.0+",
-  "authors": [
-	{
-	  "name": "Pascal Birchler",
-	  "email": "support@spinpress.com",
-	  "homepage": "https://spinpress.com",
-	  "role": "Developer"
-	}
-  ],
   "require": {
+  },
+  "require-dev": {
+    "phpmd/phpmd": "@stable"
   }
 }
