@@ -20,6 +20,8 @@ This feature plugin leverages the new REST API to make WordPress an oEmbed provi
 
 We hold weekly chats about this plugin in the \#feature-oembed WordPress Slack channel. Read the [announcement post](http://make.wordpress.org/core/2015/07/17/oembed-feature-plugin/) for more information.
 
+[![Build Status](https://travis-ci.org/swissspidy/oEmbed-API.svg)](https://travis-ci.org/swissspidy/oEmbed-API)
+
 ## Installation ##
 
 ### Manual Installation ###
