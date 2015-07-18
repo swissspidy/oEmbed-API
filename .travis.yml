@@ -28,7 +28,6 @@ before_script:
   - bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 $WP_VERSION
 
 script:
-  - vendor/bin/phplint classes
   - vendor/bin/phpcs -n --report=emacs --standard=phpcs.ruleset.xml classes
   - vendor/bin/phpmd classes text cleancode,codesize,naming,unusedcode
   - vendor/bin/phpcpd -n classes

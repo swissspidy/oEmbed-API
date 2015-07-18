@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4f5718756f204a9497051eb1857dee89",
+    "hash": "03f0d1dde8518f646e85d97296501eb4",
     "packages": [
         {
             "name": "composer/installers",
@@ -141,59 +141,6 @@
             ],
             "description": "Official version of pdepend to be handled with Composer",
             "time": "2015-05-21 18:09:06"
-        },
-        {
-            "name": "phplint/phplint",
-            "version": "0.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/martinssipenko/phplint.git",
-                "reference": "4eab3bd0abc8d5c03c6278b278df716e7e07c0e5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/martinssipenko/phplint/zipball/4eab3bd0abc8d5c03c6278b278df716e7e07c0e5",
-                "reference": "4eab3bd0abc8d5c03c6278b278df716e7e07c0e5",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4",
-                "symfony/console": "2.*",
-                "symfony/finder": "2.*",
-                "symfony/process": "2.*"
-            },
-            "bin": [
-                "bin/phplint"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Phplint\\": "Phplint/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Martins Sipenko",
-                    "email": "martins.sipenko@gmail.com"
-                }
-            ],
-            "description": "phplint can speed upi your linting my running several processes asynchronously",
-            "keywords": [
-                "check",
-                "lint",
-                "phplint",
-                "syntax"
-            ],
-            "time": "2014-09-25 16:04:45"
         },
         {
             "name": "phpmd/phpmd",
@@ -761,55 +708,6 @@
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
             "time": "2015-07-09 16:07:40"
-        },
-        {
-            "name": "symfony/process",
-            "version": "v2.7.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/Process.git",
-                "reference": "48aeb0e48600321c272955132d7606ab0a49adb3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Process/zipball/48aeb0e48600321c272955132d7606ab0a49adb3",
-                "reference": "48aeb0e48600321c272955132d7606ab0a49adb3",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.9"
-            },
-            "require-dev": {
-                "symfony/phpunit-bridge": "~2.7"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.7-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Process\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony Process Component",
-            "homepage": "https://symfony.com",
-            "time": "2015-07-01 11:25:50"
         },
         {
             "name": "theseer/fdomdocument",
