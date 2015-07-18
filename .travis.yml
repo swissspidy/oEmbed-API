@@ -29,7 +29,7 @@ before_script:
 
 script:
   - if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.2" ]]; then vendor/bin/phpmd classes text cleancode,codesize,naming,unusedcode; fi
-  - if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.2" ]]; vendor/bin/phpcpd -n classes; fi
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.2" ]]; then vendor/bin/phpcpd -n classes; fi
   - vendor/bin/phpcs -n --report=emacs --standard=phpcs.ruleset.xml classes
   - phpunit --coverage-clover clover.xml
 
