@@ -43,6 +43,8 @@ $wp_api_oembed_requirements_check = new WP_API_oEmbed_Requirements_Check( array(
 if ( $wp_api_oembed_requirements_check->passes() ) {
 	// Pull in the plugin classes and initialize.
 	include( dirname( __FILE__ ) . '/lib/wp-stack-plugin.php' );
+	include( dirname( __FILE__ ) . '/classes/endpoint.php' );
+	include( dirname( __FILE__ ) . '/classes/frontend.php' );
 	include( dirname( __FILE__ ) . '/classes/plugin.php' );
 	WP_API_oEmbed_Plugin::start( __FILE__ );
 
