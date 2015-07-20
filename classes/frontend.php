@@ -127,4 +127,53 @@ class WP_API_oEmbed_Frontend {
 </html>
 	<?php
 	}
+
+	/**
+	 * If the $url isn't on the trusted providers list, we need to filter the HTML heavily for security.
+	 *
+	 * @param string $html The unfiltered oEmbed HTML.
+	 * @param string $url  URL of the content to be embedded.
+	 * @param string $args Optional arguments, usually passed from a shortcode.
+	 * @return string The filtered oEmbed HTML.
+	 */
+	public function filter_oembed_result( $html, $url, $args ) {
+		$wp_oembed = _wp_oembed_get_object();
+
+		$trusted = false;
+
+		foreach ( $wp_oembed->providers as $matchmask => $data ) {
+			list( $providerurl, $regex ) = $data;
+
+			// Turn the asterisk-type provider URLs into regex
+			if ( !$regex ) {
+				$matchmask = '#' . str_replace( '___wildcard___', '(.+)', preg_quote( str_replace( '*', '___wildcard___', $matchmask ), '#' ) ) . '#i';
+				$matchmask = preg_replace( '|^#http\\\://|', '#https?\://', $matchmask );
+			}
+
+			if ( preg_match( $matchmask, $url ) ) {
+				$trusted = true;
+				break;
+			}
+		}
+		var_dump( $trusted );
+
+		$allowed_html = array(
+			'iframe' => array(
+				'src' => true,
+				'width' => true,
+				'height' => true,
+				'frameborder' => true,
+				'marginwidth' => true,
+				'marginheight' => true,
+				'scrolling' => true,
+			),
+		);
+
+		if ( ! $trusted ) {
+			$html = wp_kses( $html, $allowed_html );
+			$html = str_replace( '<iframe', '<iframe sandbox="" security="restricted"', $html );
+		}
+
+		return $html;
+	}
 }
