@@ -75,8 +75,6 @@ class WP_API_oEmbed_Frontend {
 			}
 			body {
 				border: 1px solid #aaa;
-				height: 338px;
-				width: 600px;
 				padding: 20px;
 				font-family: sans-serif;
 			}
