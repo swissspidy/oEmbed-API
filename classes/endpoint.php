@@ -132,7 +132,7 @@ class WP_API_oEmbed_Endppoint {
 		}
 
 		$output = sprintf(
-			'<iframe src="%1$s" width="%2$d" height="%3$d" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>',
+			'<iframe sandbox="" security="restricted" src="%1$s" width="%2$d" height="%3$d" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>',
 			esc_url( $embed_url ),
 			$width,
 			$height
