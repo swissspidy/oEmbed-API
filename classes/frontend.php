@@ -155,7 +155,6 @@ class WP_API_oEmbed_Frontend {
 				break;
 			}
 		}
-		var_dump( $trusted );
 
 		$allowed_html = array(
 			'iframe' => array(
