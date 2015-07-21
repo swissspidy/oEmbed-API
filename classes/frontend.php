@@ -118,7 +118,7 @@ class WP_API_oEmbed_Frontend {
 		</head>
 		<body>
 		<div class="oembed-header">
-			<h1><?php esc_html_e( $post->post_title ); ?></h1>
+			<h1><?php echo esc_html( $post->post_title ); ?></h1>
 		</div>
 		<div class="oembed-content"><?php echo $oembed_content; ?></div>
 		<div class="oembed-footer">
