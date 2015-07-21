@@ -142,17 +142,16 @@ class WP_API_oEmbed_Frontend {
 	 *
 	 * @param string $html The unfiltered oEmbed HTML.
 	 * @param string $url  URL of the content to be embedded.
-	 * @param string $args Optional arguments, usually passed from a shortcode.
 	 *
 	 * @return string The filtered oEmbed HTML.
 	 */
-	public function filter_oembed_result( $html, $url, $args ) {
+	public function filter_oembed_result( $html, $url ) {
 		$wp_oembed = _wp_oembed_get_object();
 
 		$trusted = false;
 
 		foreach ( $wp_oembed->providers as $matchmask => $data ) {
-			list( $providerurl, $regex ) = $data;
+			$regex = $data[1];
 
 			// Turn the asterisk-type provider URLs into regex
 			if ( ! $regex ) {
