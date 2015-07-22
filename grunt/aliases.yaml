@@ -14,6 +14,7 @@ build:
 
 # Pre commit task
 precommit:
+- 'checktextdomain'
 - 'phpcs'
 - 'phpcpd'
 - 'phpmd'
