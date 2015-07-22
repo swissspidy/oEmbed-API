@@ -62,12 +62,12 @@ class WP_API_oEmbed_Frontend {
 		if ( count( $words ) > 35 ) {
 			$more_words     = count( $words ) - 30;
 			$oembed_content = implode( ' ', array_slice( $words, 0, 30 ) );
-			$oembed_content .= sprintf( ' <span class="oembed-words>"(' . _n( '%d word', '%d words', $more_words ) . ')</span>', $more_words );
+			$oembed_content .= sprintf( ' <span class="oembed-words>"(' . _n( '%d word', '%d words', $more_words, 'oembed-api' ) . ')</span>', $more_words );
 		}
 		?>
 		<html>
 		<head>
-			<title><?php esc_html_e( $post->post_title ); ?></title>
+			<title><?php esc_html_e( $post->post_title, 'oembed-api' ); ?></title>
 			<style type="text/css">
 				html, body {
 					padding: 0;
