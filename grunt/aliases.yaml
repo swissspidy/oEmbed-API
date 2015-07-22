@@ -12,6 +12,13 @@ build:
 - 'copy:main'
 - 'compress' # Can comment this out for WordPress.org plugins
 
+# Pre commit task
+precommit:
+- 'phpcs'
+- 'phpcpd'
+- 'phpmd'
+- 'phpunit'
+
 # Prepare a WordPress.org release
 release:prepare:
 - 'build'
