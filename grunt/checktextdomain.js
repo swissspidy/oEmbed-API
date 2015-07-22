@@ -1,7 +1,7 @@
 module.exports = {
 	dist: {
 		options: {
-			text_domain   : 'wp-api-oembed',
+			text_domain   : 'oembed-api',
 			report_missing: true,
 			correct_domain: true,
 			keywords      : [
