@@ -110,7 +110,7 @@ class WP_API_oEmbed_Frontend {
 				.oembed-footer-comments .comments::after {
 					content: '';
 					display: inline-block;
-					background: url('<?php echo admin_url( 'images/comment-grey-bubble.png' ); ?>') 3px 5px no-repeat;
+					background: url('<?php echo esc_url( admin_url( 'images/comment-grey-bubble.png' ) ); ?>') 3px 5px no-repeat;
 					height: 16px;
 					width: 16px;
 				}
@@ -128,7 +128,7 @@ class WP_API_oEmbed_Frontend {
 				<?php bloginfo( 'name' ); ?>
 			</div>
 			<div class="oembed-footer-comments">
-				<span class="comments"><?php echo get_comments_number( $post->ID ); ?></span>
+				<span class="comments"><?php echo esc_html( get_comments_number( $post->ID ) ); ?></span>
 				<span class="sharing">LOL</span>
 			</div>
 		</div>
