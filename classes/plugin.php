@@ -58,6 +58,10 @@ class WP_API_oEmbed_Plugin extends WP_Stack_Plugin2 {
 		add_action( 'wp_head', array( $this->frontendClass, 'add_oembed_discovery_links' ) );
 		add_action( 'template_redirect', array( $this->frontendClass, 'template_redirect' ) );
 		add_action( 'rest_oembed_output', array( $this->frontendClass, 'rest_oembed_output' ) );
+
+		add_filter( 'oembed_result', array( $this->frontendClass, 'filter_oembed_result' ), 10, 2 );
+
+		add_filter( 'embed_oembed_discover', '__return_true' );
 	}
 
 	/**
