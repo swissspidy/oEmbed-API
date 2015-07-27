@@ -1,9 +1,9 @@
 # oEmbed API #
-Contributors:      swissspidy  
+Contributors:      swissspidy, pento, netweb  
 Donate link:         
 Tags:              oembed, api  
-Requires at least: 4.0  
-Tested up to:      4.2  
+Requires at least: 4.3-alpha  
+Tested up to:      4.3-beta  
 Stable tag:        0.1.0  
 License:           GPLv2 or later  
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html  
@@ -41,7 +41,7 @@ Yes.
 
 ## Screenshots ##
 
-1. Description of first screenshot
+1. Mockup of how embedding a WordPress post might look like in the end.
 
 ## Contribute ##
 
