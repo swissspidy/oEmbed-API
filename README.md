@@ -1,5 +1,5 @@
 # oEmbed API #
-Contributors:      swissspidy  
+Contributors:      swissspidy, pento
 Donate link:         
 Tags:              oembed, api  
 Requires at least: 4.0  
