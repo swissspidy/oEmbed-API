@@ -4,7 +4,7 @@ Donate link:
 Tags:              oembed, api  
 Requires at least: 4.3-alpha  
 Tested up to:      4.3-beta  
-Stable tag:        0.1.0  
+Stable tag:        0.2.0  
 License:           GPLv2 or later  
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -51,7 +51,10 @@ Join the discussion on [Trac](https://core.trac.wordpress.org/ticket/32522) and 
 
 ## Changelog ##
 
-### 0.0.1 ###
+### 0.2.0 ###
+* Okay, now it's actually usable.
+
+### 0.1.0 ###
 * First release
 
 ## Upgrade Notice ##
