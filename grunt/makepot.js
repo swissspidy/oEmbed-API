@@ -3,7 +3,7 @@ module.exports = {
 		options: {
 			cwd            : '',
 			domainPath     : '/languages',
-			exclude        : ['release/.*'],
+			exclude        : [],
 			include        : [],
 			mainFile       : 'wp-api-oembed.php',
 			potComments    : '',
