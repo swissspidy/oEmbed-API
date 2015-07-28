@@ -182,7 +182,7 @@ class WP_API_oEmbed_Endppoint {
 		}
 		echo '</oembed>';
 
-		return true;
+		return $served = true;
 	}
 
 	/**
@@ -196,14 +196,18 @@ class WP_API_oEmbed_Endppoint {
 			foreach ( $value as $k => $v ) {
 				$this->xml_wrap( $k, $v );
 			}
+
+			return;
 		} else if ( is_array( $value ) ) {
 			echo "<$key>";
 			foreach ( $value as $k => $v ) {
 				$this->xml_wrap( $k, $v );
 			}
 			echo "</$key>";
-		} else {
-			echo "<$key>" . esc_html( $value ) . "</$key>";
+
+			return;
 		}
+
+		echo "<$key>" . esc_html( $value ) . "</$key>";
 	}
 }
