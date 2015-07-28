@@ -33,6 +33,8 @@ class WP_API_oEmbed_Endppoint {
 				),
 			),
 		) );
+
+		add_filter( 'rest_pre_serve_request', array( $this, 'rest_pre_serve_request' ), 10, 4 );
 	}
 
 	/**
@@ -45,10 +47,6 @@ class WP_API_oEmbed_Endppoint {
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public function get_oembed_response( WP_REST_Request $request ) {
-		if ( 'xml' === $request['format'] ) {
-			add_filter( 'rest_pre_serve_request', array( $this, 'rest_pre_serve_request' ), 10, 4 );
-		}
-
 		$post_id = url_to_postid( $request['url'] );
 
 		if ( 0 === $post_id ) {
@@ -158,8 +156,15 @@ class WP_API_oEmbed_Endppoint {
 	 * @return bool
 	 */
 	public function rest_pre_serve_request( $served, $result, $request, $server ) {
+		$params     = $request->get_query_params();
+		$xml_format = isset( $params['format'] ) && 'xml' === $params['format'];
+
+		if ( '/wp/v2/oembed' !== $request->get_route() || ! $xml_format ) {
+			return $served;
+		}
+
 		if ( 'HEAD' === $request->get_method() ) {
-			return false;
+			return $served;
 		}
 
 		$server->send_header( 'Content-Type', 'application/xml; charset=' . get_option( 'blog_charset' ) );
