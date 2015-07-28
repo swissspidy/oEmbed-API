@@ -53,6 +53,10 @@ class WP_API_oEmbed_Endppoint {
 			return new WP_Error( 'rest_oembed_invalid_url', __( 'Invalid URL.', 'oembed-api' ), array( 'status' => 404 ) );
 		}
 
+		if ( ! in_array( $request['format'], array( 'json', 'xml' ) ) ) {
+			return new WP_Error( 'rest_oembed_invalid_format', __( 'Invalid format.', 'oembed-api' ), array( 'status' => 501 ) );
+		}
+
 		/**
 		 * Current post object.
 		 *
