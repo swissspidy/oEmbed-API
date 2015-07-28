@@ -45,14 +45,14 @@ class WP_API_oEmbed_Endppoint {
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public function get_oembed_response( WP_REST_Request $request ) {
+		if ( 'xml' === $request['format'] ) {
+			add_filter( 'rest_pre_serve_request', array( $this, 'rest_pre_serve_request' ), 10, 4 );
+		}
+
 		$post_id = url_to_postid( $request['url'] );
 
 		if ( 0 === $post_id ) {
 			return new WP_Error( 'rest_oembed_invalid_url', __( 'Invalid URL.', 'oembed-api' ), array( 'status' => 404 ) );
-		}
-
-		if ( 'json' !== $request['format'] ) {
-			return new WP_Error( 'rest_oembed_invalid_format', __( 'Invalid format.', 'oembed-api' ), array( 'status' => 501 ) );
 		}
 
 		/**
@@ -145,5 +145,65 @@ class WP_API_oEmbed_Endppoint {
 		$output = apply_filters( 'rest_oembed_html', $output, $post, $width, $height );
 
 		return $output;
+	}
+
+	/**
+	 * Hooks into the REST API output to print XML instead of JSON.
+	 *
+	 * @param bool                      $served  Whether the request has already been served.
+	 * @param WP_HTTP_ResponseInterface $result  Result to send to the client. Usually a WP_REST_Response.
+	 * @param WP_REST_Request           $request Request used to generate the response.
+	 * @param WP_REST_Server            $server  Server instance.
+	 *
+	 * @return bool
+	 */
+	public function rest_pre_serve_request( $served, $result, $request, $server ) {
+		if ( 'HEAD' === $request->get_method() ) {
+			return false;
+		}
+
+		$server->send_header( 'Content-Type', 'application/xml; charset=' . get_option( 'blog_charset' ) );
+
+		// Embed links inside the request.
+		$result = $server->response_to_data( $result, false );
+
+		if ( isset( $result['body'] ) ) {
+			$result = $result['body'];
+		}
+
+		if ( isset( $result[0] ) ) {
+			$result = $result[0];
+		}
+
+		echo '<?xml version="1.0" encoding="' . esc_attr( get_bloginfo( 'charset' ) ) . '" standalone="yes" ?>';
+		echo '<oembed>';
+		foreach ( $result as $key => $value ) {
+			$this->xml_wrap( $key, $value );
+		}
+		echo '</oembed>';
+
+		return true;
+	}
+
+	/**
+	 * Prepare XML output.
+	 *
+	 * @param string $key   XML element name.
+	 * @param mixed  $value XML element content.
+	 */
+	public function xml_wrap( $key, $value ) {
+		if ( is_numeric( $key ) ) {
+			foreach ( $value as $k => $v ) {
+				$this->xml_wrap( $k, $v );
+			}
+		} else if ( is_array( $value ) ) {
+			echo "<$key>";
+			foreach ( $value as $k => $v ) {
+				$this->xml_wrap( $k, $v );
+			}
+			echo "</$key>";
+		} else {
+			echo "<$key>" . esc_html( $value ) . "</$key>";
+		}
 	}
 }
