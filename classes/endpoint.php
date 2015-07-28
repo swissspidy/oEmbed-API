@@ -53,6 +53,7 @@ class WP_API_oEmbed_Endppoint {
 			return new WP_Error( 'rest_oembed_invalid_url', __( 'Invalid URL.', 'oembed-api' ), array( 'status' => 404 ) );
 		}
 
+		// Todo: Perhaps just default to json if something invalid is provided.
 		if ( ! in_array( $request['format'], array( 'json', 'xml' ) ) ) {
 			return new WP_Error( 'rest_oembed_invalid_format', __( 'Invalid format.', 'oembed-api' ), array( 'status' => 501 ) );
 		}
@@ -160,10 +161,9 @@ class WP_API_oEmbed_Endppoint {
 	 * @return bool
 	 */
 	public function rest_pre_serve_request( $served, $result, $request, $server ) {
-		$params     = $request->get_query_params();
-		$xml_format = isset( $params['format'] ) && 'xml' === $params['format'];
+		$params = $request->get_params();
 
-		if ( '/wp/v2/oembed' !== $request->get_route() || ! $xml_format ) {
+		if ( '/wp/v2/oembed' !== $request->get_route() || ! 'xml' === $params['format'] ) {
 			return $served;
 		}
 
@@ -171,52 +171,27 @@ class WP_API_oEmbed_Endppoint {
 			return $served;
 		}
 
-		$server->send_header( 'Content-Type', 'application/xml; charset=' . get_option( 'blog_charset' ) );
+		$server->send_header( 'Content-Type', 'text/xml; charset=' . get_option( 'blog_charset' ) );
 
 		// Embed links inside the request.
 		$result = $server->response_to_data( $result, false );
 
-		if ( isset( $result['body'] ) ) {
-			$result = $result['body'];
-		}
-
-		if ( isset( $result[0] ) ) {
-			$result = $result[0];
-		}
-
-		echo '<?xml version="1.0" encoding="' . esc_attr( get_bloginfo( 'charset' ) ) . '" standalone="yes" ?>';
-		echo '<oembed>';
+		$oembed = new SimpleXMLElement( '<oembed></oembed>' );
 		foreach ( $result as $key => $value ) {
-			$this->xml_wrap( $key, $value );
+			if ( is_array( $value ) ) {
+				$element = $oembed->addChild( $key );
+
+				foreach ( $value as $k => $v ) {
+					$element->addChild( $k, $v );
+				}
+
+				continue;
+			}
+
+			$oembed->addChild( $key, $value );
 		}
-		echo '</oembed>';
+		echo $oembed->asXML();
 
 		return $served = true;
-	}
-
-	/**
-	 * Prepare XML output.
-	 *
-	 * @param string $key   XML element name.
-	 * @param mixed  $value XML element content.
-	 */
-	public function xml_wrap( $key, $value ) {
-		if ( is_numeric( $key ) ) {
-			foreach ( $value as $k => $v ) {
-				$this->xml_wrap( $k, $v );
-			}
-
-			return;
-		} else if ( is_array( $value ) ) {
-			echo "<$key>";
-			foreach ( $value as $k => $v ) {
-				$this->xml_wrap( $k, $v );
-			}
-			echo "</$key>";
-
-			return;
-		}
-
-		echo "<$key>" . esc_html( $value ) . "</$key>";
 	}
 }
