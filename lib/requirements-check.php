@@ -7,6 +7,7 @@ class WP_API_oEmbed_Requirements_Check {
 	private $title = '';
 	private $php = '5.2.4';
 	private $wp = '3.8';
+	private $rest_api = '2.0';
 	private $file;
 
 	/**
@@ -15,7 +16,7 @@ class WP_API_oEmbed_Requirements_Check {
 	 * @param array $args An array of arguments to overwrite the default requirements.
 	 */
 	public function __construct( $args ) {
-		foreach ( array( 'title', 'php', 'wp', 'file' ) as $setting ) {
+		foreach ( array( 'title', 'php', 'wp', 'rest-api', 'file' ) as $setting ) {
 			if ( isset( $args[ $setting ] ) ) {
 				$this->$setting = $args[ $setting ];
 			}
@@ -26,7 +27,7 @@ class WP_API_oEmbed_Requirements_Check {
 	 * @return bool True if the install passes the requirements, false otherwise.
 	 */
 	public function passes() {
-		$passes = $this->php_passes() && $this->wp_passes();
+		$passes = $this->php_passes() && $this->wp_passes() && $this->rest_api_passes();
 		if ( ! $passes ) {
 			add_action( 'admin_notices', array( $this, 'deactivate' ) );
 		}
@@ -101,6 +102,41 @@ class WP_API_oEmbed_Requirements_Check {
 		?>
 		<div class="error">
 			<p><?php printf( 'The &#8220;%s&#8221; plugin cannot run on WordPress versions older than %s. Please update WordPress.', esc_html( $this->title ), $this->wp ); ?></p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * @return bool True if the REST API version is high enough, false otherwise.
+	 */
+	private function rest_api_passes() {
+		if ( $this->__rest_api_at_least( $this->rest_api ) ) {
+			return true;
+		} else {
+			add_action( 'admin_notices', array( $this, 'rest_api_version_notice' ) );
+
+			return false;
+		}
+	}
+
+	/**
+	 * Compare the current version of the REST API with the minimum required version.
+	 */
+	private static function __rest_api_at_least( $min_version ) {
+		if ( ! defined( 'REST_API_VERSION' ) ) {
+			return false;
+		}
+
+		return version_compare( REST_API_VERSION, $min_version, '>=' );
+	}
+
+	/**
+	 * Show the REST API version notice.
+	 */
+	public function rest_api_version_notice() {
+		?>
+		<div class="error">
+			<p><?php printf( 'The &#8220;%s&#8221; plugin requires version %s or higher of the REST API to be installed. Please update or install the REST API plugin.', esc_html( $this->title ), $this->rest_api ); ?></p>
 		</div>
 		<?php
 	}

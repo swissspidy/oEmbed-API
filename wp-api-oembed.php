@@ -34,10 +34,11 @@ defined( 'WPINC' ) or die;
 include( dirname( __FILE__ ) . '/lib/requirements-check.php' );
 
 $wp_api_oembed_requirements_check = new WP_API_oEmbed_Requirements_Check( array(
-	'title' => 'oEmbed API',
-	'php'   => '5.3',
-	'wp'    => '4.3-beta3',
-	'file'  => __FILE__,
+	'title'    => 'oEmbed API',
+	'php'      => '5.3',
+	'wp'       => '4.3-beta3',
+	'rest-api' => '2.0-beta3',
+	'file'     => __FILE__,
 ) );
 
 if ( $wp_api_oembed_requirements_check->passes() ) {
