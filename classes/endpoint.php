@@ -125,11 +125,7 @@ class WP_API_oEmbed_Endppoint {
 	 * @return string
 	 */
 	protected function get_oembed_html( $post, $width, $height ) {
-		$embed_url = add_query_arg( array( 'embed' => true ), get_permalink( $post ) );
-
-		if ( get_option( 'permalink_structure' ) ) {
-			$embed_url = trailingslashit( get_permalink( $post ) ) . user_trailingslashit( 'embed' );
-		}
+		$embed_url = get_post_embed_url( $post );
 
 		$output = sprintf(
 			'<iframe sandbox="" security="restricted" src="%1$s" width="%2$d" height="%3$d" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>',

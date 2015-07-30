@@ -74,3 +74,26 @@ add_action( 'plugins_loaded', 'oembed_api_init' );
 
 register_activation_hook( __FILE__, array( WP_API_oEmbed_Plugin::get_instance(), 'activate_plugin' ) );
 register_deactivation_hook( __FILE__, array( WP_API_oEmbed_Plugin::get_instance(), 'deactivate_plugin' ) );
+
+/**
+ * Get the URL to embed a specific post, for example in an iframe.
+ *
+ * @param int|WP_Post $post Post ID or object. Defaults to the current post.
+ *
+ * @return bool|string URL on success, false otherwise.
+ */
+function get_post_embed_url( $post = null ) {
+	$post = get_post( $post );
+
+	if ( ! $post ) {
+		return false;
+	}
+
+	$embed_url = add_query_arg( array( 'embed' => 'true' ), get_permalink( $post ) );
+
+	if ( get_option( 'permalink_structure' ) ) {
+		$embed_url = trailingslashit( get_permalink( $post ) ) . user_trailingslashit( 'embed' );
+	}
+
+	return $embed_url;
+}
