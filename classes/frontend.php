@@ -38,6 +38,7 @@ class WP_API_oEmbed_Frontend {
 
 		if ( is_singular() ) {
 			$output .= '<link rel="alternate" type="application/json+oembed" href="' . esc_url( rest_url( 'wp/v2/oembed?url=' . get_permalink() ) ) . '" />' . "\n";
+			$output .= '<link rel="alternate" type="text/xml+oembed" href="' . esc_url( rest_url( 'wp/v2/oembed?url=' . get_permalink() . '&format=xml' ) ) . '" />' . "\n";
 		}
 
 		$output = apply_filters( 'rest_oembed_discovery_links', $output );
@@ -51,8 +52,8 @@ class WP_API_oEmbed_Frontend {
 	 * @param WP_Post $post The current post object.
 	 */
 	public function rest_oembed_output( $post ) {
-		$post_content = strip_tags( $post->post_content );
-		$words        = str_word_count( $post_content );
+		$post_content   = strip_tags( $post->post_content );
+		$words          = str_word_count( $post_content );
 		$oembed_content = $post_content;
 
 		if ( count( $words ) > 35 ) {
