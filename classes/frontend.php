@@ -34,10 +34,6 @@ class WP_API_oEmbed_Frontend {
 	 * Add oEmbed discovery links in the website <head>.
 	 */
 	public function add_oembed_discovery_links() {
-		if ( ! function_exists( 'get_rest_url' ) ) {
-			return;
-		}
-
 		$output = '';
 
 		if ( is_singular() ) {

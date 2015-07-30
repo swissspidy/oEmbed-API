@@ -31,26 +31,41 @@
 
 defined( 'WPINC' ) or die;
 
-include( dirname( __FILE__ ) . '/lib/requirements-check.php' );
+// Check if the REST API is available first.
+if ( ! version_compare( get_option( 'rest_api_plugin_version' ), '2.0-beta3', '>=' ) ) {
+	add_action( 'admin_notices', 'oembed_api_requirements_notice' );
+	unset( $_GET['activate'] );
 
-$wp_api_oembed_requirements_check = new WP_API_oEmbed_Requirements_Check( array(
-	'title'    => 'oEmbed API',
-	'php'      => '5.2.4',
-	'wp'       => '4.3-beta3',
-	'rest_api' => '2.0-beta3',
-	'file'     => __FILE__,
-) );
-
-if ( $wp_api_oembed_requirements_check->passes() ) {
-	// Pull in the plugin classes and initialize.
-	include( dirname( __FILE__ ) . '/lib/wp-stack-plugin.php' );
-	include( dirname( __FILE__ ) . '/classes/endpoint.php' );
-	include( dirname( __FILE__ ) . '/classes/frontend.php' );
-	include( dirname( __FILE__ ) . '/classes/plugin.php' );
-	WP_API_oEmbed_Plugin::start( __FILE__ );
-
-	register_activation_hook( __FILE__, array( WP_API_oEmbed_Plugin::get_instance(), 'activate_plugin' ) );
-	register_deactivation_hook( __FILE__, array( WP_API_oEmbed_Plugin::get_instance(), 'deactivate_plugin' ) );
+	return;
 }
 
-unset( $wp_api_oembed_requirements_check );
+/**
+ * Print the missing REST API notice and disable the plugin.
+ */
+function oembed_api_requirements_notice() {
+	deactivate_plugins( plugin_basename( __FILE__ ) );
+	?>
+	<div class="error">
+		<p><?php printf( 'The oEmbed API plugin requires version 2.0 of the REST API to be installed. Please update or install the REST API plugin.' ); ?></p>
+	</div>
+	<?php
+}
+
+// Pull in the plugin classes and initialize.
+include( dirname( __FILE__ ) . '/lib/wp-stack-plugin.php' );
+include( dirname( __FILE__ ) . '/classes/endpoint.php' );
+include( dirname( __FILE__ ) . '/classes/frontend.php' );
+include( dirname( __FILE__ ) . '/classes/plugin.php' );
+
+/**
+ * Init our plugin.
+ */
+function oembed_api_init() {
+	$oembed_api = WP_API_oEmbed_Plugin::get_instance();
+	$oembed_api->add_hooks();
+}
+
+add_action( 'plugins_loaded', 'oembed_api_init' );
+
+register_activation_hook( __FILE__, array( WP_API_oEmbed_Plugin::get_instance(), 'activate_plugin' ) );
+register_deactivation_hook( __FILE__, array( WP_API_oEmbed_Plugin::get_instance(), 'deactivate_plugin' ) );

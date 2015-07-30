@@ -10,7 +10,7 @@ defined( 'WPINC' ) or die;
 /**
  * Class WP_API_oEmbed_Plugin
  */
-class WP_API_oEmbed_Plugin extends WP_Stack_Plugin2 {
+class WP_API_oEmbed_Plugin {
 	/**
 	 * Instance of this class.
 	 *
@@ -26,31 +26,39 @@ class WP_API_oEmbed_Plugin extends WP_Stack_Plugin2 {
 	protected $frontendClass;
 
 	/**
-	 * Plugin version.
-	 */
-	const VERSION = '0.1.0';
-
-	/**
-	 * Constructs the object, hooks in to `plugins_loaded`.
+	 * Protected constructor.
 	 */
 	protected function __construct() {
-		$this->hook( 'plugins_loaded', 'add_hooks' );
+	}
+
+	/**
+	 * Returns the plugin's object instance.
+	 *
+	 * @return self The plugin object instance.
+	 */
+	public static function get_instance() {
+		if ( ! isset( static::$instance ) ) {
+			static::$instance = new self();
+		}
+
+		return static::$instance;
 	}
 
 	/**
 	 * Adds hooks.
 	 */
 	public function add_hooks() {
-		$this->hook( 'init' );
+		// Load the plugin textdomain.
+		add_action( 'init', array( $this, 'load_textdomain' ) );
 
 		// Whitelist this site as an oEmbed provider.
-		$this->hook( 'init', 'add_oembed_provider' );
+		add_action( 'init', array( $this, 'add_oembed_provider' ) );
 
 		// Configure the REST API route.
 		add_action( 'rest_api_init', array( new WP_API_oEmbed_Endppoint(), 'register_routes' ) );
 
 		// Add a rewrite endpoint for the iframe.
-		$this->hook( 'init', 'add_rewrite_endpoint' );
+		add_action( 'init', array( $this, 'add_rewrite_endpoint' ) );
 
 		// Setup our frontend facing component.
 		$this->frontendClass = new WP_API_oEmbed_Frontend();
@@ -65,10 +73,11 @@ class WP_API_oEmbed_Plugin extends WP_Stack_Plugin2 {
 	}
 
 	/**
-	 * Initializes the plugin, registers textdomain, etc.
+	 * Load the plugin textdomain.
+	 * @return bool
 	 */
-	public function init() {
-		$this->load_textdomain( 'oembed-api', '/languages' );
+	public function load_textdomain() {
+		return load_plugin_textdomain( 'oembed-api', false, basename( dirname( plugin_dir_path( __FILE__ ) ) ) . '/languages' );
 	}
 
 	/**
