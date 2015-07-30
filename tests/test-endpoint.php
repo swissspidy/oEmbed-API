@@ -19,6 +19,8 @@ class WP_API_oEmbed_Test_Endpoint extends WP_API_oEmbed_TestCase {
 	 * Runs before each test.
 	 */
 	function setUp() {
+		parent::setUp();
+
 		$this->class = new WP_API_oEmbed_Endppoint();
 
 		$GLOBALS['wp_rest_server'] = new WP_REST_Server();
@@ -55,7 +57,6 @@ class WP_API_oEmbed_Test_Endpoint extends WP_API_oEmbed_TestCase {
 	function test_non_existing_route() {
 		$request = new WP_REST_Request( 'GET', '/wp/v2/oembed' );
 
-		/* @var WP_REST_Response $response */
 		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
 		$data     = $response->get_data();
 
@@ -67,10 +68,8 @@ class WP_API_oEmbed_Test_Endpoint extends WP_API_oEmbed_TestCase {
 	 */
 	function test_request_with_wrong_method() {
 		$this->class->register_routes();
-
 		$request = new WP_REST_Request( 'POST', '/wp/v2/oembed' );
 
-		/* @var WP_REST_Response $response */
 		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
 		$data     = $response->get_data();
 
@@ -84,7 +83,6 @@ class WP_API_oEmbed_Test_Endpoint extends WP_API_oEmbed_TestCase {
 		$this->class->register_routes();
 		$request = new WP_REST_Request( 'GET', '/wp/v2/oembed' );
 
-		/* @var WP_REST_Response $response */
 		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
 		$data     = $response->get_data();
 
@@ -96,12 +94,70 @@ class WP_API_oEmbed_Test_Endpoint extends WP_API_oEmbed_TestCase {
 	 * Test a request with a wrong URL.
 	 */
 	function test_request_with_bad_url() {
-		$request = new WP_REST_Request( 'POST', '/wp/v2/oembed' );
+		$this->class->register_routes();
+		$request = new WP_REST_Request( 'GET', '/wp/v2/oembed' );
 		$request->set_param( 'url', 'http://google.com/' );
 
-		$response = $this->class->get_oembed_response( $request );
+		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
+		$data     = $response->get_data();
 
-		$this->assertWPError( $response );
-		$this->assertEquals( 'rest_oembed_invalid_url', $response->get_error_code() );
+		$this->assertEquals( 'rest_oembed_invalid_url', $data[0]['code'] );
+	}
+
+	/**
+	 * Test a request with invalid format.
+	 */
+	function test_request_invalid_format() {
+		$this->class->register_routes();
+
+		$post_id = $this->factory->post->create();
+
+		$request = new WP_REST_Request( 'GET', '/wp/v2/oembed' );
+		$request->set_param( 'url', get_permalink( $post_id ) );
+		$request->set_param( 'format', 'xml' );
+
+		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 'rest_oembed_invalid_format', $data[0]['code'] );
+	}
+
+	/**
+	 * Test request for a normal post.
+	 */
+	function test_request_json() {
+		$this->class->register_routes();
+
+		$user = $this->factory->user->create_and_get( array(
+			'display_name' => 'John Doe',
+		) );
+		$post = $this->factory->post->create_and_get( array(
+			'post_author' => $user->ID,
+			'post_title'  => 'Hello World',
+		) );
+
+		$request = new WP_REST_Request( 'GET', '/wp/v2/oembed' );
+		$request->set_param( 'url', get_permalink( $post->ID ) );
+
+		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertTrue( is_array( $data ) );
+
+		$this->assertArrayHasKey( 'version', $data );
+		$this->assertArrayHasKey( 'provider_name', $data );
+		$this->assertArrayHasKey( 'provider_url', $data );
+		$this->assertArrayHasKey( 'author_name', $data );
+		$this->assertArrayHasKey( 'author_url', $data );
+		$this->assertArrayHasKey( 'title', $data );
+		$this->assertArrayHasKey( 'type', $data );
+
+		$this->assertEquals( '1.0', $data['version'] );
+		$this->assertEquals( get_bloginfo( 'name' ), $data['provider_name'] );
+		$this->assertEquals( get_home_url(), $data['provider_url'] );
+		$this->assertEquals( $user->display_name, $data['author_name'] );
+		$this->assertEquals( get_author_posts_url( $user->ID, $user->user_nicename ), $data['author_url'] );
+		$this->assertEquals( $post->post_title, $data['title'] );
+		$this->assertEquals( 'rich', $data['type'] );
 	}
 }
