@@ -149,7 +149,7 @@ class WP_API_oEmbed_Frontend {
 		foreach ( $wp_oembed->providers as $matchmask => $data ) {
 			$regex = $data[1];
 
-			// Turn the asterisk-type provider URLs into regex
+			// Turn the asterisk-type provider URLs into regex.
 			if ( ! $regex ) {
 				$matchmask = '#' . str_replace( '___wildcard___', '(.+)', preg_quote( str_replace( '*', '___wildcard___', $matchmask ), '#' ) ) . '#i';
 				$matchmask = preg_replace( '|^#http\\\://|', '#https?\://', $matchmask );

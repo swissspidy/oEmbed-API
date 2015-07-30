@@ -10,24 +10,71 @@
  */
 class WP_API_oEmbed_Test_Frontend extends WP_API_oEmbed_TestCase {
 	/**
-	 * Check if our rewrite endpoint exists.
+	 * API route class instance.
+	 * @var WP_API_oEmbed_Frontend
 	 */
-	function test_rewrite_endpoint() {
-		global $wp_rewrite;
+	protected $class;
 
-		$this->assertEquals( 'embed', $wp_rewrite->endpoints[0][1] );
-		$this->assertEquals( 'embed', $wp_rewrite->endpoints[0][2] );
+	/**
+	 * Runs before each test.
+	 */
+	function setUp() {
+		parent::setUp();
+
+		$this->class = new WP_API_oEmbed_Frontend();
 	}
 
 	/**
-	 * Check if our own site is on the oEmbed provider whitelist.
+	 * Runs after each test.
 	 */
-	function test_add_oembed_provider() {
-		$oembed = _wp_oembed_get_object();
-		$this->assertArrayHasKey( home_url( '/*' ), $oembed->providers );
-		$this->assertEquals(
-			array( esc_url( rest_url( 'wp/v2/oembed' ) ), false ),
-			$oembed->providers[ home_url( '/*' ) ]
-		);
+	function tearDown() {
+		parent::tearDown();
+
+		unset( $this->class );
+	}
+
+	/**
+	 * Test output of add_oembed_discovery_links.
+	 */
+	function test_add_oembed_discovery_links_non_singular() {
+		$this->assertEquals( '', $this->class->add_oembed_discovery_links() );
+	}
+
+	/**
+	 * Test output of add_oembed_discovery_links.
+	 */
+	function test_add_oembed_discovery_links() {
+		$post_id = $this->factory->post->create();
+		$this->go_to( get_permalink( $post_id ) );
+
+		$this->assertQueryTrue( 'is_single', 'is_singular' );
+
+		ob_start();
+		$this->class->add_oembed_discovery_links();
+		$actual = ob_get_clean();
+
+		$expected = '<link rel="alternate" type="application/json+oembed" href="' . esc_url( rest_url( 'wp/v2/oembed?url=' . get_permalink( $post_id ) ) ) . '" />' . "\n";
+
+		$this->assertEquals( $expected, $actual );
+	}
+
+	/**
+	 * Test filter_oembed_result_trusted method.
+	 */
+	function test_filter_oembed_result_trusted() {
+		$html   = '<p></p><iframe onload="alert(1)"></iframe>';
+		$actual = $this->class->filter_oembed_result( $html, 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' );
+
+		$this->assertEquals( $html, $actual );
+	}
+
+	/**
+	 * Test filter_oembed_result_trusted method.
+	 */
+	function test_filter_oembed_result_untrusted() {
+		$html   = '<p></p><iframe onload="alert(1)"></iframe>';
+		$actual = $this->class->filter_oembed_result( $html, '' );
+
+		$this->assertEquals( '<iframe sandbox="" security="restricted"></iframe>', $actual );
 	}
 }
