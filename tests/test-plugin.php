@@ -22,21 +22,6 @@ class WP_API_oEmbed_Test_Plugin extends WP_API_oEmbed_TestCase {
 	}
 
 	/**
-	 * Test the WordPress, PHP, and REST API requirements.
-	 */
-	function test_minimum_requirements() {
-		$requirements_check = new WP_API_oEmbed_Requirements_Check( array(
-			'title'    => 'oEmbed API',
-			'php'      => '5.2',
-			'wp'       => '4.3-beta3',
-			'rest_api' => '2.0-beta3',
-			'file'     => __FILE__,
-		) );
-
-		$this->assertTrue( $requirements_check->passes() );
-	}
-
-	/**
 	 * Ensure our rewrite endpoint is there.
 	 */
 	function test_rewrite_endpoint() {

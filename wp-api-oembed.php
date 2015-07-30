@@ -31,8 +31,14 @@
 
 defined( 'WPINC' ) or die;
 
+$rest_api_version = get_option( 'rest_api_plugin_version' );
+
+if ( defined( 'REST_API_VERSION' ) ) {
+	$rest_api_version = REST_API_VERSION;
+}
+
 // Check if the REST API is available first.
-if ( ! version_compare( get_option( 'rest_api_plugin_version' ), '2.0-beta3', '>=' ) ) {
+if ( ! version_compare( $rest_api_version, '2.0-beta3', '>=' ) ) {
 	add_action( 'admin_notices', 'oembed_api_requirements_notice' );
 	unset( $_GET['activate'] );
 
@@ -52,7 +58,6 @@ function oembed_api_requirements_notice() {
 }
 
 // Pull in the plugin classes and initialize.
-include( dirname( __FILE__ ) . '/lib/wp-stack-plugin.php' );
 include( dirname( __FILE__ ) . '/classes/endpoint.php' );
 include( dirname( __FILE__ ) . '/classes/frontend.php' );
 include( dirname( __FILE__ ) . '/classes/plugin.php' );
