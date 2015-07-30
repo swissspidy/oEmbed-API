@@ -54,6 +54,7 @@ class WP_API_oEmbed_Test_Frontend extends WP_API_oEmbed_TestCase {
 		$actual = ob_get_clean();
 
 		$expected = '<link rel="alternate" type="application/json+oembed" href="' . esc_url( rest_url( 'wp/v2/oembed?url=' . get_permalink( $post_id ) ) ) . '" />' . "\n";
+		$expected .= '<link rel="alternate" type="text/xml+oembed" href="' . esc_url( rest_url( 'wp/v2/oembed?url=' . get_permalink() . '&format=xml' ) ) . '" />' . "\n";
 
 		$this->assertEquals( $expected, $actual );
 	}

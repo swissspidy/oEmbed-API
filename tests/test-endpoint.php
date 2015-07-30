@@ -116,7 +116,7 @@ class WP_API_oEmbed_Test_Endpoint extends WP_API_oEmbed_TestCase {
 
 		$request = new WP_REST_Request( 'GET', '/wp/v2/oembed' );
 		$request->set_param( 'url', get_permalink( $post_id ) );
-		$request->set_param( 'format', 'xml' );
+		$request->set_param( 'format', 'random' );
 
 		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
 		$data     = $response->get_data();
@@ -161,6 +161,58 @@ class WP_API_oEmbed_Test_Endpoint extends WP_API_oEmbed_TestCase {
 		$this->assertEquals( get_author_posts_url( $user->ID, $user->user_nicename ), $data['author_url'] );
 		$this->assertEquals( $post->post_title, $data['title'] );
 		$this->assertEquals( 'rich', $data['type'] );
+	}
+
+	/**
+	 * Test request for a normal post.
+	 */
+	function test_request_xml() {
+		$this->class->register_routes();
+
+		$user = $this->factory->user->create_and_get( array(
+			'display_name' => 'John Doe',
+		) );
+		$post = $this->factory->post->create_and_get( array(
+			'post_author' => $user->ID,
+			'post_title'  => 'Hello World',
+		) );
+
+		$request = new WP_REST_Request( 'GET', '/wp/v2/oembed' );
+		$request->set_param( 'url', get_permalink( $post->ID ) );
+		$request->set_param( 'format', 'xml' );
+
+		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertTrue( is_array( $data ) );
+	}
+
+	/**
+	 * Test XML output by the rest_pre_serve_request method.
+	 */
+	function test_rest_pre_serve_request() {
+		$this->class->register_routes();
+
+		$user = $this->factory->user->create_and_get( array(
+			'display_name' => 'John Doe',
+		) );
+		$post = $this->factory->post->create_and_get( array(
+			'post_author' => $user->ID,
+			'post_title'  => 'Hello World',
+		) );
+
+		$request = new WP_REST_Request( 'GET', '/wp/v2/oembed' );
+		$request->set_param( 'url', get_permalink( $post->ID ) );
+		$request->set_param( 'format', 'xml' );
+
+		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
+
+		ob_start();
+		$this->class->rest_pre_serve_request( true, $response, $request, $GLOBALS['wp_rest_server'] );
+		$output = ob_get_clean();
+
+		$xml = simplexml_load_string( $output );
+		$this->assertInstanceOf( 'SimpleXMLElement', $xml );
 	}
 
 	/**
