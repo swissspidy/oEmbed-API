@@ -50,7 +50,7 @@ class WP_API_oEmbed_Requirements_Check {
 	 * @param array $args An array of arguments to overwrite the default requirements.
 	 */
 	public function __construct( $args ) {
-		foreach ( array( 'title', 'php', 'wp', 'rest-api', 'file' ) as $setting ) {
+		foreach ( array( 'title', 'php', 'wp', 'rest_api', 'file' ) as $setting ) {
 			if ( isset( $args[ $setting ] ) ) {
 				$this->$setting = $args[ $setting ];
 			}
