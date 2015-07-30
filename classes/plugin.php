@@ -37,11 +37,11 @@ class WP_API_oEmbed_Plugin {
 	 * @return self The plugin object instance.
 	 */
 	public static function get_instance() {
-		if ( ! isset( static::$instance ) ) {
-			static::$instance = new self();
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self();
 		}
 
-		return static::$instance;
+		return self::$instance;
 	}
 
 	/**
