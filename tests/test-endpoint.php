@@ -160,4 +160,70 @@ class WP_API_oEmbed_Test_Endpoint extends WP_API_oEmbed_TestCase {
 		$this->assertEquals( $post->post_title, $data['title'] );
 		$this->assertEquals( 'rich', $data['type'] );
 	}
+
+	/**
+	 * Test request with maxwidth param.
+	 */
+	function test_request_maxwidth() {
+		$this->class->register_routes();
+
+		$user = $this->factory->user->create_and_get();
+		$post = $this->factory->post->create_and_get( array(
+			'post_author' => $user->ID,
+		) );
+
+		$request = new WP_REST_Request( 'GET', '/wp/v2/oembed' );
+		$request->set_param( 'url', get_permalink( $post->ID ) );
+		$request->set_param( 'maxwidth', 400 );
+
+		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 400, $data['width'] );
+		$this->assertEquals( 225, $data['height'] );
+	}
+
+	/**
+	 * Test request with maxwidth param that is too high.
+	 */
+	function test_request_maxwidth_too_high() {
+		$this->class->register_routes();
+
+		$user = $this->factory->user->create_and_get();
+		$post = $this->factory->post->create_and_get( array(
+			'post_author' => $user->ID,
+		) );
+
+		$request = new WP_REST_Request( 'GET', '/wp/v2/oembed' );
+		$request->set_param( 'url', get_permalink( $post->ID ) );
+		$request->set_param( 'maxwidth', 1000 );
+
+		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 600, $data['width'] );
+		$this->assertEquals( 338, $data['height'] );
+	}
+
+	/**
+	 * Test request with maxwidth param that is too low.
+	 */
+	function test_request_maxwidth_too_low() {
+		$this->class->register_routes();
+
+		$user = $this->factory->user->create_and_get();
+		$post = $this->factory->post->create_and_get( array(
+			'post_author' => $user->ID,
+		) );
+
+		$request = new WP_REST_Request( 'GET', '/wp/v2/oembed' );
+		$request->set_param( 'url', get_permalink( $post->ID ) );
+		$request->set_param( 'maxwidth', - 10 );
+
+		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 200, $data['width'] );
+		$this->assertEquals( 113, $data['height'] );
+	}
 }
