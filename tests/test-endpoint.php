@@ -1,6 +1,8 @@
 <?php
 /**
  * Test our REST route.
+ *
+ * @package WP_API_oEmbed
  */
 
 /**

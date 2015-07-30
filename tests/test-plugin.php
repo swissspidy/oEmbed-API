@@ -1,6 +1,8 @@
 <?php
 /**
  * Test our plugin.
+ *
+ * @package WP_API_oEmbed
  */
 
 /**
