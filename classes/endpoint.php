@@ -171,7 +171,9 @@ class WP_API_oEmbed_Endppoint {
 			return $served;
 		}
 
-		$server->send_header( 'Content-Type', 'text/xml; charset=' . get_option( 'blog_charset' ) );
+		if ( ! headers_sent() ) {
+			$server->send_header( 'Content-Type', 'text/xml; charset=' . get_option( 'blog_charset' ) );
+		}
 
 		// Embed links inside the request.
 		$result = $server->response_to_data( $result, false );
