@@ -38,6 +38,12 @@ class WP_API_oEmbed_Test_Plugin extends WP_API_oEmbed_TestCase {
 	 */
 	function test_add_oembed_provider() {
 		$oembed = _wp_oembed_get_object();
+
+		wp_oembed_remove_provider( home_url( '/*' ) );
+		$this->assertArrayNotHasKey( home_url( '/*' ), $oembed->providers );
+
+		$this->plugin()->add_oembed_provider();
+
 		$this->assertArrayHasKey( home_url( '/*' ), $oembed->providers );
 		$this->assertEquals( array( esc_url( rest_url( 'wp/v2/oembed' ) ), false ),
 			$oembed->providers[ home_url( '/*' ) ]

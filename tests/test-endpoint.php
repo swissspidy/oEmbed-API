@@ -30,6 +30,8 @@ class WP_API_oEmbed_Test_Endpoint extends WP_API_oEmbed_TestCase {
 	 * Runs after each test.
 	 */
 	function tearDown() {
+		parent::tearDown();
+
 		unset( $this->class );
 	}
 
