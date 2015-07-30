@@ -10,10 +10,18 @@
   "require-dev": {
     "phpmd/phpmd": "@stable",
     "wp-coding-standards/wpcs": "dev-develop",
-    "sebastian/phpcpd": "*"
+    "sebastian/phpcpd": "*",
+    "wp-api/wp-api": "dev-develop"
   },
   "scripts": {
     "post-install-cmd": "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs",
     "post-update-cmd": "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs"
+  },
+  "extra": {
+    "installer-paths": {
+      "vendor/{$name}": [
+        "wp-api/wp-api"
+      ]
+    }
   }
 }

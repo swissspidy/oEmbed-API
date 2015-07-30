@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "03f0d1dde8518f646e85d97296501eb4",
+    "hash": "29c8e92779a5f0f62bc81ad5716d0e97",
     "packages": [
         {
             "name": "composer/installers",
@@ -206,16 +206,16 @@
         },
         {
             "name": "phpunit/php-timer",
-            "version": "1.0.6",
+            "version": "1.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-timer.git",
-                "reference": "83fe1bdc5d47658b727595c14da140da92b3d66d"
+                "reference": "3e82f4e9fc92665fafd9157568e4dcb01d014e5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-timer/zipball/83fe1bdc5d47658b727595c14da140da92b3d66d",
-                "reference": "83fe1bdc5d47658b727595c14da140da92b3d66d",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-timer/zipball/3e82f4e9fc92665fafd9157568e4dcb01d014e5b",
+                "reference": "3e82f4e9fc92665fafd9157568e4dcb01d014e5b",
                 "shasum": ""
             },
             "require": {
@@ -243,7 +243,7 @@
             "keywords": [
                 "timer"
             ],
-            "time": "2015-06-13 07:35:30"
+            "time": "2015-06-21 08:01:12"
         },
         {
             "name": "sebastian/finder-facade",
@@ -750,17 +750,55 @@
             "time": "2015-05-27 22:58:02"
         },
         {
+            "name": "wp-api/wp-api",
+            "version": "dev-develop",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/WP-API/WP-API.git",
+                "reference": "0a3aec4314ccff400303434cc946cc7e67d0584d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/WP-API/WP-API/zipball/0a3aec4314ccff400303434cc946cc7e67d0584d",
+                "reference": "0a3aec4314ccff400303434cc946cc7e67d0584d",
+                "shasum": ""
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "require-dev": {
+                "wp-coding-standards/wpcs": "dev-develop"
+            },
+            "type": "wordpress-plugin",
+            "extra": {
+                "installer-name": "json-rest-api"
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL2+"
+            ],
+            "authors": [
+                {
+                    "name": "WP-API Team",
+                    "homepage": "http://wp-api.org/"
+                }
+            ],
+            "description": "Access your WordPress site's data through an easy-to-use HTTP REST API.",
+            "homepage": "http://wp-api.org/",
+            "time": "2015-07-29 23:27:53"
+        },
+        {
             "name": "wp-coding-standards/wpcs",
             "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git",
-                "reference": "a9a032ef2ce775bd5c45b52db98fda45efa87148"
+                "reference": "4e56965cc862043254e3ef7fc1d09bbf1a219fb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WordPress-Coding-Standards/WordPress-Coding-Standards/zipball/a9a032ef2ce775bd5c45b52db98fda45efa87148",
-                "reference": "a9a032ef2ce775bd5c45b52db98fda45efa87148",
+                "url": "https://api.github.com/repos/WordPress-Coding-Standards/WordPress-Coding-Standards/zipball/4e56965cc862043254e3ef7fc1d09bbf1a219fb8",
+                "reference": "4e56965cc862043254e3ef7fc1d09bbf1a219fb8",
                 "shasum": ""
             },
             "require": {
@@ -783,14 +821,15 @@
                 "standards",
                 "wordpress"
             ],
-            "time": "2015-06-30 21:30:08"
+            "time": "2015-07-25 21:22:17"
         }
     ],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
         "phpmd/phpmd": 0,
-        "wp-coding-standards/wpcs": 20
+        "wp-coding-standards/wpcs": 20,
+        "wp-api/wp-api": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
