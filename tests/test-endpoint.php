@@ -216,6 +216,47 @@ class WP_API_oEmbed_Test_Endpoint extends WP_API_oEmbed_TestCase {
 	}
 
 	/**
+	 * Test the rest_pre_serve_request method.
+	 */
+	function test_rest_pre_serve_request_wrong_format() {
+		$this->class->register_routes();
+
+		$post = $this->factory->post->create_and_get();
+
+		$request = new WP_REST_Request( 'HEAD', '/wp/v2/oembed' );
+		$request->set_param( 'url', get_permalink( $post->ID ) );
+
+		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
+
+		ob_start();
+		$this->plugin()->rest_pre_serve_request( true, $response, $request, $GLOBALS['wp_rest_server'] );
+		$output = ob_get_clean();
+
+		$this->assertTrue( $output );
+	}
+
+	/**
+	 * Test the rest_pre_serve_request method.
+	 */
+	function test_rest_pre_serve_request_wrong_method() {
+		$this->class->register_routes();
+
+		$post = $this->factory->post->create_and_get();
+
+		$request = new WP_REST_Request( 'HEAD', '/wp/v2/oembed' );
+		$request->set_param( 'url', get_permalink( $post->ID ) );
+		$request->set_param( 'format', 'xml' );
+
+		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
+
+		ob_start();
+		$this->plugin()->rest_pre_serve_request( true, $response, $request, $GLOBALS['wp_rest_server'] );
+		$output = ob_get_clean();
+
+		$this->assertTrue( $output );
+	}
+
+	/**
 	 * Test request with maxwidth param.
 	 */
 	function test_request_maxwidth() {
