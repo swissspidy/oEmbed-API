@@ -225,14 +225,11 @@ class WP_API_oEmbed_Test_Endpoint extends WP_API_oEmbed_TestCase {
 
 		$request = new WP_REST_Request( 'HEAD', '/wp/v2/oembed' );
 		$request->set_param( 'url', get_permalink( $post->ID ) );
+		$request->set_param( 'format', 'json' );
 
 		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
 
-		ob_start();
-		$this->plugin()->rest_pre_serve_request( true, $response, $request, $GLOBALS['wp_rest_server'] );
-		$output = ob_get_clean();
-
-		$this->assertTrue( $output );
+		$this->assertTrue( $this->plugin()->rest_pre_serve_request( true, $response, $request, $GLOBALS['wp_rest_server'] ) );
 	}
 
 	/**
@@ -249,11 +246,7 @@ class WP_API_oEmbed_Test_Endpoint extends WP_API_oEmbed_TestCase {
 
 		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
 
-		ob_start();
-		$this->plugin()->rest_pre_serve_request( true, $response, $request, $GLOBALS['wp_rest_server'] );
-		$output = ob_get_clean();
-
-		$this->assertTrue( $output );
+		$this->assertTrue( $this->plugin()->rest_pre_serve_request( true, $response, $request, $GLOBALS['wp_rest_server'] ) );
 	}
 
 	/**
