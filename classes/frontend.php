@@ -48,6 +48,8 @@ class WP_API_oEmbed_Frontend {
 
 	/**
 	 * Print the CSS used to style the embed output.
+	 *
+	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
 	 */
 	protected function rest_oembed_output_css() {
 		?>
