@@ -97,3 +97,41 @@ function get_post_embed_url( $post = null ) {
 
 	return $embed_url;
 }
+
+/**
+ * Get the embed code fpr a specific post.
+ *
+ * @param int|WP_Post $post   Post ID or object. Defaults to the current post.
+ * @param int         $width  The width for the response.
+ * @param int         $height The height for the response.
+ *
+ * @return bool|string Embed code on success, false otherwise.
+ */
+function get_post_embed_html( $post = null, $width, $height ) {
+	$post = get_post( $post );
+
+	if ( ! $post ) {
+		return false;
+	}
+
+	$embed_url = get_post_embed_url( $post );
+
+	$output = sprintf(
+		'<iframe sandbox="" security="restricted" src="%1$s" width="%2$d" height="%3$d" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>',
+		esc_url( $embed_url ),
+		$width,
+		$height
+	);
+
+	/**
+	 * Filters the oEmbed HTML output.
+	 *
+	 * @param string  $output The default HTML.
+	 * @param WP_Post $post   Current post object.
+	 * @param int     $width  Width of the response.
+	 * @param int     $height Height of the response.
+	 */
+	$output = apply_filters( 'rest_oembed_html', $output, $post, $width, $height );
+
+	return $output;
+}

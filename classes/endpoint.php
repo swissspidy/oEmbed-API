@@ -112,42 +112,10 @@ class WP_API_oEmbed_Endppoint {
 			'type'          => 'rich',
 			'width'         => $width,
 			'height'        => $height,
-			'html'          => $this->get_oembed_html( $post, $width, $height ),
+			'html'          => get_post_embed_html( $post, $width, $height ),
 		) );
 
 		return $data;
-	}
-
-	/**
-	 * Get the HTML output for the oEmbed response.
-	 *
-	 * @param WP_Post $post   The current post object.
-	 * @param int     $width  The width for the response.
-	 * @param int     $height The height for the response.
-	 *
-	 * @return string
-	 */
-	protected function get_oembed_html( $post, $width, $height ) {
-		$embed_url = get_post_embed_url( $post );
-
-		$output = sprintf(
-			'<iframe sandbox="" security="restricted" src="%1$s" width="%2$d" height="%3$d" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>',
-			esc_url( $embed_url ),
-			$width,
-			$height
-		);
-
-		/**
-		 * Filters the oEmbed HTML output.
-		 *
-		 * @param string  $output The default HTML.
-		 * @param WP_Post $post   Current post object.
-		 * @param int     $width  Width of the response.
-		 * @param int     $height Height of the response.
-		 */
-		$output = apply_filters( 'rest_oembed_html', $output, $post, $width, $height );
-
-		return $output;
 	}
 
 	/**
