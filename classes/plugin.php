@@ -125,7 +125,7 @@ class WP_API_oEmbed_Plugin {
 	public function rest_pre_serve_request( $served, $result, $request, $server ) {
 		$params = $request->get_params();
 
-		if ( '/wp/v2/oembed' !== $request->get_route() || ! 'xml' === $params['format'] ) {
+		if ( '/wp/v2/oembed' !== $request->get_route() || 'xml' !== $params['format'] ) {
 			return $served;
 		}
 
