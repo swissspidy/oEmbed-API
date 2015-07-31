@@ -208,7 +208,7 @@ class WP_API_oEmbed_Test_Endpoint extends WP_API_oEmbed_TestCase {
 		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
 
 		ob_start();
-		$this->class->rest_pre_serve_request( true, $response, $request, $GLOBALS['wp_rest_server'] );
+		$this->plugin()->rest_pre_serve_request( true, $response, $request, $GLOBALS['wp_rest_server'] );
 		$output = ob_get_clean();
 
 		$xml = simplexml_load_string( $output );

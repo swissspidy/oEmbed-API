@@ -33,8 +33,6 @@ class WP_API_oEmbed_Endppoint {
 				),
 			),
 		) );
-
-		add_filter( 'rest_pre_serve_request', array( $this, 'rest_pre_serve_request' ), 10, 4 );
 	}
 
 	/**
@@ -116,52 +114,5 @@ class WP_API_oEmbed_Endppoint {
 		) );
 
 		return $data;
-	}
-
-	/**
-	 * Hooks into the REST API output to print XML instead of JSON.
-	 *
-	 * @param bool                      $served  Whether the request has already been served.
-	 * @param WP_HTTP_ResponseInterface $result  Result to send to the client. Usually a WP_REST_Response.
-	 * @param WP_REST_Request           $request Request used to generate the response.
-	 * @param WP_REST_Server            $server  Server instance.
-	 *
-	 * @return bool
-	 */
-	public function rest_pre_serve_request( $served, $result, $request, $server ) {
-		$params = $request->get_params();
-
-		if ( '/wp/v2/oembed' !== $request->get_route() || ! 'xml' === $params['format'] ) {
-			return $served;
-		}
-
-		if ( 'HEAD' === $request->get_method() ) {
-			return $served;
-		}
-
-		if ( ! headers_sent() ) {
-			$server->send_header( 'Content-Type', 'text/xml; charset=' . get_option( 'blog_charset' ) );
-		}
-
-		// Embed links inside the request.
-		$result = $server->response_to_data( $result, false );
-
-		$oembed = new SimpleXMLElement( '<oembed></oembed>' );
-		foreach ( $result as $key => $value ) {
-			if ( is_array( $value ) ) {
-				$element = $oembed->addChild( $key );
-
-				foreach ( $value as $k => $v ) {
-					$element->addChild( $k, $v );
-				}
-
-				continue;
-			}
-
-			$oembed->addChild( $key, $value );
-		}
-		echo $oembed->asXML();
-
-		return $served = true;
 	}
 }
