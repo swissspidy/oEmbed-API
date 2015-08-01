@@ -47,6 +47,14 @@ class WP_API_oEmbed_Endppoint {
 	public function get_oembed_response( WP_REST_Request $request ) {
 		$post_id = url_to_postid( $request['url'] );
 
+		/**
+		 * Filter the determined post id.
+		 *
+		 * @param int    $post_id The post ID.
+		 * @param string $url     The requestd URL.
+		 */
+		$post_id = apply_filters( 'rest_oembed_request_post_id', $post_id, $request['url'] );
+
 		if ( 0 === $post_id ) {
 			return new WP_Error( 'rest_oembed_invalid_url', __( 'Invalid URL.', 'oembed-api' ), array( 'status' => 404 ) );
 		}
