@@ -100,6 +100,9 @@ class WP_API_oEmbed_Frontend {
 				font-weight: bold;
 				font-size: 22px;
 				line-height: 1.3;
+			}
+
+			.wp-embed-heading a {
 				color: #32373c;
 			}
 
@@ -139,6 +142,16 @@ class WP_API_oEmbed_Frontend {
 				text-align: right;
 			}
 
+			.wp-embed-social .dashicons {
+				-webkit-transition: color .1s ease-in;
+				transition: color .1s ease-in;
+			}
+
+			.wp-embed-social a:hover {
+				text-decoration: none;
+				color: #0073aa;
+			}
+
 			.wp-embed-comments,
 			.wp-embed-share {
 				display: inline;
@@ -148,31 +161,65 @@ class WP_API_oEmbed_Frontend {
 				margin-left: 10px;
 			}
 
-			.wp-embed-comments span:before,
-			.wp-embed-share:before {
-				display: inline-block;
-				width: 20px;
-				height: 20px;
-				font-size: 20px;
-				line-height: 1;
-				font-family: dashicons;
-				text-decoration: inherit;
-				font-weight: 400;
-				font-style: normal;
-				vertical-align: top;
+			.wp-embed-share-dialog {
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background-color: rgba(10, 10, 10, 0.8);
 				text-align: center;
-				-webkit-font-smoothing: antialiased;
-				-moz-osx-font-smoothing: grayscale;
+				color: #fff;
+				opacity: 1;
+				transition: opacity .25s ease-in-out;
+				-moz-transition: opacity .25s ease-in-out;
+				-webkit-transition: opacity .25s ease-in-out;
 			}
 
-			.wp-embed-comments span:before {
-				margin-top: 2px;
-				content: "\f101";
+			.wp-embed-share-dialog.hidden {
+				opacity: 0;
+				visibility: hidden;
 			}
 
-			.wp-embed-share:before {
-				margin-top: 1px;
-				content: "\f237";
+			a.wp-embed-share-dialog-close {
+				position: absolute;
+				top: 20px;
+				right: 20px;
+				color: #fff;
+				font-size: 22px;
+			}
+
+			a.wp-embed-share-dialog-close:hover {
+				text-decoration: none;
+			}
+
+			.wp-embed-share-dialog-content {
+				height: 100%;
+				-webkit-transform-style: preserve-3d;
+				-moz-transform-style: preserve-3d;
+				transform-style: preserve-3d;
+			}
+
+			.wp-embed-share-dialog-text {
+				position: relative;
+				top: 50%;
+				transform: translateY(-50%);
+				padding: 0 20px;
+			}
+
+			.wp-embed-share-title {
+				margin: 0 0 15px;
+				font-weight: bold;
+				font-size: 18px;
+				line-height: 1.3;
+			}
+
+			.wp-embed-share-input {
+				width: 100%;
+				max-width: 600px;
+				border: 0px;
+				height: 28px;
+				padding: 0 5px;
 			}
 		</style>
 		<?php
@@ -202,10 +249,38 @@ class WP_API_oEmbed_Frontend {
 			<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700"/>
 			<link rel="stylesheet" href="https://s.w.org/wp-includes/css/dashicons.css"/>
 			<?php $this->rest_oembed_output_css(); ?>
+			<script type="text/javascript">
+				(function () {
+					window.onload = function () {
+						var share_dialog = document.getElementsByClassName('wp-embed-share-dialog')[0];
+
+						// Select content when clicking on the input field.
+						document.getElementsByClassName('wp-embed-share-input')[0].onclick = function () {
+							this.select();
+						};
+
+						// Open the share dialog.
+						document.getElementsByClassName('wp-embed-share-dialog-open')[0].onclick = function (e) {
+							share_dialog.className = share_dialog.className.replace('hidden', '');
+							e.preventDefault();
+						}
+
+						// Close the share dialog.
+						document.getElementsByClassName('wp-embed-share-dialog-close')[0].onclick = function (e) {
+							share_dialog.className += ' hidden';
+							e.preventDefault();
+						}
+					}
+				})();
+			</script>
 		</head>
 		<body>
 		<div class="wp-embed">
-			<h1 class="wp-embed-heading"><?php echo esc_html( $post->post_title ); ?></h1>
+			<h1 class="wp-embed-heading">
+				<a href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>" target="_top">
+					<?php echo esc_html( $post->post_title ); ?>
+				</a>
+			</h1>
 
 			<p class="wp-embed-excerpt"><?php echo $post_content; ?></p>
 
@@ -217,14 +292,50 @@ class WP_API_oEmbed_Frontend {
 				);
 				?>
 				<div class="wp-embed-site-title">
-					<?php printf( '<a href="%s">%s</a>', esc_url( home_url() ), bloginfo( 'name' ) ); ?>
+					<?php printf( '<a href="%s" target="_top">%s</a>', esc_url( home_url() ), get_bloginfo( 'name' ) ); ?>
 				</div>
 			</div>
 			<div class="wp-embed-social">
 				<div class="wp-embed-comments">
-					<span><?php echo esc_html( get_comments_number( $post->ID ) ); ?></span>
+					<a href="<?php echo esc_url( get_comments_link( $post->ID ) ); ?>" target="_top">
+						<span class="dashicons dashicons-admin-comments"></span>
+						<?php
+						printf(
+							_n(
+								'%s <span class="screen-reader-text">Comment</span>',
+								'%s <span class="screen-reader-text">Comments</span>',
+								get_comments_number( $post->ID )
+							),
+							get_comments_number( $post->ID )
+						);
+						?>
+					</a>
 				</div>
 				<div class="wp-embed-share">
+					<a href="#" class="wp-embed-share-dialog-open">
+						<span class="dashicons dashicons-share"></span>
+						<span class="screen-reader-text"><?php _e( 'Open sharing dialog' ); ?></span>
+					</a>
+				</div>
+			</div>
+			<div class="wp-embed-share-dialog hidden">
+				<div class="wp-embed-share-dialog-content">
+					<a href="#" class="wp-embed-share-dialog-close">
+						<span class="dashicons dashicons-no"></span>
+						<span class="screen-reader-text"><?php _e( 'Close dialog' ); ?></span>
+					</a>
+
+					<div class="wp-embed-share-dialog-text">
+						<h2 class="wp-embed-share-title">
+							<?php _e( 'Copy and paste this URL into your site to embed:' ); ?>
+						</h2>
+						<?php
+						printf(
+							'<input type="text" value="%s" class="wp-embed-share-input" />',
+							esc_url( get_permalink( $post->ID ) )
+						);
+						?>
+					</div>
 				</div>
 			</div>
 		</div>
