@@ -387,7 +387,7 @@ class WP_API_oEmbed_Frontend {
 
 		if ( ! $trusted ) {
 			$html = wp_kses( $html, $allowed_html );
-			$html = str_replace( '<iframe', '<iframe sandbox="" security="restricted"', $html );
+			$html = str_replace( '<iframe', '<iframe sandbox="allow-scripts" security="restricted"', $html );
 		}
 
 		return $html;
