@@ -307,7 +307,8 @@ class WP_API_oEmbed_Frontend {
 							_n(
 								'%s <span class="screen-reader-text">Comment</span>',
 								'%s <span class="screen-reader-text">Comments</span>',
-								get_comments_number( $post->ID )
+								get_comments_number( $post->ID ),
+								'oembed-api'
 							),
 							get_comments_number( $post->ID )
 						);
@@ -317,7 +318,7 @@ class WP_API_oEmbed_Frontend {
 				<div class="wp-embed-share">
 					<a href="#" class="wp-embed-share-dialog-open">
 						<span class="dashicons dashicons-share"></span>
-						<span class="screen-reader-text"><?php _e( 'Open sharing dialog' ); ?></span>
+						<span class="screen-reader-text"><?php _e( 'Open sharing dialog', 'oembed-api' ); ?></span>
 					</a>
 				</div>
 			</div>
@@ -325,12 +326,12 @@ class WP_API_oEmbed_Frontend {
 				<div class="wp-embed-share-dialog-content">
 					<a href="#" class="wp-embed-share-dialog-close">
 						<span class="dashicons dashicons-no"></span>
-						<span class="screen-reader-text"><?php _e( 'Close dialog' ); ?></span>
+						<span class="screen-reader-text"><?php _e( 'Close dialog', 'oembed-api' ); ?></span>
 					</a>
 
 					<div class="wp-embed-share-dialog-text">
 						<h2 class="wp-embed-share-title">
-							<?php _e( 'Copy and paste this URL into your site to embed:' ); ?>
+							<?php _e( 'Copy and paste this URL into your site to embed:', 'oembed-api' ); ?>
 						</h2>
 						<?php
 						printf(
