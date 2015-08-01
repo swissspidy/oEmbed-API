@@ -226,6 +226,43 @@ class WP_API_oEmbed_Frontend {
 	}
 
 	/**
+	 * Print the JS used inside the iframe.
+	 *
+	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+	 */
+	protected function rest_oembed_output_js() {
+		?>
+		<script type="text/javascript">
+			(function () {
+				window.onload = function () {
+					var share_dialog = document.getElementsByClassName('wp-embed-share-dialog')[0];
+
+					// Send this document's height to the parent (embedding) site.
+					top.parent.postMessage(document.body.scrollHeight, '*');
+
+					// Select content when clicking on the input field.
+					document.getElementsByClassName('wp-embed-share-input')[0].onclick = function () {
+						this.select();
+					};
+
+					// Open the share dialog.
+					document.getElementsByClassName('wp-embed-share-dialog-open')[0].onclick = function (e) {
+						share_dialog.className = share_dialog.className.replace('hidden', '');
+						e.preventDefault();
+					}
+
+					// Close the share dialog.
+					document.getElementsByClassName('wp-embed-share-dialog-close')[0].onclick = function (e) {
+						share_dialog.className += ' hidden';
+						e.preventDefault();
+					}
+				}
+			})();
+		</script>
+		<?php
+	}
+
+	/**
 	 * Output the HTML that gets embedded
 	 *
 	 * @todo Use `.screen-reader-text` where needed.
@@ -249,33 +286,7 @@ class WP_API_oEmbed_Frontend {
 			<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700"/>
 			<link rel="stylesheet" href="https://s.w.org/wp-includes/css/dashicons.css"/>
 			<?php $this->rest_oembed_output_css(); ?>
-			<script type="text/javascript">
-				(function () {
-					window.onload = function () {
-						var share_dialog = document.getElementsByClassName('wp-embed-share-dialog')[0];
-
-						// Send this document's height to the parent (embedding) site.
-						top.parent.postMessage(document.body.scrollHeight, '*');
-
-						// Select content when clicking on the input field.
-						document.getElementsByClassName('wp-embed-share-input')[0].onclick = function () {
-							this.select();
-						};
-
-						// Open the share dialog.
-						document.getElementsByClassName('wp-embed-share-dialog-open')[0].onclick = function (e) {
-							share_dialog.className = share_dialog.className.replace('hidden', '');
-							e.preventDefault();
-						}
-
-						// Close the share dialog.
-						document.getElementsByClassName('wp-embed-share-dialog-close')[0].onclick = function (e) {
-							share_dialog.className += ' hidden';
-							e.preventDefault();
-						}
-					}
-				})();
-			</script>
+			<?php $this->rest_oembed_output_js(); ?>
 		</head>
 		<body>
 		<div class="wp-embed">
