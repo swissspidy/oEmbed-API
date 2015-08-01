@@ -254,6 +254,9 @@ class WP_API_oEmbed_Frontend {
 					window.onload = function () {
 						var share_dialog = document.getElementsByClassName('wp-embed-share-dialog')[0];
 
+						// Send this document's height to the parent (embedding) site.
+						top.parent.postMessage(document.body.scrollHeight, '*');
+
 						// Select content when clicking on the input field.
 						document.getElementsByClassName('wp-embed-share-input')[0].onclick = function () {
 							this.select();
