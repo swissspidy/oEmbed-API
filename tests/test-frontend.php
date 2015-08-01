@@ -76,6 +76,6 @@ class WP_API_oEmbed_Test_Frontend extends WP_API_oEmbed_TestCase {
 		$html   = '<p></p><iframe onload="alert(1)"></iframe>';
 		$actual = $this->class->filter_oembed_result( $html, '' );
 
-		$this->assertEquals( '<iframe sandbox="" security="restricted"></iframe>', $actual );
+		$this->assertEquals( '<iframe sandbox="allow-scripts" security="restricted"></iframe>', $actual );
 	}
 }

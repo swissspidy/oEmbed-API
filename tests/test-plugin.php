@@ -98,7 +98,7 @@ class WP_API_oEmbed_Test_Plugin extends WP_API_oEmbed_TestCase {
 	function test_get_post_embed_html() {
 		$post_id = $this->factory->post->create();
 
-		$expected = '<iframe sandbox="" security="restricted" src="' . esc_url( get_post_embed_url( $post_id ) ) . '" width="200" height="200" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>';
+		$expected = '<iframe sandbox="allow-scripts" security="restricted" src="' . esc_url( get_post_embed_url( $post_id ) ) . '" width="200" height="200" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>';
 
 		$this->assertEquals( $expected, get_post_embed_html( $post_id, 200, 200 ) );
 	}
