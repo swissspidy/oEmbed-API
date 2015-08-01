@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2+.
 msgid ""
 msgstr ""
-"Project-Id-Version: oEmbed API 0.1.0\n"
+"Project-Id-Version: oEmbed API 0.2.0\n"
 "Report-Msgid-Bugs-To: https://pascalbirchler.com\n"
 "POT-Creation-Date: 2015-07-27 13:00:02+00:00\n"
 "MIME-Version: 1.0\n"
@@ -24,19 +24,37 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: classes/endpoint.php:51
+#: classes/endpoint.php:59
 msgid "Invalid URL."
 msgstr ""
 
-#: classes/endpoint.php:55
+#: classes/endpoint.php:64
 msgid "Invalid format."
 msgstr ""
 
-#: classes/frontend.php:65
+#: classes/frontend.php:280
 msgid "%d word"
 msgid_plural "%d words"
 msgstr[0] ""
 msgstr[1] ""
+
+#: classes/frontend.php:318
+msgid "%s <span class=\"screen-reader-text\">Comment</span>"
+msgid_plural "%s <span class=\"screen-reader-text\">Comments</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: classes/frontend.php:332
+msgid "Open sharing dialog"
+msgstr ""
+
+#: classes/frontend.php:340
+msgid "Close dialog"
+msgstr ""
+
+#: classes/frontend.php:345
+msgid "Copy and paste this URL into your site to embed:"
+msgstr ""
 
 #. Plugin Name of the plugin/theme
 msgid "oEmbed API"
