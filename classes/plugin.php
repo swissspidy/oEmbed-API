@@ -70,6 +70,8 @@ class WP_API_oEmbed_Plugin {
 		add_action( 'template_redirect', array( $this->frontendClass, 'template_redirect' ) );
 		add_action( 'rest_oembed_output', array( $this->frontendClass, 'rest_oembed_output' ) );
 
+		add_action( 'wp_head', array( $this->frontendClass, 'add_host_js' ) );
+
 		add_filter( 'oembed_result', array( $this->frontendClass, 'filter_oembed_result' ), 10, 2 );
 
 		add_filter( 'embed_oembed_discover', '__return_true' );
@@ -109,7 +111,7 @@ class WP_API_oEmbed_Plugin {
 	 * Add this site to the whitelist of oEmbed providers.
 	 */
 	public function add_oembed_provider() {
-		wp_oembed_add_provider( home_url( '/*' ), esc_url( rest_url( 'wp/v2/oembed' ) ) );
+		//wp_oembed_add_provider( home_url( '/*' ), esc_url( rest_url( 'wp/v2/oembed' ) ) );
 	}
 
 	/**

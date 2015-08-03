@@ -47,6 +47,42 @@ class WP_API_oEmbed_Frontend {
 	}
 
 	/**
+	 * Add JS to handle the messages from the embedded iframes.
+	 *
+	 * @todo: Think of a better way to restrict the height.
+	 */
+	public function add_host_js() {
+		?>
+		<script type="text/javascript">
+			function receiveEmbedMessage( e ) {
+				if ( 'height' == e.data.message ) {
+					var iframes = document.getElementsByTagName( 'iframe' );
+					for( var ii = 0; ii < iframes.length; ii++ ) {
+						if ( iframes[ ii ].classList.contains( 'embed-' + e.data.password ) ) {
+							var height = e.data.value;
+							if ( height > 600 ) {
+								height = 600;
+							} else if ( height < 100 ) {
+								height = 100;
+							}
+
+							iframes[ ii ].height = (height) + "px";
+						}
+					}
+				}
+			}
+
+			if ( window.addEventListener ) {
+				window.addEventListener( 'message', receiveEmbedMessage, false );
+			}
+			else if ( window.attachEvent ) {
+				window.attachEvent( 'message', receiveEmbedMessage );
+			}
+		</script>
+		<?php
+	}
+
+	/**
 	 * Print the CSS used to style the embed output.
 	 *
 	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
@@ -235,10 +271,13 @@ class WP_API_oEmbed_Frontend {
 		<script type="text/javascript">
 			(function () {
 				window.onload = function () {
+					var password = '<?php echo esc_js( $_REQUEST['messagesecret'] ); ?>';
 					var share_dialog = document.getElementsByClassName('wp-embed-share-dialog')[0];
 
+					var embed = document.getElementsByClassName( 'wp-embed' )[0];
+
 					// Send this document's height to the parent (embedding) site.
-					top.parent.postMessage(document.body.scrollHeight, '*');
+					window.parent.postMessage( { 'message': 'height', 'value': embed.clientHeight + 2, 'password': password }, '*' );
 
 					// Select content when clicking on the input field.
 					document.getElementsByClassName('wp-embed-share-input')[0].onclick = function () {
@@ -403,6 +442,17 @@ class WP_API_oEmbed_Frontend {
 		if ( ! $trusted ) {
 			$html = wp_kses( $html, $allowed_html );
 			$html = str_replace( '<iframe', '<iframe sandbox="allow-scripts" security="restricted"', $html );
+
+			preg_match( '/ src=[\'"]([^\'"]*)[\'"]/', $html, $results );
+			if ( empty( $results ) ) {
+				return $html;
+			}
+
+			$password = wp_generate_password( 10, false );
+
+			$url = add_query_arg( 'messagesecret', $password, $results[1] );
+
+			$html = str_replace( $results[0], " src=\"$url\" class=\"embed-{$password}\"", $html );
 		}
 
 		return $html;
