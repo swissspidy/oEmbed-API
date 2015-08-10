@@ -271,7 +271,9 @@ class WP_API_oEmbed_Frontend {
 		<script type="text/javascript">
 			(function () {
 				window.onload = function () {
-					var password = '<?php echo esc_js( $_REQUEST['messagesecret'] ); ?>';
+					var hash = window.location.hash;
+					var password = hash.replace( /.*messagesecret=([\d\w]{10}).*/, '$1' );
+
 					var share_dialog = document.getElementsByClassName('wp-embed-share-dialog')[0];
 
 					var embed = document.getElementsByClassName( 'wp-embed' )[0];
@@ -450,7 +452,7 @@ class WP_API_oEmbed_Frontend {
 
 			$password = wp_generate_password( 10, false );
 
-			$url = add_query_arg( 'messagesecret', $password, $results[1] );
+			$url = esc_url( "{$results[1]}#?messagesecret=$password" );
 
 			$html = str_replace( $results[0], " src=\"$url\" class=\"embed-{$password}\"", $html );
 		}
