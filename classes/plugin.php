@@ -63,6 +63,9 @@ class WP_API_oEmbed_Plugin {
 		// Add a rewrite endpoint for the iframe.
 		add_action( 'init', array( $this, 'add_rewrite_endpoint' ) );
 
+		// Register our TinyMCE plugin
+		add_action( 'mce_external_plugins', array( $this, 'add_mce_plugin' ) );
+
 		// Setup our frontend facing component.
 		$this->frontendClass = new WP_API_oEmbed_Frontend();
 
@@ -112,6 +115,16 @@ class WP_API_oEmbed_Plugin {
 	 */
 	public function add_oembed_provider() {
 		//wp_oembed_add_provider( home_url( '/*' ), esc_url( rest_url( 'wp/v2/oembed' ) ) );
+	}
+
+	/**
+	 * Register our TinyMCE plugin
+	 *
+	 * @param array $plugins List of current TinyMCE plugins
+	 */
+	public function add_mce_plugin( $plugins ) {
+		$plugins['autoembed'] = plugins_url( 'tinymce/plugin.js', __FILE__ );
+		return $plugins;
 	}
 
 	/**
