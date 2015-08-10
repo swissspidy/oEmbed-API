@@ -58,7 +58,7 @@ class WP_API_oEmbed_Frontend {
 				if ( 'height' == e.data.message ) {
 					var iframes = document.getElementsByTagName( 'iframe' );
 					for( var ii = 0; ii < iframes.length; ii++ ) {
-						if ( iframes[ ii ].classList.contains( 'embed-' + e.data.password ) ) {
+						if ( iframes[ ii ].getAttribute( 'data-password' ) == e.data.password ) {
 							var height = e.data.value;
 							if ( height > 600 ) {
 								height = 600;
@@ -454,7 +454,7 @@ class WP_API_oEmbed_Frontend {
 
 			$url = esc_url( "{$results[1]}#?messagesecret=$password" );
 
-			$html = str_replace( $results[0], " src=\"$url\" class=\"embed-{$password}\"", $html );
+			$html = str_replace( $results[0], " src=\"$url\" data-password=\"$password\"", $html );
 		}
 
 		return $html;
