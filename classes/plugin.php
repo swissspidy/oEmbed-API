@@ -123,7 +123,7 @@ class WP_API_oEmbed_Plugin {
 	 * @param array $plugins List of current TinyMCE plugins
 	 */
 	public function add_mce_plugin( $plugins ) {
-		$plugins['autoembed'] = plugins_url( 'tinymce/plugin.js', __FILE__ );
+		$plugins['autoembed'] = plugins_url( 'tinymce/plugin.js', dirname( __FILE__ ) );
 		return $plugins;
 	}
 
