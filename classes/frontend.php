@@ -54,7 +54,7 @@ class WP_API_oEmbed_Frontend {
 	public function add_host_js() {
 		?>
 		<script type="text/javascript">
-			<?php readfile( dirname( dirname( __FILE__ ) ) . "/scripts/frontend.js" ); ?>
+			<?php readfile( dirname( dirname( __FILE__ ) ) . '/scripts/frontend.js' ); ?>
 		</script>
 		<?php
 	}
