@@ -8,9 +8,9 @@
 defined( 'WPINC' ) or die;
 
 /**
- * Class WP_API_oEmbed_Endppoint
+ * Class WP_API_oEmbed_Endpoint
  */
-class WP_API_oEmbed_Endppoint {
+class WP_API_oEmbed_Endpoint {
 	/**
 	 * Register the API routes.
 	 */
