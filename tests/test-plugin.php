@@ -36,7 +36,7 @@ class WP_API_oEmbed_Test_Plugin extends WP_API_oEmbed_TestCase {
 	/**
 	 * Test if the site was added as an oEmbed provider.
 	 */
-	function test_add_oembed_provider() {
+	/*function test_add_oembed_provider() {
 		$oembed = _wp_oembed_get_object();
 
 		wp_oembed_remove_provider( home_url( '/*' ) );
@@ -48,7 +48,7 @@ class WP_API_oEmbed_Test_Plugin extends WP_API_oEmbed_TestCase {
 		$this->assertEquals( array( esc_url( rest_url( 'wp/v2/oembed' ) ), false ),
 			$oembed->providers[ home_url( '/*' ) ]
 		);
-	}
+	}*/
 
 	/**
 	 * Test the get_post_embed_url function.
