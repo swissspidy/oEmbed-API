@@ -78,4 +78,11 @@ class WP_API_oEmbed_Test_Frontend extends WP_API_oEmbed_TestCase {
 
 		$this->assertEquals( '<iframe sandbox="allow-scripts" security="restricted"></iframe>', $actual );
 	}
+
+	function test_filter_oembed_result_multiple_tags() {
+		$html   = '<div><iframe></iframe><iframe></iframe><p></p></div>';
+		$actual = $this->class->filter_oembed_result( $html, '' );
+
+		$this->assertEquals( '<iframe sandbox="allow-scripts" security="restricted"></iframe>', $actual );
+	}
 }

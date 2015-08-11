@@ -428,6 +428,7 @@ class WP_API_oEmbed_Frontend {
 
 		if ( ! $trusted  || $current_site ) {
 			$html = wp_kses( $html, $allowed_html );
+			$html = preg_replace( '|^(<iframe.*?></iframe>).*$|', '$1', $html );
 			$html = str_replace( '<iframe', '<iframe sandbox="allow-scripts" security="restricted"', $html );
 
 			preg_match( '/ src=[\'"]([^\'"]*)[\'"]/', $html, $results );
