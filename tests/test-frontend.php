@@ -85,4 +85,16 @@ class WP_API_oEmbed_Test_Frontend extends WP_API_oEmbed_TestCase {
 
 		$this->assertEquals( '<iframe sandbox="allow-scripts" security="restricted"></iframe>', $actual );
 	}
+
+	function test_filter_oembed_result_password() {
+		$html   = '<iframe src="https://wordpress.org"></iframe>';
+		$actual = $this->class->filter_oembed_result( $html, '' );
+
+		$matches = array();
+		preg_match( '|src="https://wordpress.org#\?messagesecret=([\w\d]+)" data-password="([\w\d]+)"|', $actual, $matches );
+
+		$this->assertTrue( isset( $matches[1] ) );
+		$this->assertTrue( isset( $matches[2] ) );
+		$this->assertEquals( $matches[1], $matches[2] );
+	}
 }
