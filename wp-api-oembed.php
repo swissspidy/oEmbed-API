@@ -31,32 +31,6 @@
 
 defined( 'WPINC' ) or die;
 
-$rest_api_version = get_option( 'rest_api_plugin_version' );
-
-if ( defined( 'REST_API_VERSION' ) ) {
-	$rest_api_version = REST_API_VERSION;
-}
-
-// Check if the REST API is available first.
-if ( ! version_compare( $rest_api_version, '2.0-beta3', '>=' ) ) {
-	add_action( 'admin_notices', 'oembed_api_requirements_notice' );
-	unset( $_GET['activate'] );
-
-	return;
-}
-
-/**
- * Print the missing REST API notice and disable the plugin.
- */
-function oembed_api_requirements_notice() {
-	deactivate_plugins( plugin_basename( __FILE__ ) );
-	?>
-	<div class="error">
-		<p><?php printf( 'The oEmbed API plugin requires version 2.0 of the REST API to be installed. Please update or install the REST API plugin.' ); ?></p>
-	</div>
-	<?php
-}
-
 // Pull in the plugin classes and initialize.
 include( dirname( __FILE__ ) . '/classes/endpoint.php' );
 include( dirname( __FILE__ ) . '/classes/frontend.php' );
