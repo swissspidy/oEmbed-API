@@ -9,6 +9,8 @@ defined( 'WPINC' ) or die;
 
 /**
  * Class WP_API_oEmbed_Plugin
+ *
+ * @SuppressWarnings(PHPMD.TooManyMethods)
  */
 class WP_API_oEmbed_Plugin {
 	/**
