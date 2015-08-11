@@ -91,7 +91,7 @@ function get_post_embed_url( $post = null ) {
 
 	$embed_url = add_query_arg( array( 'embed' => 'true' ), get_permalink( $post ) );
 
-	if ( get_option( 'permalink_structure' ) ) {
+	if ( get_option( 'permalink_structure' ) && $post->post_type !== 'attachment' ) {
 		$embed_url = trailingslashit( get_permalink( $post ) ) . user_trailingslashit( 'embed' );
 	}
 
