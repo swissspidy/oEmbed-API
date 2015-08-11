@@ -320,7 +320,7 @@ class WP_API_oEmbed_Frontend {
 				<?php
 				printf(
 					'<img src="%s" width="32" height="32" alt="" class="wp-embed-site-icon"/>',
-					esc_url( get_site_icon_url( null, 32, admin_url( 'images/w-logo-blue.png' ) ) )
+					esc_url( get_site_icon_url( 32, admin_url( 'images/w-logo-blue.png' ) ) )
 				);
 				?>
 				<div class="wp-embed-site-title">
