@@ -73,6 +73,47 @@ function get_post_embed_url( $post = null ) {
 }
 
 /**
+ * Get the oEmbed endpoint URL for a given permalink.
+ *
+ * Pass an empty string as the first argument
+ * to get the endpoint base URL.
+ *
+ * @param string $permalink The permalink used for the `url` query arg.
+ * @param string $format    The requested response format.
+ *
+ * @return string
+ */
+function get_oembed_endpoint_url( $permalink = '', $format = 'json' ) {
+	$url = '';
+
+	if ( function_exists( 'rest_url' ) ) {
+		$url = rest_url( 'wp/v2/oembed' );
+	}
+
+	if ( '' === $permalink ) {
+		return esc_url( $url );
+	}
+
+	$url = add_query_arg( array(
+		'url'    => $permalink,
+		'format' => $format,
+	), $url );
+
+	/**
+	 * Filter the oEmbed endpoint URL.
+	 *
+	 * @param string $url       The URL to the oEmbed endpoint.
+	 * @param string $permalink The permalink used for the `url` query arg.
+	 * @param string $format    The requested response format.
+	 *
+	 * @return string
+	 */
+	$url = apply_filters( 'rest_oembed_endpoint_url', $url, $permalink, $format );
+
+	return esc_url( $url );
+}
+
+/**
  * Get the embed code fpr a specific post.
  *
  * @param int|WP_Post $post   Post ID or object. Defaults to the current post.

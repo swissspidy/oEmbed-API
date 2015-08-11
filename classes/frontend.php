@@ -37,8 +37,8 @@ class WP_API_oEmbed_Frontend {
 		$output = '';
 
 		if ( is_singular() ) {
-			$output .= '<link rel="alternate" type="application/json+oembed" href="' . esc_url( rest_url( 'wp/v2/oembed?url=' . get_permalink() ) ) . '" />' . "\n";
-			$output .= '<link rel="alternate" type="text/xml+oembed" href="' . esc_url( rest_url( 'wp/v2/oembed?url=' . get_permalink() . '&format=xml' ) ) . '" />' . "\n";
+			$output .= '<link rel="alternate" type="application/json+oembed" href="' . esc_url( get_oembed_endpoint_url( get_permalink() ) ) . '" />' . "\n";
+			$output .= '<link rel="alternate" type="text/xml+oembed" href="' . esc_url( get_oembed_endpoint_url( get_permalink(), 'xml' ) ) . '" />' . "\n";
 		}
 
 		$output = apply_filters( 'rest_oembed_discovery_links', $output );
