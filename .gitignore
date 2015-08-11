@@ -1,5 +1,6 @@
 # General
 .DS_Store
+composer.lock
 
 # npm
 /node_modules
