@@ -392,10 +392,11 @@ class WP_API_oEmbed_Frontend {
 		}
 		$wp_oembed = _wp_oembed_get_object();
 
-		$trusted = false;
+		$trusted = $current_site = false;
 
 		foreach ( $wp_oembed->providers as $matchmask => $data ) {
 			$regex = $data[1];
+			$originalmask = $matchmask;
 
 			// Turn the asterisk-type provider URLs into regex.
 			if ( ! $regex ) {
@@ -404,6 +405,10 @@ class WP_API_oEmbed_Frontend {
 			}
 
 			if ( preg_match( $matchmask, $url ) ) {
+				if ( home_url( '/*' ) === $originalmask ) {
+					$current_site = true;
+				}
+
 				$trusted = true;
 				break;
 			}
@@ -421,7 +426,7 @@ class WP_API_oEmbed_Frontend {
 			),
 		);
 
-		if ( ! $trusted ) {
+		if ( ! $trusted  || $current_site ) {
 			$html = wp_kses( $html, $allowed_html );
 			$html = str_replace( '<iframe', '<iframe sandbox="allow-scripts" security="restricted"', $html );
 
