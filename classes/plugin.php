@@ -54,7 +54,7 @@ class WP_API_oEmbed_Plugin {
 		// Whitelist this site as an oEmbed provider.
 		add_action( 'init', array( $this, 'add_oembed_provider' ) );
 
-		// Register scripts
+		// Register scripts.
 		add_action( 'init', array( $this, 'register_scripts' ) );
 
 		// Configure the REST API route.
@@ -66,7 +66,7 @@ class WP_API_oEmbed_Plugin {
 		// Add a rewrite endpoint for the iframe.
 		add_action( 'init', array( $this, 'add_rewrite_endpoint' ) );
 
-		// Register our TinyMCE plugin
+		// Register our TinyMCE plugin.
 		add_action( 'mce_external_plugins', array( $this, 'add_mce_plugin' ) );
 
 		// Enqueue the resize script when the editor is also enqueued.
@@ -133,10 +133,13 @@ class WP_API_oEmbed_Plugin {
 	/**
 	 * Register our TinyMCE plugin
 	 *
-	 * @param array $plugins List of current TinyMCE plugins
+	 * @param array $plugins List of current TinyMCE plugins.
+	 *
+	 * @return array
 	 */
 	public function add_mce_plugin( $plugins ) {
 		$plugins['autoembed'] = plugins_url( 'tinymce/plugin.js', dirname( __FILE__ ) );
+
 		return $plugins;
 	}
 
@@ -144,7 +147,7 @@ class WP_API_oEmbed_Plugin {
 	 * Load the resize script in the main window when TinyMCE is loaded, so that the
 	 * embed popup can also resize the iframe correctly.
 	 *
-	 * @param array $opts TinyMCE options
+	 * @param array $opts TinyMCE options.
 	 */
 	public function load_mce_script( $opts ) {
 		if ( $opts['tinymce'] ) {
