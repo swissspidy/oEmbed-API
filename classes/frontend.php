@@ -47,6 +47,19 @@ class WP_API_oEmbed_Frontend {
 	}
 
 	/**
+	 * Add JS to handle the messages from the embedded iframes.
+	 *
+	 * @todo: Think of a better way to restrict the height.
+	 */
+	public function add_host_js() {
+		?>
+		<script type="text/javascript">
+			<?php readfile( dirname( dirname( __FILE__ ) ) . '/scripts/frontend.js' ); ?>
+		</script>
+		<?php
+	}
+
+	/**
 	 * Print the CSS used to style the embed output.
 	 *
 	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
@@ -235,10 +248,15 @@ class WP_API_oEmbed_Frontend {
 		<script type="text/javascript">
 			(function () {
 				window.onload = function () {
+					var hash = window.location.hash;
+					var password = hash.replace( /.*messagesecret=([\d\w]{10}).*/, '$1' );
+
 					var share_dialog = document.getElementsByClassName('wp-embed-share-dialog')[0];
 
+					var embed = document.getElementsByClassName( 'wp-embed' )[0];
+
 					// Send this document's height to the parent (embedding) site.
-					top.parent.postMessage(document.body.scrollHeight, '*');
+					window.parent.postMessage( { 'message': 'height', 'value': embed.clientHeight + 2, 'password': password }, '*' );
 
 					// Select content when clicking on the input field.
 					document.getElementsByClassName('wp-embed-share-input')[0].onclick = function () {
@@ -302,7 +320,7 @@ class WP_API_oEmbed_Frontend {
 				<?php
 				printf(
 					'<img src="%s" width="32" height="32" alt="" class="wp-embed-site-icon"/>',
-					esc_url( get_site_icon_url( null, 32, admin_url( 'images/w-logo-blue.png' ) ) )
+					esc_url( get_site_icon_url( 32, admin_url( 'images/w-logo-blue.png' ) ) )
 				);
 				?>
 				<div class="wp-embed-site-title">
@@ -369,12 +387,16 @@ class WP_API_oEmbed_Frontend {
 	 * @return string The filtered oEmbed HTML.
 	 */
 	public function filter_oembed_result( $html, $url ) {
+		if ( ! function_exists( '_wp_oembed_get_object' ) ) {
+			require_once( ABSPATH . WPINC . '/class-oembed.php' );
+		}
 		$wp_oembed = _wp_oembed_get_object();
 
-		$trusted = false;
+		$trusted = $current_site = false;
 
 		foreach ( $wp_oembed->providers as $matchmask => $data ) {
 			$regex = $data[1];
+			$originalmask = $matchmask;
 
 			// Turn the asterisk-type provider URLs into regex.
 			if ( ! $regex ) {
@@ -383,6 +405,10 @@ class WP_API_oEmbed_Frontend {
 			}
 
 			if ( preg_match( $matchmask, $url ) ) {
+				if ( home_url( '/*' ) === $originalmask ) {
+					$current_site = true;
+				}
+
 				$trusted = true;
 				break;
 			}
@@ -400,9 +426,20 @@ class WP_API_oEmbed_Frontend {
 			),
 		);
 
-		if ( ! $trusted ) {
+		if ( ! $trusted  || $current_site ) {
 			$html = wp_kses( $html, $allowed_html );
 			$html = str_replace( '<iframe', '<iframe sandbox="allow-scripts" security="restricted"', $html );
+
+			preg_match( '/ src=[\'"]([^\'"]*)[\'"]/', $html, $results );
+			if ( empty( $results ) ) {
+				return $html;
+			}
+
+			$password = wp_generate_password( 10, false );
+
+			$url = esc_url( "{$results[1]}#?messagesecret=$password" );
+
+			$html = str_replace( $results[0], " src=\"$url\" data-password=\"$password\"", $html );
 		}
 
 		return $html;

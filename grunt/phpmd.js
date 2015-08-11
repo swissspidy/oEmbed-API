@@ -1,6 +1,6 @@
 module.exports = {
 	default: {
-		cmd: 'phpmd',
+		cmd: 'vendor/bin/phpmd',
 		args: [ 'classes', 'text', 'cleancode,codesize,naming,unusedcode' ]
 	}
 }

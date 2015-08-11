@@ -1,6 +1,6 @@
 module.exports = {
 	default: {
-		cmd: 'phpcpd',
+		cmd: 'vendor/bin/phpcpd',
 		args: [ '-n', 'classes' ]
 	}
 }
