@@ -98,7 +98,7 @@ class WP_API_oEmbed_Plugin {
 	 * Add our rewrite endpoint to permalinks and pages.
 	 */
 	public function add_rewrite_endpoint() {
-		add_rewrite_endpoint( 'embed', EP_PERMALINK | EP_PAGES );
+		add_rewrite_endpoint( 'embed', EP_PERMALINK | EP_PAGES | EP_ATTACHMENT );
 	}
 
 	/**
