@@ -4,7 +4,7 @@ Donate link:
 Tags:              oembed, api  
 Requires at least: 4.3-alpha  
 Tested up to:      4.3-beta  
-Stable tag:        0.2.0  
+Stable tag:        0.3.0  
 License:           GPLv2 or later  
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -50,6 +50,9 @@ Here is how you can contribute:
 Join the discussion on [Trac](https://core.trac.wordpress.org/ticket/32522) and submit pull requests on [GitHub](https://github.com/swissspidy/oEmbed-API).
 
 ## Changelog ##
+
+### 0.3.0 ###
+* Added a bunch of polish.
 
 ### 0.2.0 ###
 * Okay, now it's actually usable.
