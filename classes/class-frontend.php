@@ -246,14 +246,16 @@ class WP_oEmbed_Frontend {
 	protected function rest_oembed_output_js() {
 		?>
 		<script type="text/javascript">
-			(function () {
+			(function ( window, document ) {
+				var hash, password, share_dialog, embed, resize_limiter;
+
 				window.onload = function () {
-					var hash = window.location.hash;
-					var password = hash.replace( /.*messagesecret=([\d\w]{10}).*/, '$1' );
+					hash = window.location.hash;
+					password = hash.replace( /.*messagesecret=([\d\w]{10}).*/, '$1' );
 
-					var share_dialog = document.getElementsByClassName('wp-embed-share-dialog')[0];
+					share_dialog = document.getElementsByClassName('wp-embed-share-dialog')[0];
 
-					var embed = document.getElementsByClassName( 'wp-embed' )[0];
+					embed = document.getElementsByClassName( 'wp-embed' )[0];
 
 					// Send this document's height to the parent (embedding) site.
 					window.parent.postMessage( { 'message': 'height', 'value': embed.clientHeight + 2, 'password': password }, '*' );
@@ -274,8 +276,20 @@ class WP_oEmbed_Frontend {
 						share_dialog.className += ' hidden';
 						e.preventDefault();
 					}
-				}
-			})();
+				};
+
+				window.onresize = function () {
+					// We need to limit how often we sent the message, otherwise we're just wasting CPU.
+					if ( resize_limiter ) {
+						return;
+					}
+					resize_limiter = true;
+					// Call onresize immediately, in case the resize finished before we got the final size.
+					setTimeout( function() { resize_limiter = false; window.onresize(); }, 50 );
+					// Send this document's height to the parent (embedding) site.
+					window.parent.postMessage( { 'message': 'height', 'value': embed.clientHeight + 2, 'password': password }, '*' );
+				};
+			})( window, document );
 		</script>
 		<?php
 	}
