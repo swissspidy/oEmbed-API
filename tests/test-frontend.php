@@ -53,8 +53,8 @@ class WP_oEmbed_Test_Frontend extends WP_oEmbed_TestCase {
 		$this->class->add_oembed_discovery_links();
 		$actual = ob_get_clean();
 
-		$expected = '<link rel="alternate" type="application/json+oembed" href="' . esc_url( rest_url( 'wp/v2/oembed?url=' . get_permalink( $post_id ) ) ) . '" />' . "\n";
-		$expected .= '<link rel="alternate" type="text/xml+oembed" href="' . esc_url( rest_url( 'wp/v2/oembed?url=' . get_permalink() . '&format=xml' ) ) . '" />' . "\n";
+		$expected = '<link rel="alternate" type="application/json+oembed" href="' . get_oembed_endpoint_url( get_permalink() ) . '" />' . "\n";
+		$expected .= '<link rel="alternate" type="text/xml+oembed" href="' . get_oembed_endpoint_url( get_permalink(), 'xml' ) . '" />' . "\n";
 
 		$this->assertEquals( $expected, $actual );
 	}
