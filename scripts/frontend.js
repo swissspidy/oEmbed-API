@@ -2,7 +2,7 @@ function receiveEmbedMessage( e ) {
 	if ( 'height' == e.data.message ) {
 		var iframes = document.getElementsByTagName( 'iframe' );
 		for( var ii = 0; ii < iframes.length; ii++ ) {
-			if ( iframes[ ii ].getAttribute( 'data-password' ) == e.data.password ) {
+			if ( iframes[ ii ].getAttribute( 'data-secret' ) == e.data.secret ) {
 				var height = e.data.value;
 				if ( height > 600 ) {
 					height = 600;
