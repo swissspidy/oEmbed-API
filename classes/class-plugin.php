@@ -41,8 +41,8 @@ class WP_oEmbed_Plugin {
 
 		// Load fallback if REST API isn't available.
 		if ( ! defined( 'REST_API_VERSION' ) || ! version_compare( REST_API_VERSION, '2.0-beta3', '>=' ) ) {
-			// Add needed query vars.
-			add_action( 'query_vars', array( $this, 'add_query_vars' ) );
+			// Hook into parse_query.
+			add_action( 'parse_query', array( $this, 'parse_query' ) );
 		}
 
 		// Add a rewrite endpoint for the iframe.
