@@ -2,24 +2,17 @@
 /**
  * Main plugin class.
  *
- * @package WP_API_oEmbed
+ * @package WP_oEmbed
  */
 
 defined( 'WPINC' ) or die;
 
 /**
- * Class WP_API_oEmbed_Plugin
+ * Class WP_oEmbed_Plugin
  *
  * @SuppressWarnings(PHPMD.TooManyMethods)
  */
-class WP_API_oEmbed_Plugin {
-	/**
-	 * Instance of this class.
-	 *
-	 * @var self
-	 */
-	protected static $instance;
-
+class WP_oEmbed_Plugin {
 	/**
 	 * Instance of our frontend class.
 	 *
@@ -41,7 +34,7 @@ class WP_API_oEmbed_Plugin {
 		add_action( 'init', array( $this, 'register_scripts' ) );
 
 		// Configure the REST API route.
-		add_action( 'rest_api_init', array( new WP_REST_oEmbed_Endpoint(), 'register_routes' ) );
+		add_action( 'rest_api_init', array( new WP_REST_oEmbed_Controller(), 'register_routes' ) );
 
 		// Filter the REST API response to output XML if requested.
 		add_filter( 'rest_pre_serve_request', array( $this, 'rest_pre_serve_request' ), 10, 4 );
@@ -53,7 +46,7 @@ class WP_API_oEmbed_Plugin {
 		}
 
 		// Add a rewrite endpoint for the iframe.
-		add_action( 'init', array( $this, 'add_rewrite_endpoint' ) );
+		add_action( 'init', array( 'WP_oEmbed_Plugin', 'add_rewrite_endpoint' ) );
 
 		// Register our TinyMCE plugin.
 		add_action( 'mce_external_plugins', array( $this, 'add_mce_plugin' ) );
@@ -62,7 +55,7 @@ class WP_API_oEmbed_Plugin {
 		add_action( 'wp_enqueue_editor', array( $this, 'load_mce_script' ) );
 
 		// Setup our frontend facing component.
-		$this->frontendClass = new WP_API_oEmbed_Frontend();
+		$this->frontendClass = new WP_oEmbed_Frontend();
 
 		add_action( 'wp_head', array( $this->frontendClass, 'add_oembed_discovery_links' ) );
 		add_action( 'template_redirect', array( $this->frontendClass, 'template_redirect' ) );
@@ -86,7 +79,7 @@ class WP_API_oEmbed_Plugin {
 	/**
 	 * Add our rewrite endpoint to permalinks and pages.
 	 */
-	public function add_rewrite_endpoint() {
+	public static function add_rewrite_endpoint() {
 		add_rewrite_endpoint( 'embed', EP_PERMALINK | EP_PAGES | EP_ATTACHMENT );
 	}
 
@@ -103,7 +96,6 @@ class WP_API_oEmbed_Plugin {
 		) {
 			return;
 		}
-
 
 		/**
 		 * Check for the allowed query vars and set defaults.
@@ -145,15 +137,15 @@ class WP_API_oEmbed_Plugin {
 	/**
 	 * Add our rewrite endpoint on plugin activation.
 	 */
-	public function activate_plugin() {
-		$this->add_rewrite_endpoint();
+	public static function activate_plugin() {
+		self::add_rewrite_endpoint();
 		flush_rewrite_rules();
 	}
 
 	/**
 	 * Flush rewrite rules on plugin deactivation.
 	 */
-	public function deactivate_plugin() {
+	public static function deactivate_plugin() {
 		flush_rewrite_rules();
 	}
 

@@ -2,13 +2,13 @@
 /**
  * Test our REST route.
  *
- * @package WP_API_oEmbed
+ * @package WP_oEmbed
  */
 
 /**
  * Class WP_REST_oEmbed_Test_Endpoint.
  */
-class WP_REST_oEmbed_Test_Endpoint extends WP_API_oEmbed_TestCase {
+class WP_REST_oEmbed_Test_Endpoint extends WP_oEmbed_TestCase {
 	/**
 	 * API route class instance.
 	 * @var WP_REST_oEmbed_Endpoint
@@ -21,7 +21,7 @@ class WP_REST_oEmbed_Test_Endpoint extends WP_API_oEmbed_TestCase {
 	function setUp() {
 		parent::setUp();
 
-		$this->class = new WP_REST_oEmbed_Endpoint();
+		$this->class = new WP_REST_oEmbed_Controller();
 
 		$GLOBALS['wp_rest_server'] = new WP_REST_Server();
 	}

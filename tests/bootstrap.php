@@ -20,16 +20,27 @@ tests_add_filter( 'muplugins_loaded', '_manually_load_oembed_api_plugin' );
 require $_tests_dir . '/includes/bootstrap.php';
 
 /**
- * Class WP_API_oEmbed_TestCase.
+ * Class WP_oEmbed_TestCase.
  */
-class WP_API_oEmbed_TestCase extends WP_UnitTestCase {
+class WP_oEmbed_TestCase extends WP_UnitTestCase {
+	/**
+	 * Plugin instance
+	 *
+	 * @var WP_oEmbed_Plugin
+	 */
+	protected static $instance;
+
 	/**
 	 * Return the plugin instance.
 	 *
-	 * @return WP_API_oEmbed_Plugin
+	 * @return WP_oEmbed_Plugin
 	 */
 	function plugin() {
-		return WP_API_oEmbed_Plugin::get_instance();
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new WP_oEmbed_Plugin();
+		}
+
+		return self::$instance;
 	}
 
 	/**

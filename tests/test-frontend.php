@@ -2,16 +2,16 @@
 /**
  * Test frontend stuff.
  *
- * @package WP_API_oEmbed
+ * @package WP_oEmbed
  */
 
 /**
- * Class WP_API_oEmbed_Test_Frontend.
+ * Class WP_oEmbed_Test_Frontend.
  */
-class WP_API_oEmbed_Test_Frontend extends WP_API_oEmbed_TestCase {
+class WP_oEmbed_Test_Frontend extends WP_oEmbed_TestCase {
 	/**
 	 * API route class instance.
-	 * @var WP_API_oEmbed_Frontend
+	 * @var WP_oEmbed_Frontend
 	 */
 	protected $class;
 
@@ -21,7 +21,7 @@ class WP_API_oEmbed_Test_Frontend extends WP_API_oEmbed_TestCase {
 	function setUp() {
 		parent::setUp();
 
-		$this->class = new WP_API_oEmbed_Frontend();
+		$this->class = new WP_oEmbed_Frontend();
 	}
 
 	/**

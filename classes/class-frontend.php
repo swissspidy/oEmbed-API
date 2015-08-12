@@ -2,15 +2,15 @@
 /**
  * User-facing components.
  *
- * @package WP_API_oEmbed
+ * @package WP_oEmbed
  */
 
 defined( 'WPINC' ) or die;
 
 /**
- * Class WP_API_oEmbed_Frontend
+ * Class WP_oEmbed_Frontend
  */
-class WP_API_oEmbed_Frontend {
+class WP_oEmbed_Frontend {
 	/**
 	 * Output the embeddable HTML.
 	 *

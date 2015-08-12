@@ -2,18 +2,18 @@
 /**
  * Test our plugin.
  *
- * @package WP_API_oEmbed
+ * @package WP_oEmbed
  */
 
 /**
- * Class WP_API_oEmbed_Test_Plugin.
+ * Class WP_oEmbed_Test_Plugin.
  */
-class WP_API_oEmbed_Test_Plugin extends WP_API_oEmbed_TestCase {
+class WP_oEmbed_Test_Plugin extends WP_oEmbed_TestCase {
 	/**
 	 * The plugin should be installed and activated.
 	 */
 	function test_plugin_activated() {
-		$this->assertTrue( class_exists( 'WP_API_oEmbed_Plugin' ) );
+		$this->assertTrue( class_exists( 'WP_oEmbed_Plugin' ) );
 	}
 
 	/**

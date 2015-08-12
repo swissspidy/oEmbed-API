@@ -10,7 +10,7 @@
  * Text Domain: oembed-api
  * Domain Path: /languages
  *
- * @package WP_API_oEmbed
+ * @package WP_oEmbed
  */
 
 /**
@@ -32,22 +32,23 @@
 defined( 'WPINC' ) or die;
 
 // Pull in the plugin classes and initialize.
-include( dirname( __FILE__ ) . '/classes/endpoint.php' );
-include( dirname( __FILE__ ) . '/classes/frontend.php' );
-include( dirname( __FILE__ ) . '/classes/plugin.php' );
+include( dirname( __FILE__ ) . '/classes/class-wp-rest-oembed-controller.php' );
+include( dirname( __FILE__ ) . '/classes/class-oembed-endpoint.php' );
+include( dirname( __FILE__ ) . '/classes/class-frontend.php' );
+include( dirname( __FILE__ ) . '/classes/class-plugin.php' );
 
 /**
  * Init our plugin.
  */
 function oembed_api_init() {
-	$oembed_api = new WP_API_oEmbed_Plugin();
+	$oembed_api = new WP_oEmbed_Plugin();
 	$oembed_api->add_hooks();
 }
 
 add_action( 'plugins_loaded', 'oembed_api_init' );
 
-register_activation_hook( __FILE__, array( WP_API_oEmbed_Plugin::get_instance(), 'activate_plugin' ) );
-register_deactivation_hook( __FILE__, array( WP_API_oEmbed_Plugin::get_instance(), 'deactivate_plugin' ) );
+register_activation_hook( __FILE__, array( 'WP_oEmbed_Plugin', 'activate_plugin' ) );
+register_deactivation_hook( __FILE__, array( 'WP_oEmbed_Plugin', 'deactivate_plugin' ) );
 
 /**
  * Get the URL to embed a specific post, for example in an iframe.
