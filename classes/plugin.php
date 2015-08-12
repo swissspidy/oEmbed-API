@@ -46,6 +46,12 @@ class WP_API_oEmbed_Plugin {
 		// Filter the REST API response to output XML if requested.
 		add_filter( 'rest_pre_serve_request', array( $this, 'rest_pre_serve_request' ), 10, 4 );
 
+		// Load fallback if REST API isn't available.
+		if ( ! defined( 'REST_API_VERSION' ) || ! version_compare( REST_API_VERSION, '2.0-beta3', '>=' ) ) {
+			// Add needed query vars.
+			add_action( 'query_vars', array( $this, 'add_query_vars' ) );
+		}
+
 		// Add a rewrite endpoint for the iframe.
 		add_action( 'init', array( $this, 'add_rewrite_endpoint' ) );
 
@@ -82,6 +88,58 @@ class WP_API_oEmbed_Plugin {
 	 */
 	public function add_rewrite_endpoint() {
 		add_rewrite_endpoint( 'embed', EP_PERMALINK | EP_PAGES | EP_ATTACHMENT );
+	}
+
+	/**
+	 * Hook into the query parsing to detect oEmbed requests.
+	 *
+	 * If an oEmbed request is made, trigger the output.
+	 *
+	 * @param WP_Query $wp_query The WP_Query instance (passed by reference).
+	 */
+	public function parse_query( $wp_query ) {
+		if ( ! array_key_exists( 'oembed', $wp_query->query_vars ) ||
+		     ! array_key_exists( 'url', $wp_query->query_vars )
+		) {
+			return;
+		}
+
+
+		/**
+		 * Check for the allowed query vars and set defaults.
+		 *
+		 * @see WP_REST_oEmbed_Controller::register_routes()
+		 */
+
+		$url = esc_url_raw( $wp_query->query_vars['format'] );
+
+		/**
+		 * Filter the default oEmbed response format.
+		 *
+		 * @param string $format oEmbed response format. Defaults to json.
+		 *
+		 * @return string
+		 */
+		$format = apply_filters( 'rest_oembed_default_format', 'json' );
+
+		if ( isset( $wp_query->query_vars['format'] ) ) {
+			$format = sanitize_text_field( $wp_query->query_vars['format'] );
+		}
+
+		/**
+		 * Filter the maxwidth oEmbed parameter.
+		 *
+		 * @param int $maxwidth Maximum allowed width. Defaults to 600.
+		 *
+		 * @return int
+		 */
+		$maxwidth = apply_filters( 'rest_oembed_default_width', 600 );
+		if ( isset( $wp_query->query_vars['maxwidth'] ) ) {
+			$maxwidth = absint( $wp_query->query_vars['maxwidth'] );
+		}
+
+		$callback = isset( $wp_query->query_vars['_jsonp'] ) ? $wp_query->query_vars['_jsonp'] : false;
+
 	}
 
 	/**

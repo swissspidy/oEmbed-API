@@ -84,7 +84,7 @@ function get_post_embed_url( $post = null ) {
  * @return string
  */
 function get_oembed_endpoint_url( $permalink = '', $format = 'json' ) {
-	$url = '';
+	$url = add_query_arg( array( 'oembed' => 'true' ), home_url() );
 
 	if ( function_exists( 'rest_url' ) ) {
 		$url = rest_url( 'wp/v2/oembed' );
