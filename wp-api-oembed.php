@@ -40,7 +40,7 @@ include( dirname( __FILE__ ) . '/classes/plugin.php' );
  * Init our plugin.
  */
 function oembed_api_init() {
-	$oembed_api = WP_API_oEmbed_Plugin::get_instance();
+	$oembed_api = new WP_API_oEmbed_Plugin();
 	$oembed_api->add_hooks();
 }
 

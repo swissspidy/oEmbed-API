@@ -28,25 +28,6 @@ class WP_API_oEmbed_Plugin {
 	protected $frontendClass;
 
 	/**
-	 * Protected constructor.
-	 */
-	protected function __construct() {
-	}
-
-	/**
-	 * Returns the plugin's object instance.
-	 *
-	 * @return self The plugin object instance.
-	 */
-	public static function get_instance() {
-		if ( ! isset( self::$instance ) ) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
-	}
-
-	/**
 	 * Adds hooks.
 	 */
 	public function add_hooks() {
