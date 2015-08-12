@@ -28,7 +28,7 @@ class WP_REST_oEmbed_Controller {
 					'sanitize_callback' => 'sanitize_text_field',
 				),
 				'maxwidth' => array(
-					'default'           => absint( apply_filters( 'rest_oembed_default_width', 600 ) ),
+					'default'           => apply_filters( 'rest_oembed_default_width', 600 ),
 					'sanitize_callback' => 'absint',
 				),
 			),
