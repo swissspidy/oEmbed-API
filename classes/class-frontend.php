@@ -247,18 +247,18 @@ class WP_oEmbed_Frontend {
 		?>
 		<script type="text/javascript">
 			(function ( window, document ) {
-				var hash, password, share_dialog, embed, resize_limiter;
+				var hash, secret, share_dialog, embed, resize_limiter;
 
 				window.onload = function () {
 					hash = window.location.hash;
-					password = hash.replace( /.*messagesecret=([\d\w]{10}).*/, '$1' );
+					secret = hash.replace( /.*secret=([\d\w]{10}).*/, '$1' );
 
 					share_dialog = document.getElementsByClassName('wp-embed-share-dialog')[0];
 
 					embed = document.getElementsByClassName( 'wp-embed' )[0];
 
 					// Send this document's height to the parent (embedding) site.
-					window.parent.postMessage( { 'message': 'height', 'value': embed.clientHeight + 2, 'password': password }, '*' );
+					window.parent.postMessage( { 'message': 'height', 'value': embed.clientHeight + 2, 'secret': secret }, '*' );
 
 					// Select content when clicking on the input field.
 					document.getElementsByClassName('wp-embed-share-input')[0].onclick = function () {
@@ -287,7 +287,7 @@ class WP_oEmbed_Frontend {
 					// Call onresize immediately, in case the resize finished before we got the final size.
 					setTimeout( function() { resize_limiter = false; window.onresize(); }, 50 );
 					// Send this document's height to the parent (embedding) site.
-					window.parent.postMessage( { 'message': 'height', 'value': embed.clientHeight + 2, 'password': password }, '*' );
+					window.parent.postMessage( { 'message': 'height', 'value': embed.clientHeight + 2, 'secret': secret }, '*' );
 				};
 			})( window, document );
 		</script>
@@ -450,11 +450,11 @@ class WP_oEmbed_Frontend {
 				return $html;
 			}
 
-			$password = wp_generate_password( 10, false );
+			$secret = wp_generate_password( 10, false );
 
-			$url = esc_url( "{$results[1]}#?messagesecret=$password" );
+			$url = esc_url( "{$results[1]}#?secret=$secret" );
 
-			$html = str_replace( $results[0], " src=\"$url\" data-password=\"$password\"", $html );
+			$html = str_replace( $results[0], " src=\"$url\" data-secret=\"$secret\"", $html );
 		}
 
 		return $html;
