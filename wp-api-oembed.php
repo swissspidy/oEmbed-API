@@ -151,3 +151,69 @@ function get_post_embed_html( $post = null, $width, $height ) {
 
 	return $output;
 }
+
+/**
+ * Get the oEmbed data for a given post.
+ *
+ * @param WP_Post|int $post  Post object or ID.
+ * @param int         $width The requested width.
+ *
+ * @return mixed|void
+ */
+function get_oembed_response_data( $post, $width ) {
+	/**
+	 * Current post object.
+	 *
+	 * @var WP_Post $post
+	 */
+	$post = get_post( $post );
+
+	/**
+	 * User object for the post author.
+	 *
+	 * @var WP_User $author
+	 */
+	$author = get_userdata( $post->post_author );
+
+	/**
+	 * Filter the allowed minimum width for the oEmbed response.
+	 *
+	 * @param int $width The minimum width. Defaults to 200.
+	 */
+	$minwidth = apply_filters( 'rest_oembed_minwidth', 200 );
+
+	/**
+	 * Filter the allowed maximum width for the oEmbed response.
+	 *
+	 * @param int $width The maximum width. Defaults to 600.
+	 */
+	$maxwidth = apply_filters( 'rest_oembed_maxwidth', 600 );
+
+	if ( $width < $minwidth ) {
+		$width = $minwidth;
+	} else if ( $width > $maxwidth ) {
+		$width = $maxwidth;
+	}
+
+	$height = ceil( $width / 16 * 9 );
+
+	/**
+	 * Filters the oEmbed response data.
+	 *
+	 * @param array $data The response data.
+	 */
+	$data = apply_filters( 'rest_oembed_response_data', array(
+		'version'       => '1.0',
+		'provider_name' => get_bloginfo( 'name' ),
+		'provider_url'  => get_home_url(),
+		'author_name'   => $author->display_name,
+		'author_url'    => get_author_posts_url( $author->ID, $author->user_nicename ),
+		'title'         => $post->post_title,
+		'type'          => 'rich',
+		'width'         => $width,
+		'height'        => $height,
+		'html'          => get_post_embed_html( $post, $width, $height ),
+	) );
+
+	return $data;
+}

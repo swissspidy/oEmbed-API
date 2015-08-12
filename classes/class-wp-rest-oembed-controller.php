@@ -64,63 +64,6 @@ class WP_REST_oEmbed_Controller {
 			return new WP_Error( 'rest_oembed_invalid_format', __( 'Invalid format.', 'oembed-api' ), array( 'status' => 501 ) );
 		}
 
-		/**
-		 * Current post object.
-		 *
-		 * @var WP_Post $post
-		 */
-		$post = get_post( $post_id );
-
-		/**
-		 * User object for the post author.
-		 *
-		 * @var WP_User $author
-		 */
-		$author = get_userdata( $post->post_author );
-
-		/**
-		 * Filter the allowed minimum width for the oEmbed response.
-		 *
-		 * @param int $width The minimum width. Defaults to 200.
-		 */
-		$minwidth = apply_filters( 'rest_oembed_minwidth', 200 );
-
-		/**
-		 * Filter the allowed maximum width for the oEmbed response.
-		 *
-		 * @param int $width The maximum width. Defaults to 600.
-		 */
-		$maxwidth = apply_filters( 'rest_oembed_maxwidth', 600 );
-
-		$width = $request['maxwidth'];
-
-		if ( $width < $minwidth ) {
-			$width = $minwidth;
-		} else if ( $width > $maxwidth ) {
-			$width = $maxwidth;
-		}
-
-		// Todo: this shouldn't be hardcoded.
-		$height = ceil( $width / 16 * 9 );
-
-		/**
-		 * Filters the oEmbed response data.
-		 *
-		 * @param array $data The response data.
-		 */
-		$data = apply_filters( 'rest_oembed_response_data', array(
-			'version'       => '1.0',
-			'provider_name' => get_bloginfo( 'name' ),
-			'provider_url'  => get_home_url(),
-			'author_name'   => $author->display_name,
-			'author_url'    => get_author_posts_url( $author->ID, $author->user_nicename ),
-			'title'         => $post->post_title,
-			'type'          => 'rich',
-			'width'         => $width,
-			'height'        => $height,
-			'html'          => get_post_embed_html( $post, $width, $height ),
-		) );
-
-		return $data;
+		return get_oembed_response_data( $post_id, $request['maxwidth'] );
 	}
 }
