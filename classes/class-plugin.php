@@ -41,6 +41,9 @@ class WP_oEmbed_Plugin {
 
 		// Load fallback if REST API isn't available.
 		if ( ! defined( 'REST_API_VERSION' ) || ! version_compare( REST_API_VERSION, '2.0-beta3', '>=' ) ) {
+			// Add needed query vars.
+			add_action( 'query_vars', array( $this, 'add_query_vars' ) );
+
 			// Hook into parse_query.
 			add_action( 'parse_query', array( $this, 'parse_query' ) );
 		}
@@ -81,6 +84,17 @@ class WP_oEmbed_Plugin {
 	 */
 	public static function add_rewrite_endpoint() {
 		add_rewrite_endpoint( 'embed', EP_PERMALINK | EP_PAGES | EP_ATTACHMENT );
+	}
+
+	/**
+	 * Add the query vars we need.
+	 *
+	 * @param array $query_vars Registered query vars.
+	 *
+	 * @return array
+	 */
+	public function add_query_vars( $query_vars ) {
+		return array_merge( $query_vars, array( 'oembed', 'format', 'url', '_jsonp', 'maxwidth' ) );
 	}
 
 	/**
