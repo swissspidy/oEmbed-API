@@ -1,6 +1,6 @@
 <?php
 /**
- * REST API endpoint configuration.
+ * REST API endpoint controller.
  *
  * @package WP_API_oEmbed
  */
@@ -8,16 +8,16 @@
 defined( 'WPINC' ) or die;
 
 /**
- * Class WP_API_oEmbed_Endpoint
+ * Class WP_REST_oEmbed_Controller
  */
-class WP_API_oEmbed_Endpoint {
+class WP_REST_oEmbed_Controller {
 	/**
 	 * Register the API routes.
 	 */
 	public function register_routes() {
 		register_rest_route( 'wp/v2', '/oembed', array(
 			'methods'  => WP_REST_Server::READABLE,
-			'callback' => array( $this, 'get_oembed_response' ),
+			'callback' => array( $this, 'get_item' ),
 			'args'     => array(
 				'url'      => array(
 					'required'          => true,
@@ -44,7 +44,7 @@ class WP_API_oEmbed_Endpoint {
 	 *
 	 * @return WP_Error|WP_REST_Response
 	 */
-	public function get_oembed_response( WP_REST_Request $request ) {
+	public function get_item( WP_REST_Request $request ) {
 		$post_id = url_to_postid( $request['url'] );
 
 		/**

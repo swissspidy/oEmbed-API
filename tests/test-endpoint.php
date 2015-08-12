@@ -6,12 +6,12 @@
  */
 
 /**
- * Class WP_API_oEmbed_Test_Endpoint.
+ * Class WP_REST_oEmbed_Test_Endpoint.
  */
-class WP_API_oEmbed_Test_Endpoint extends WP_API_oEmbed_TestCase {
+class WP_REST_oEmbed_Test_Endpoint extends WP_API_oEmbed_TestCase {
 	/**
 	 * API route class instance.
-	 * @var WP_API_oEmbed_Endpoint
+	 * @var WP_REST_oEmbed_Endpoint
 	 */
 	protected $class;
 
@@ -21,7 +21,7 @@ class WP_API_oEmbed_Test_Endpoint extends WP_API_oEmbed_TestCase {
 	function setUp() {
 		parent::setUp();
 
-		$this->class = new WP_API_oEmbed_Endpoint();
+		$this->class = new WP_REST_oEmbed_Endpoint();
 
 		$GLOBALS['wp_rest_server'] = new WP_REST_Server();
 	}

@@ -41,7 +41,7 @@ class WP_API_oEmbed_Plugin {
 		add_action( 'init', array( $this, 'register_scripts' ) );
 
 		// Configure the REST API route.
-		add_action( 'rest_api_init', array( new WP_API_oEmbed_Endpoint(), 'register_routes' ) );
+		add_action( 'rest_api_init', array( new WP_REST_oEmbed_Endpoint(), 'register_routes' ) );
 
 		// Filter the REST API response to output XML if requested.
 		add_filter( 'rest_pre_serve_request', array( $this, 'rest_pre_serve_request' ), 10, 4 );
