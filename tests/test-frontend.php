@@ -37,7 +37,10 @@ class WP_oEmbed_Test_Frontend extends WP_oEmbed_TestCase {
 	 * Test output of add_oembed_discovery_links.
 	 */
 	function test_add_oembed_discovery_links_non_singular() {
-		$this->assertEquals( '', $this->class->add_oembed_discovery_links() );
+		ob_start();
+		$this->class->add_oembed_discovery_links();
+		$actual = ob_get_clean();
+		$this->assertEquals( '', $actual );
 	}
 
 	/**
