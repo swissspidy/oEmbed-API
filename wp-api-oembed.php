@@ -33,7 +33,7 @@ defined( 'WPINC' ) or die;
 
 // Pull in the plugin classes and initialize.
 include( dirname( __FILE__ ) . '/classes/class-wp-rest-oembed-controller.php' );
-include( dirname( __FILE__ ) . '/classes/class-oembed-endpoint.php' );
+include( dirname( __FILE__ ) . '/classes/class-oembed-response.php' );
 include( dirname( __FILE__ ) . '/classes/class-frontend.php' );
 include( dirname( __FILE__ ) . '/classes/class-plugin.php' );
 

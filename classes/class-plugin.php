@@ -39,6 +39,9 @@ class WP_oEmbed_Plugin {
 		// Filter the REST API response to output XML if requested.
 		add_filter( 'rest_pre_serve_request', array( $this, 'rest_pre_serve_request' ), 10, 4 );
 
+		// Filter the oEmbed XML response to create an XML string.
+		add_filter( 'rest_oembed_xml_response', array( $this, 'create_xml' ) );
+
 		// Load fallback if REST API isn't available.
 		if ( ! defined( 'REST_API_VERSION' ) || ! version_compare( REST_API_VERSION, '2.0-beta3', '>=' ) ) {
 			// Add needed query vars.
@@ -147,6 +150,14 @@ class WP_oEmbed_Plugin {
 
 		$callback = isset( $wp_query->query_vars['_jsonp'] ) ? $wp_query->query_vars['_jsonp'] : false;
 
+		$response = new WP_oEmbed_Response( array(
+			'url'      => $url,
+			'format'   => $format,
+			'maxwidth' => $maxwidth,
+			'callback' => $callback,
+		) );
+
+		$response->dispatch();
 	}
 
 	/**
@@ -224,15 +235,39 @@ class WP_oEmbed_Plugin {
 			return $served;
 		}
 
+		// Embed links inside the request.
+		$data = $server->response_to_data( $result, false );
+
+		/**
+		 * Filter the XML response.
+		 *
+		 * @param string $result The built XML.
+		 * @param array  $data   The original oEmbed response data.
+		 *
+		 * @return string
+		 */
+		$result = apply_filters( 'rest_oembed_xml_response', false, $data );
+
 		if ( ! headers_sent() ) {
 			$server->send_header( 'Content-Type', 'text/xml; charset=' . get_option( 'blog_charset' ) );
 		}
 
-		// Embed links inside the request.
-		$result = $server->response_to_data( $result, false );
+		echo $result;
 
+		return true;
+	}
+
+	/**
+	 * Create an XML string from the oEmbed response data
+	 *
+	 * @param array $data The original oEmbed response data.
+	 *
+	 * @return string|bool XML string on success, false otherwise.
+	 */
+	public function create_xml( $data ) {
 		$oembed = new SimpleXMLElement( '<oembed></oembed>' );
-		foreach ( $result as $key => $value ) {
+
+		foreach ( $data as $key => $value ) {
 			if ( is_array( $value ) ) {
 				$element = $oembed->addChild( $key );
 
@@ -245,8 +280,7 @@ class WP_oEmbed_Plugin {
 
 			$oembed->addChild( $key, $value );
 		}
-		echo $oembed->asXML();
 
-		return true;
+		return $oembed->asXML();
 	}
 }
