@@ -40,7 +40,7 @@ class WP_oEmbed_Plugin {
 		add_filter( 'rest_pre_serve_request', array( $this, 'rest_pre_serve_request' ), 10, 4 );
 
 		// Filter the oEmbed XML response to create an XML string.
-		add_filter( 'rest_oembed_xml_response', array( $this, 'create_xml' ) );
+		add_filter( 'rest_oembed_xml_response', array( $this, 'create_xml' ), 10, 2 );
 
 		// Load fallback if REST API isn't available.
 		if ( ! defined( 'REST_API_VERSION' ) || ! version_compare( REST_API_VERSION, '2.0-beta3', '>=' ) ) {
@@ -260,11 +260,12 @@ class WP_oEmbed_Plugin {
 	/**
 	 * Create an XML string from the oEmbed response data
 	 *
-	 * @param array $data The original oEmbed response data.
+	 * @param string|false $result The   XML response string.
+	 * @param array        $data   The original oEmbed response data.
 	 *
 	 * @return string|bool XML string on success, false otherwise.
 	 */
-	public function create_xml( $data ) {
+	public function create_xml( $result, $data ) {
 		$oembed = new SimpleXMLElement( '<oembed></oembed>' );
 
 		foreach ( $data as $key => $value ) {
