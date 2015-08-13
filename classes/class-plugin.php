@@ -105,6 +105,7 @@ class WP_oEmbed_Plugin {
 	 * @param WP_Query $wp_query The WP_Query instance (passed by reference).
 	 */
 	public function parse_query( $wp_query ) {
+		// Check for required params.
 		if ( ! array_key_exists( 'oembed', $wp_query->query_vars ) ||
 		     ! array_key_exists( 'url', $wp_query->query_vars )
 		) {
@@ -117,7 +118,7 @@ class WP_oEmbed_Plugin {
 		 * @see WP_REST_oEmbed_Controller::register_routes()
 		 */
 
-		$url = esc_url_raw( $wp_query->query_vars['format'] );
+		$url = esc_url_raw( $wp_query->query_vars['url'] );
 
 		/**
 		 * Filter the default oEmbed response format.
