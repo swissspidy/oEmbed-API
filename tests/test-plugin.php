@@ -143,4 +143,16 @@ class WP_oEmbed_Test_Plugin extends WP_oEmbed_TestCase {
 		$this->assertEquals( 200, $data['width'] );
 		$this->assertEquals( 113, $data['height'] );
 	}
+
+	/**
+	 * Test if our query vars have been successfully registered.
+	 */
+	function test_query_vars() {
+		/* @var WP $wp */
+		global $wp;
+
+		foreach ( array( 'oembed', 'format', 'url', '_jsonp', 'maxwidth' ) as $query_var ) {
+			$this->assertTrue( in_array( $query_var, $wp->public_query_vars ) );
+		}
+	}
 }
