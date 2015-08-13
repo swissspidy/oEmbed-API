@@ -102,4 +102,47 @@ class WP_oEmbed_Test_Plugin extends WP_oEmbed_TestCase {
 
 		$this->assertEquals( $expected, get_post_embed_html( $post_id, 200, 200 ) );
 	}
+
+	/**
+	 * Test get_oembed_response_data with a post that doesn't exist.
+	 */
+	function test_get_oembed_response_data_non_existent_post() {
+		$this->assertFalse( get_oembed_response_data( 0, 100 ) );
+	}
+
+	/**
+	 * Test get_oembed_response_data normally.
+	 */
+	function test_get_oembed_response_data() {
+		$post = $this->factory->post->create_and_get();
+
+		$data = get_oembed_response_data( $post, 400 );
+
+		$this->assertEquals( 400, $data['width'] );
+		$this->assertEquals( 225, $data['height'] );
+	}
+
+	/**
+	 * Test get_oembed_response_data with a maxwidth that is too high.
+	 */
+	function test_get_oembed_response_data_maxwidth_too_high() {
+		$post = $this->factory->post->create_and_get();
+
+		$data = get_oembed_response_data( $post, 1000 );
+
+		$this->assertEquals( 600, $data['width'] );
+		$this->assertEquals( 338, $data['height'] );
+	}
+
+	/**
+	 * Test get_oembed_response_data with a maxwidth that is too low.
+	 */
+	function test_get_oembed_response_data_maxwidth_too_low() {
+		$post = $this->factory->post->create_and_get();
+
+		$data = get_oembed_response_data( $post, 100 );
+
+		$this->assertEquals( 200, $data['width'] );
+		$this->assertEquals( 113, $data['height'] );
+	}
 }
