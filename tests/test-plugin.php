@@ -155,4 +155,18 @@ class WP_oEmbed_Test_Plugin extends WP_oEmbed_TestCase {
 			$this->assertTrue( in_array( $query_var, $wp->public_query_vars ) );
 		}
 	}
+
+	/**
+	 * Test get_oembed_endpoint_url
+	 */
+	function test_get_oembed_endpoint_url() {
+		$this->assertEquals( home_url() . '/?oembed=true', get_oembed_endpoint_url() );
+		$this->assertEquals( home_url() . '/?oembed=true', get_oembed_endpoint_url( '', 'xml' ) );
+
+		$post_id = $this->factory->post->create();
+		$url     = get_permalink( $post_id );
+
+		$this->assertEquals( home_url() . '/?oembed=true&url=' . $url, get_oembed_endpoint_url( $url ) );
+		$this->assertEquals( home_url() . '/?oembed=true&url=' . $url . '&format=xml', get_oembed_endpoint_url( $url, 'xml' ) );
+	}
 }

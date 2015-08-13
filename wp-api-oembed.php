@@ -79,20 +79,28 @@ function get_post_embed_url( $post = null ) {
  * Pass an empty string as the first argument
  * to get the endpoint base URL.
  *
- * @param string $permalink The permalink used for the `url` query arg.
- * @param string $format    The requested response format.
+ * @param string      $permalink The permalink used for the `url` query arg.
+ * @param string|bool $format    The requested response format.
+ *                               Provide false to get the default format.
  *
  * @return string
  */
-function get_oembed_endpoint_url( $permalink = '', $format = 'json' ) {
-	$url = add_query_arg( array( 'oembed' => 'true' ), home_url() );
+function get_oembed_endpoint_url( $permalink = '', $format = false ) {
+	$url = add_query_arg( array( 'oembed' => 'true' ), home_url( '/' ) );
 
 	if ( function_exists( 'rest_url' ) ) {
 		$url = rest_url( 'wp/v2/oembed' );
 	}
 
 	if ( '' === $permalink ) {
-		return esc_url( $url );
+		return $url;
+	}
+
+	/** This filter is defined in classes/class-plugin.php */
+	$default_format = apply_filters( 'rest_oembed_default_format', 'json' );
+
+	if ( $format === $default_format ) {
+		$format = false;
 	}
 
 	$url = add_query_arg( array(
@@ -111,7 +119,7 @@ function get_oembed_endpoint_url( $permalink = '', $format = 'json' ) {
 	 */
 	$url = apply_filters( 'rest_oembed_endpoint_url', $url, $permalink, $format );
 
-	return esc_url( $url );
+	return $url;
 }
 
 /**

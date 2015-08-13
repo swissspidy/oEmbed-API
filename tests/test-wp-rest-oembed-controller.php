@@ -262,4 +262,36 @@ class WP_REST_oEmbed_Test_Controller extends WP_oEmbed_TestCase {
 
 		$this->assertTrue( $this->plugin()->rest_pre_serve_request( true, $response, $request, $GLOBALS['wp_rest_server'] ) );
 	}
+
+	/**
+	 * Test get_oembed_endpoint_url
+	 */
+	function test_get_oembed_endpoint_url() {
+		$this->assertEquals( home_url() . '/?rest_route=/wp/v2/oembed', get_oembed_endpoint_url() );
+		$this->assertEquals( home_url() . '/?rest_route=/wp/v2/oembed', get_oembed_endpoint_url( '', 'xml' ) );
+
+		$post_id = $this->factory->post->create();
+		$url     = get_permalink( $post_id );
+
+		$this->assertEquals( home_url() . '/?rest_route=%2Fwp%2Fv2%2Foembed&url=' . $url, get_oembed_endpoint_url( $url ) );
+		$this->assertEquals( home_url() . '/?rest_route=%2Fwp%2Fv2%2Foembed&url=' . $url . '&format=xml', get_oembed_endpoint_url( $url, 'xml' ) );
+	}
+
+	/**
+	 * Test get_oembed_endpoint_url
+	 */
+	function test_get_oembed_endpoint_url_pretty_permalinks() {
+		update_option( 'permalink_structure', '/%postname%' );
+
+		$this->assertEquals( home_url() . '/wp-json/wp/v2/oembed', get_oembed_endpoint_url() );
+		$this->assertEquals( home_url() . '/wp-json/wp/v2/oembed', get_oembed_endpoint_url( '', 'xml' ) );
+
+		$post_id = $this->factory->post->create();
+		$url     = get_permalink( $post_id );
+
+		$this->assertEquals( home_url() . '/wp-json/wp/v2/oembed?url=' . $url, get_oembed_endpoint_url( $url ) );
+		$this->assertEquals( home_url() . '/wp-json/wp/v2/oembed?url=' . $url . '&format=xml', get_oembed_endpoint_url( $url, 'xml' ) );
+
+		update_option( 'permalink_structure', '' );
+	}
 }
