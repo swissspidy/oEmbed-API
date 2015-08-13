@@ -168,12 +168,25 @@ function get_oembed_response_data( $post, $width ) {
 	 */
 	$post = get_post( $post );
 
+	if ( ! $post ) {
+		return false;
+	}
+
 	/**
 	 * User object for the post author.
 	 *
 	 * @var WP_User $author
 	 */
 	$author = get_userdata( $post->post_author );
+
+	// If a post doesn't have an author, fall back to the site's name.
+	$author_name = get_bloginfo( 'name' );
+	$author_url  = get_home_url();
+
+	if ( $author ) {
+		$author_name = $author->display_name;
+		$author_url  = get_author_posts_url( $author->ID, $author->user_nicename );
+	}
 
 	/**
 	 * Filter the allowed minimum width for the oEmbed response.
@@ -206,8 +219,8 @@ function get_oembed_response_data( $post, $width ) {
 		'version'       => '1.0',
 		'provider_name' => get_bloginfo( 'name' ),
 		'provider_url'  => get_home_url(),
-		'author_name'   => $author->display_name,
-		'author_url'    => get_author_posts_url( $author->ID, $author->user_nicename ),
+		'author_name'   => $author_name,
+		'author_url'    => $author_url,
 		'title'         => $post->post_title,
 		'type'          => 'rich',
 		'width'         => $width,
