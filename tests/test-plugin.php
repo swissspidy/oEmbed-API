@@ -45,9 +45,7 @@ class WP_oEmbed_Test_Plugin extends WP_oEmbed_TestCase {
 		$this->plugin()->add_oembed_provider();
 
 		$this->assertArrayHasKey( home_url( '/*' ), $oembed->providers );
-		$this->assertEquals( array( esc_url( rest_url( 'wp/v2/oembed' ) ), false ),
-			$oembed->providers[ home_url( '/*' ) ]
-		);
+		$this->assertEquals( array( get_oembed_endpoint_url(), false ), $oembed->providers[ home_url( '/*' ) ] );
 	}
 
 	/**
