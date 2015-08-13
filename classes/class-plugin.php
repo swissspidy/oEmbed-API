@@ -282,6 +282,8 @@ class WP_oEmbed_Plugin {
 			$oembed->addChild( $key, $value );
 		}
 
-		return $oembed->asXML();
+		$result = $oembed->asXML();
+
+		return $result;
 	}
 }
