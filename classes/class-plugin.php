@@ -168,7 +168,7 @@ class WP_oEmbed_Plugin {
 	 * Add this site to the whitelist of oEmbed providers.
 	 */
 	public function add_oembed_provider() {
-		wp_oembed_add_provider( home_url( '/*' ), esc_url( get_oembed_endpoint_url() ) );
+		wp_oembed_add_provider( home_url( '/*' ), get_oembed_endpoint_url() );
 	}
 
 	/**
