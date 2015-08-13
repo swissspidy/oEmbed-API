@@ -20,7 +20,7 @@ class WP_oEmbed_Test_Plugin extends WP_oEmbed_TestCase {
 	 * Test if the register_rest_route function exists.
 	 */
 	function test_rest_api_available() {
-		$this->assertTrue( function_exists( 'register_rest_route' ) );
+		$this->assertFalse( function_exists( 'register_rest_route' ) );
 	}
 
 	/**

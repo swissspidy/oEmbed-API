@@ -11,7 +11,6 @@ require_once $_tests_dir . '/includes/functions.php';
  * Load the REST API and our own plugin.
  */
 function _manually_load_oembed_api_plugin() {
-	require( dirname( __FILE__ ) . '/../vendor/json-rest-api/plugin.php' );
 	require dirname( __FILE__ ) . '/../wp-api-oembed.php';
 }
 
