@@ -132,22 +132,7 @@ class WP_oEmbed_Response {
 			header( 'Content-Type: text/xml; charset=' . get_option( 'blog_charset' ) );
 		}
 
-		$oembed = new SimpleXMLElement( '<oembed></oembed>' );
-		foreach ( $data as $key => $value ) {
-			if ( is_array( $value ) ) {
-				$element = $oembed->addChild( $key );
-
-				foreach ( $value as $k => $v ) {
-					$element->addChild( $k, $v );
-				}
-
-				continue;
-			}
-
-			$oembed->addChild( $key, $value );
-		}
-
-		echo $oembed->asXML();
+		echo $result;
 
 		die();
 	}
