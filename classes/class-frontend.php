@@ -279,15 +279,22 @@ class WP_oEmbed_Frontend {
 				};
 
 				window.onresize = function () {
-					// We need to limit how often we sent the message, otherwise we're just wasting CPU.
+					// We need to limit how often we send the message, otherwise we're just wasting CPU.
 					if ( resize_limiter ) {
 						return;
 					}
 					resize_limiter = true;
 					// Call onresize immediately, in case the resize finished before we got the final size.
-					setTimeout( function() { resize_limiter = false; window.onresize(); }, 50 );
+					setTimeout( function () {
+						resize_limiter = false;
+						window.onresize();
+					}, 50 );
 					// Send this document's height to the parent (embedding) site.
-					window.parent.postMessage( { 'message': 'height', 'value': embed.clientHeight + 2, 'secret': secret }, '*' );
+					window.parent.postMessage( {
+						'message': 'height',
+						'value': embed.clientHeight + 2,
+						'secret': secret
+					}, '*' );
 				};
 			})( window, document );
 		</script>
