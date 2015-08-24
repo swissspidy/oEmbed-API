@@ -230,7 +230,7 @@ class WP_oEmbed_Frontend {
 			.wp-embed-share-input {
 				width: 100%;
 				max-width: 600px;
-				border: 0px;
+				border: 0;
 				height: 28px;
 				padding: 0 5px;
 			}
@@ -269,13 +269,13 @@ class WP_oEmbed_Frontend {
 					document.getElementsByClassName('wp-embed-share-dialog-open')[0].onclick = function (e) {
 						share_dialog.className = share_dialog.className.replace('hidden', '');
 						e.preventDefault();
-					}
+					};
 
 					// Close the share dialog.
 					document.getElementsByClassName('wp-embed-share-dialog-close')[0].onclick = function (e) {
 						share_dialog.className += ' hidden';
 						e.preventDefault();
-					}
+					};
 				};
 
 				window.onresize = function () {
