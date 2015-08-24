@@ -106,6 +106,10 @@ class WP_REST_oEmbed_Controller {
 					'type'        => 'string',
 					'format'      => 'uri',
 				),
+				'html'           => array(
+					'description' => 'HTML to embed the object.',
+					'type'        => 'string',
+				),
 				'author_name'   => array(
 					'description' => 'The name of the object\'s author.',
 					'type'        => 'string',
