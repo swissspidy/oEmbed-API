@@ -48,11 +48,11 @@ msgstr ""
 msgid "Copy and paste this URL into your site to embed:"
 msgstr ""
 
-#: classes/class-wp-rest-oembed-controller.php:59
+#: classes/class-wp-rest-oembed-controller.php:62
 msgid "Invalid URL."
 msgstr ""
 
-#: classes/class-wp-rest-oembed-controller.php:64
+#: classes/class-wp-rest-oembed-controller.php:67
 msgid "Invalid format."
 msgstr ""
 

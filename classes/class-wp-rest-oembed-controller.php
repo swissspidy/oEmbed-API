@@ -16,22 +16,25 @@ class WP_REST_oEmbed_Controller {
 	 */
 	public function register_routes() {
 		register_rest_route( 'wp/v2', '/oembed', array(
-			'methods'  => WP_REST_Server::READABLE,
-			'callback' => array( $this, 'get_item' ),
-			'args'     => array(
-				'url'      => array(
-					'required'          => true,
-					'sanitize_callback' => 'esc_url_raw',
-				),
-				'format'   => array(
-					'default'           => apply_filters( 'rest_oembed_default_format', 'json' ),
-					'sanitize_callback' => 'sanitize_text_field',
-				),
-				'maxwidth' => array(
-					'default'           => apply_filters( 'rest_oembed_default_width', 600 ),
-					'sanitize_callback' => 'absint',
+			array(
+				'methods'  => WP_REST_Server::READABLE,
+				'callback' => array( $this, 'get_item' ),
+				'args'     => array(
+					'url'      => array(
+						'required'          => true,
+						'sanitize_callback' => 'esc_url_raw',
+					),
+					'format'   => array(
+						'default'           => apply_filters( 'rest_oembed_default_format', 'json' ),
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+					'maxwidth' => array(
+						'default'           => apply_filters( 'rest_oembed_default_width', 600 ),
+						'sanitize_callback' => 'absint',
+					),
 				),
 			),
+			'schema' => array( $this, 'get_item_schema' ),
 		) );
 	}
 
@@ -65,5 +68,65 @@ class WP_REST_oEmbed_Controller {
 		}
 
 		return get_oembed_response_data( $post_id, $request['maxwidth'] );
+	}
+
+	/**
+	 * Get the item's schema for display / public consumption purposes, conforming to JSON Schema.
+	 *
+	 * @return array
+	 */
+	public function get_item_schema() {
+		$schema = array(
+			'$schema'    => 'http://json-schema.org/draft-04/schema#',
+			'title'      => 'oEmbed response',
+			'type'       => 'object',
+			'properties' => array(
+				'type'          => array(
+					'description' => 'The resource type. Either photo, video, link, or rich.',
+					'type'        => 'string',
+				),
+				'version'       => array(
+					'description' => 'The oEmbed version number. Always 1.0.',
+					'type'        => 'number',
+				),
+				'width'         => array(
+					'description' => 'Width of the embeddable post',
+					'type'        => 'integer',
+				),
+				'height'        => array(
+					'description' => 'Height of the embeddable post',
+					'type'        => 'integer',
+				),
+				'title'         => array(
+					'description' => 'The title for the object.',
+					'type'        => 'string',
+				),
+				'url'           => array(
+					'description' => 'URL to the object.',
+					'type'        => 'string',
+					'format'      => 'uri',
+				),
+				'author_name'   => array(
+					'description' => 'The name of the object\'s author.',
+					'type'        => 'string',
+				),
+				'author_url'    => array(
+					'description' => 'URL to the object\'s author.',
+					'type'        => 'string',
+					'format'      => 'uri',
+				),
+				'provider_name' => array(
+					'description' => 'The name of the object\'s provider.',
+					'type'        => 'string',
+				),
+				'provider_url'  => array(
+					'description' => 'URL to the object\'s provider.',
+					'type'        => 'string',
+					'format'      => 'uri',
+				),
+			),
+		);
+
+		return $schema;
 	}
 }
