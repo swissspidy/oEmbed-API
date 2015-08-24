@@ -2,19 +2,27 @@
 Contributors:      swissspidy, pento, netweb  
 Donate link:         
 Tags:              oembed, api  
-Requires at least: 4.3-alpha  
-Tested up to:      4.3-beta  
-Stable tag:        0.3.0  
+Requires at least: 4.3  
+Tested up to:      4.3  
+Stable tag:        0.4.0  
 License:           GPLv2 or later  
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html  
 
-Make WordPress an oEmbed provider.
+Allow others to easily embed your blog posts on their sites using oEmbed.
 
 ## Description ##
 
-This feature plugin leverages the new REST API to make WordPress an oEmbed provider. It aims to be compliant with the JSON specification at oEmbed.com. See WordPress Core ticket [\#32522](https://core.trac.wordpress.org/ticket/32522).
+It’s pretty easy to embed YouTube videos or tweets in WordPress. Just paste the URL to the content on a new line and you automagically get a preview of the embed.
 
-**Note:** WordPress 4.3 Beta 3 or later and version 2 of the REST API are required to run this plugin.
+We wondered why this doesn’t also work with WordPress blogs and created this little plugin here.
+
+This plugin makes WordPress an oEmbed provider, which means you can easily embed your blog posts somewhere else. Even on your own website!
+
+The beautiful embeds contain a short summary of the post and (if available) also its featured image.
+
+Everything is easily extensible. You can completely change the look and feel of the embedded content.
+
+**Note:** We are working on bringing this functionality to WordPress core at one point. See WordPress Core ticket [\#32522](https://core.trac.wordpress.org/ticket/32522) for more details.
 
 **Get Involved**
 
@@ -28,12 +36,21 @@ We hold weekly chats about this plugin in the \#feature-oembed WordPress Slack c
 
 ### Manual Installation ###
 
-1. Make sure WP-API 2.x is installed and activated
-2. Upload the entire `/oembed-api` directory to the `/wp-content/plugins/` directory.
+1. 2. Upload the entire `/oembed-api` directory to the `/wp-content/plugins/` directory.
 3. Activate oEmbed API through the 'Plugins' menu in WordPress.
-4. Embed a blog post or page in another post.
+4. Copy the permalink of one of your blog posts and paste it into a new post. It should automatically be embedded.
 
 ## Frequently Asked Questions ##
+
+### Is the REST API required for this plugin to work? ###
+
+While we support the REST API, it is not required for this plugin to run. The only thing you need is an up-to-date version of WordPress.
+
+### How does it work again? ###
+
+We leverage a technique called oEmbed. Thanks to oEmbed, you can embed content from the web by only knowing its URL. While WordPress has supported this feature since version 2.9, it actually isn’t an oEmbed provider itself. That’s what we’re changing.
+
+This plugin is fully compliant with the JSON specification at [oEmbed.com](http://oembed.com).
 
 ### Is it really that easy? ###
 
@@ -41,7 +58,7 @@ Yes.
 
 ## Screenshots ##
 
-1. Mockup of how embedding a WordPress post might look like in the end.
+1. Example of how embedding a WordPress post looks like.
 
 ## Contribute ##
 
@@ -50,6 +67,10 @@ Here is how you can contribute:
 Join the discussion on [Trac](https://core.trac.wordpress.org/ticket/32522) and submit pull requests on [GitHub](https://github.com/swissspidy/oEmbed-API).
 
 ## Changelog ##
+
+### 0.4.0 ###
+* Now also works without the REST API enabled.
+* Lots of bug fixes and refactoring.
 
 ### 0.3.0 ###
 * Added a bunch of polish.
@@ -61,6 +82,9 @@ Join the discussion on [Trac](https://core.trac.wordpress.org/ticket/32522) and 
 * First release
 
 ## Upgrade Notice ##
+
+### 0.4.0 ###
+You can now use this plugin without the REST API too!
 
 ### 0.0.1 ###
 First release
