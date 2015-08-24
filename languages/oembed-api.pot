@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2+.
 msgid ""
 msgstr ""
-"Project-Id-Version: oEmbed API 0.3.0\n"
+"Project-Id-Version: oEmbed API 0.4.0\n"
 "Report-Msgid-Bugs-To: https://pascalbirchler.com\n"
 "POT-Creation-Date: 2015-07-27 13:00:02+00:00\n"
 "MIME-Version: 1.0\n"
@@ -24,27 +24,27 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: classes/class-frontend.php:298
+#: classes/class-frontend.php:319
 msgid "%d word"
 msgid_plural "%d words"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/class-frontend.php:336
+#: classes/class-frontend.php:357
 msgid "%s <span class=\"screen-reader-text\">Comment</span>"
 msgid_plural "%s <span class=\"screen-reader-text\">Comments</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/class-frontend.php:350
+#: classes/class-frontend.php:371
 msgid "Open sharing dialog"
 msgstr ""
 
-#: classes/class-frontend.php:358
+#: classes/class-frontend.php:379
 msgid "Close dialog"
 msgstr ""
 
-#: classes/class-frontend.php:363
+#: classes/class-frontend.php:384
 msgid "Copy and paste this URL into your site to embed:"
 msgstr ""
 
@@ -65,7 +65,7 @@ msgid "https://github.com/swissspidy/oEmbed-API"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid "An oEmbed provider for WordPress using the WP-API plugin."
+msgid "Allow others to easily embed your blog posts on their sites using oEmbed."
 msgstr ""
 
 #. Author of the plugin/theme
@@ -73,5 +73,5 @@ msgid "Pascal Birchler"
 msgstr ""
 
 #. Author URI of the plugin/theme
-msgid "https://spinpress.com"
+msgid "https://pascalbirchler.com"
 msgstr ""
