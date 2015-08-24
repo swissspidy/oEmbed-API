@@ -402,6 +402,8 @@ class WP_oEmbed_Frontend {
 	/**
 	 * If the $url isn't on the trusted providers list, we need to filter the HTML heavily for security.
 	 *
+	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+	 *
 	 * @param string $html The unfiltered oEmbed HTML.
 	 * @param string $url  URL of the content to be embedded.
 	 *
