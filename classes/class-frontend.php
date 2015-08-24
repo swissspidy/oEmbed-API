@@ -440,21 +440,24 @@ class WP_oEmbed_Frontend {
 			),
 		);
 
-		if ( ! $trusted  || $current_site ) {
+		if ( ! $trusted || $current_site ) {
 			$html = wp_kses( $html, $allowed_html );
 			$html = preg_replace( '|^(<iframe.*?></iframe>).*$|', '$1', $html );
 			$html = str_replace( '<iframe', '<iframe sandbox="allow-scripts" security="restricted"', $html );
 
 			preg_match( '/ src=[\'"]([^\'"]*)[\'"]/', $html, $results );
-			if ( empty( $results ) ) {
-				return $html;
+
+			if ( ! empty( $results ) ) {
+				$secret = wp_generate_password( 10, false );
+
+				$url = esc_url( "{$results[1]}#?secret=$secret" );
+
+				$html = str_replace( $results[0], " src=\"$url\" data-secret=\"$secret\"", $html );
 			}
+		}
 
-			$secret = wp_generate_password( 10, false );
-
-			$url = esc_url( "{$results[1]}#?secret=$secret" );
-
-			$html = str_replace( $results[0], " src=\"$url\" data-secret=\"$secret\"", $html );
+		if ( '' === $html ) {
+			return false;
 		}
 
 		return $html;
