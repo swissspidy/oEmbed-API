@@ -53,11 +53,19 @@ add_action( 'plugins_loaded', 'oembed_api_init' );
 function oembed_api_activate_plugin() {
 	$oembed_api = new WP_oEmbed_Plugin();
 	$oembed_api->add_rewrite_endpoint();
-	flush_rewrite_rules();
+	flush_rewrite_rules( false );
 }
 
+/**
+ * Flush rewrite rules on plugin deactivation.
+ */
+function oembed_api_deactivate_plugin() {
+	flush_rewrite_rules( false );
+}
+
+
 register_activation_hook( __FILE__, 'oembed_api_activate_plugin' );
-register_deactivation_hook( __FILE__, 'flush_rewrite_rules' );
+register_deactivation_hook( __FILE__, 'oembed_api_deactivate_plugin' );
 
 /**
  * Get the URL to embed a specific post, for example in an iframe.
