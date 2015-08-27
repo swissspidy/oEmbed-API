@@ -52,7 +52,7 @@ class WP_oEmbed_Plugin {
 		}
 
 		// Add a rewrite endpoint for the iframe.
-		add_action( 'init', array( 'WP_oEmbed_Plugin', 'add_rewrite_endpoint' ) );
+		add_action( 'init', array( $this, 'add_rewrite_endpoint' ) );
 
 		// Register our TinyMCE plugin.
 		add_action( 'mce_external_plugins', array( $this, 'add_mce_plugin' ) );
@@ -85,7 +85,7 @@ class WP_oEmbed_Plugin {
 	/**
 	 * Add our rewrite endpoint to permalinks and pages.
 	 */
-	public static function add_rewrite_endpoint() {
+	public function add_rewrite_endpoint() {
 		add_rewrite_endpoint( 'embed', EP_PERMALINK | EP_PAGES | EP_ATTACHMENT );
 	}
 
@@ -159,22 +159,6 @@ class WP_oEmbed_Plugin {
 
 		$response->dispatch();
 	}
-
-	/**
-	 * Add our rewrite endpoint on plugin activation.
-	 */
-	public static function activate_plugin() {
-		self::add_rewrite_endpoint();
-		flush_rewrite_rules();
-	}
-
-	/**
-	 * Flush rewrite rules on plugin deactivation.
-	 */
-	public static function deactivate_plugin() {
-		flush_rewrite_rules();
-	}
-
 	/**
 	 * Add this site to the whitelist of oEmbed providers.
 	 */
