@@ -22,6 +22,22 @@ class WP_oEmbed_Test_Response extends WP_oEmbed_TestCase {
 	}
 
 	/**
+	 * Test a request with invalid format.
+	 */
+	function test_request_invalid_format() {
+		$post_id = $this->factory->post->create();
+
+		$response = new WP_oEmbed_Response( array(
+			'url'      => get_permalink( $post_id ),
+			'format'   => 'random',
+			'maxwidth' => 600,
+			'callback' => '',
+		) );
+
+		$this->assertEquals( 'Invalid format', $response->dispatch() );
+	}
+
+	/**
 	 * Test request for a normal post.
 	 */
 	function test_request_json() {
@@ -64,6 +80,50 @@ class WP_oEmbed_Test_Response extends WP_oEmbed_TestCase {
 	/**
 	 * Test request for a normal post.
 	 */
+	function test_request_json_not_implemented() {
+		$post = $this->factory->post->create_and_get( array(
+			'post_title'  => 'Hello World',
+		) );
+
+		$response = new WP_oEmbed_Response( array(
+			'url'      => get_permalink( $post->ID ),
+			'format'   => 'json',
+			'maxwidth' => 600,
+			'callback' => '',
+		) );
+
+		add_filter( 'rest_oembed_json_response', '__return_false' );
+
+		$this->assertEquals( 'Not implemented', $response->dispatch() );
+	}
+
+	/**
+	 * Test request for a normal post.
+	 */
+	function test_request_jsonp() {
+		$user = $this->factory->user->create_and_get( array(
+			'display_name' => 'John Doe',
+		) );
+		$post = $this->factory->post->create_and_get( array(
+			'post_author' => $user->ID,
+			'post_title'  => 'Hello World',
+		) );
+
+		$response = new WP_oEmbed_Response( array(
+			'url'      => get_permalink( $post->ID ),
+			'format'   => 'json',
+			'maxwidth' => 600,
+			'callback' => 'mycallback',
+		) );
+
+		$data = $response->dispatch();
+
+		$this->assertEquals( 0, strpos( $data, '/**/mycallback(' ) );
+	}
+
+	/**
+	 * Test request for a normal post.
+	 */
 	function test_request_xml() {
 		$user = $this->factory->user->create_and_get( array(
 			'display_name' => 'John Doe',
@@ -84,5 +144,25 @@ class WP_oEmbed_Test_Response extends WP_oEmbed_TestCase {
 
 		$xml = simplexml_load_string( $data );
 		$this->assertInstanceOf( 'SimpleXMLElement', $xml );
+	}
+
+	/**
+	 * Test request for a normal post.
+	 */
+	function test_request_xml_not_implemented() {
+		$post = $this->factory->post->create_and_get( array(
+			'post_title'  => 'Hello World',
+		) );
+
+		$response = new WP_oEmbed_Response( array(
+			'url'      => get_permalink( $post->ID ),
+			'format'   => 'xml',
+			'maxwidth' => 600,
+			'callback' => '',
+		) );
+
+		add_filter( 'rest_oembed_xml_response', '__return_false' );
+
+		$this->assertEquals( 'Not implemented', $response->dispatch() );
 	}
 }

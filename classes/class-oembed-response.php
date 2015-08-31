@@ -35,7 +35,7 @@ class WP_oEmbed_Response {
 	public function dispatch() {
 		if ( ! in_array( $this->request['format'], array( 'json', 'xml' ) ) ) {
 			status_header( 501 );
-			return 'Unsupported format';
+			return 'Invalid format';
 		}
 
 		$post_id = url_to_postid( $this->request['url'] );
