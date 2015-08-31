@@ -140,7 +140,7 @@ class WP_oEmbed_Test_Frontend extends WP_oEmbed_TestCase {
 		$this->class->add_host_js();
 		$actual = ob_get_clean();
 
-		$this->assertNotFalse( strpos( $actual, '<script type="text/javascript">' ) );
+		$this->assertTrue( false !== strpos( $actual, '<script type="text/javascript">' ) );
 	}
 
 	/**
@@ -163,6 +163,6 @@ class WP_oEmbed_Test_Frontend extends WP_oEmbed_TestCase {
 		$doc = new DOMDocument();
 		$this->assertTrue( $doc->loadHTML( $actual ) );
 
-		$this->assertNotFalse( strpos( $doc->saveHTML(), '<p class="wp-embed-excerpt">Foo Bar</p>' ) );
+		$this->assertTrue( false !== strpos( $doc->saveHTML(), '<p class="wp-embed-excerpt">Foo Bar</p>' ) );
 	}
 }
