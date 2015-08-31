@@ -71,7 +71,7 @@ class WP_oEmbed_Response {
 	 * @return string The JSON response data.
 	 */
 	public function json_response( $data, $callback ) {
-		if ( ! is_string( $this->request['callback'] ) || preg_match( '/\W\./', $this->request['callback'] ) ) {
+		if ( ! is_string( $this->request['callback'] ) || preg_match( '/[^\w\.]/', $this->request['callback'] ) ) {
 			$this->request['callback'] = false;
 		}
 
