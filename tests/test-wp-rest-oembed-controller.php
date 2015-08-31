@@ -18,35 +18,38 @@ class WP_REST_oEmbed_Test_Controller extends WP_oEmbed_TestCase {
 	/**
 	 * Load the REST API.
 	 */
-	static function setUpBeforeClass() {
+	public static function setUpBeforeClass() {
 		require( dirname( __FILE__ ) . '/../vendor/json-rest-api/plugin.php' );
 	}
 
 	/**
+	 * REST Server instance.
+	 *
+	 * @var WP_REST_Server
+	 */
+	protected $server;
+
+	/**
 	 * Runs before each test.
 	 */
-	function setUp() {
+	public function setUp() {
 		parent::setUp();
 
-		$this->class = new WP_REST_oEmbed_Controller();
-
-		$GLOBALS['wp_rest_server'] = new WP_REST_Server();
+		/* @var WP_REST_Server $wp_rest_server */
+		global $wp_rest_server;
+		$this->server = $wp_rest_server = new WP_REST_Server;
+		do_action( 'rest_api_init' );
 	}
 
 	/**
 	 * Runs after each test.
 	 */
-	function tearDown() {
+	public function tearDown() {
 		parent::tearDown();
 
-		unset( $this->class );
-	}
-
-	/**
-	 * Test if the register_rest_route function exists.
-	 */
-	function test_rest_api_available() {
-		$this->assertTrue( function_exists( 'register_rest_route' ) );
+		/* @var WP_REST_Server $wp_rest_server */
+		global $wp_rest_server;
+		$wp_rest_server = null;
 	}
 
 	/**
@@ -54,11 +57,9 @@ class WP_REST_oEmbed_Test_Controller extends WP_oEmbed_TestCase {
 	 *
 	 * Borrowed from the REST API.
 	 */
-	public function test_register_route() {
-		$this->class->register_routes();
-
+	public function test_route_availability() {
 		// Check the route was registered correctly.
-		$filtered_routes = $GLOBALS['wp_rest_server']->get_routes();
+		$filtered_routes = $this->server->get_routes();
 		$this->assertArrayHasKey( '/wp/v2/oembed', $filtered_routes );
 		$route = $filtered_routes['/wp/v2/oembed'];
 		$this->assertCount( 1, $route );
@@ -68,25 +69,12 @@ class WP_REST_oEmbed_Test_Controller extends WP_oEmbed_TestCase {
 	}
 
 	/**
-	 * Test the route before we have registered it.
-	 */
-	function test_non_existing_route() {
-		$request = new WP_REST_Request( 'GET', '/wp/v2/oembed' );
-
-		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
-		$data     = $response->get_data();
-
-		$this->assertEquals( 'rest_no_route', $data[0]['code'] );
-	}
-
-	/**
 	 * Test a POST request.
 	 */
 	function test_request_with_wrong_method() {
-		$this->class->register_routes();
 		$request = new WP_REST_Request( 'POST', '/wp/v2/oembed' );
 
-		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
+		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
 		$this->assertEquals( 'rest_no_route', $data[0]['code'] );
@@ -96,10 +84,9 @@ class WP_REST_oEmbed_Test_Controller extends WP_oEmbed_TestCase {
 	 * Test a request with a missing URL param.
 	 */
 	function test_request_without_url_param() {
-		$this->class->register_routes();
 		$request = new WP_REST_Request( 'GET', '/wp/v2/oembed' );
 
-		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
+		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
 		$this->assertEquals( 'rest_missing_callback_param', $data[0]['code'] );
@@ -110,11 +97,10 @@ class WP_REST_oEmbed_Test_Controller extends WP_oEmbed_TestCase {
 	 * Test a request with a wrong URL.
 	 */
 	function test_request_with_bad_url() {
-		$this->class->register_routes();
 		$request = new WP_REST_Request( 'GET', '/wp/v2/oembed' );
 		$request->set_param( 'url', 'http://google.com/' );
 
-		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
+		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
 		$this->assertEquals( 'rest_oembed_invalid_url', $data[0]['code'] );
@@ -124,15 +110,13 @@ class WP_REST_oEmbed_Test_Controller extends WP_oEmbed_TestCase {
 	 * Test a request with invalid format.
 	 */
 	function test_request_invalid_format() {
-		$this->class->register_routes();
-
 		$post_id = $this->factory->post->create();
 
 		$request = new WP_REST_Request( 'GET', '/wp/v2/oembed' );
 		$request->set_param( 'url', get_permalink( $post_id ) );
 		$request->set_param( 'format', 'random' );
 
-		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
+		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
 		$this->assertEquals( 'rest_oembed_invalid_format', $data[0]['code'] );
@@ -142,8 +126,6 @@ class WP_REST_oEmbed_Test_Controller extends WP_oEmbed_TestCase {
 	 * Test request for a normal post.
 	 */
 	function test_request_json() {
-		$this->class->register_routes();
-
 		$user = $this->factory->user->create_and_get( array(
 			'display_name' => 'John Doe',
 		) );
@@ -155,7 +137,7 @@ class WP_REST_oEmbed_Test_Controller extends WP_oEmbed_TestCase {
 		$request = new WP_REST_Request( 'GET', '/wp/v2/oembed' );
 		$request->set_param( 'url', get_permalink( $post->ID ) );
 
-		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
+		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
 		$this->assertTrue( is_array( $data ) );
@@ -181,8 +163,6 @@ class WP_REST_oEmbed_Test_Controller extends WP_oEmbed_TestCase {
 	 * Test request for a normal post.
 	 */
 	function test_request_xml() {
-		$this->class->register_routes();
-
 		$user = $this->factory->user->create_and_get( array(
 			'display_name' => 'John Doe',
 		) );
@@ -195,7 +175,7 @@ class WP_REST_oEmbed_Test_Controller extends WP_oEmbed_TestCase {
 		$request->set_param( 'url', get_permalink( $post->ID ) );
 		$request->set_param( 'format', 'xml' );
 
-		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
+		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
 		$this->assertTrue( is_array( $data ) );
@@ -205,8 +185,6 @@ class WP_REST_oEmbed_Test_Controller extends WP_oEmbed_TestCase {
 	 * Test XML output by the rest_pre_serve_request method.
 	 */
 	function test_rest_pre_serve_request() {
-		$this->class->register_routes();
-
 		$user = $this->factory->user->create_and_get( array(
 			'display_name' => 'John Doe',
 		) );
@@ -219,10 +197,10 @@ class WP_REST_oEmbed_Test_Controller extends WP_oEmbed_TestCase {
 		$request->set_param( 'url', get_permalink( $post->ID ) );
 		$request->set_param( 'format', 'xml' );
 
-		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
+		$response = $this->server->dispatch( $request );
 
 		ob_start();
-		$this->plugin()->rest_pre_serve_request( true, $response, $request, $GLOBALS['wp_rest_server'] );
+		$this->plugin()->rest_pre_serve_request( true, $response, $request, $this->server );
 		$output = ob_get_clean();
 
 		$xml = simplexml_load_string( $output );
@@ -233,34 +211,30 @@ class WP_REST_oEmbed_Test_Controller extends WP_oEmbed_TestCase {
 	 * Test the rest_pre_serve_request method.
 	 */
 	function test_rest_pre_serve_request_wrong_format() {
-		$this->class->register_routes();
-
 		$post = $this->factory->post->create_and_get();
 
 		$request = new WP_REST_Request( 'HEAD', '/wp/v2/oembed' );
 		$request->set_param( 'url', get_permalink( $post->ID ) );
 		$request->set_param( 'format', 'json' );
 
-		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
+		$response = $this->server->dispatch( $request );
 
-		$this->assertTrue( $this->plugin()->rest_pre_serve_request( true, $response, $request, $GLOBALS['wp_rest_server'] ) );
+		$this->assertTrue( $this->plugin()->rest_pre_serve_request( true, $response, $request, $this->server ) );
 	}
 
 	/**
 	 * Test the rest_pre_serve_request method.
 	 */
 	function test_rest_pre_serve_request_wrong_method() {
-		$this->class->register_routes();
-
 		$post = $this->factory->post->create_and_get();
 
 		$request = new WP_REST_Request( 'HEAD', '/wp/v2/oembed' );
 		$request->set_param( 'url', get_permalink( $post->ID ) );
 		$request->set_param( 'format', 'xml' );
 
-		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
+		$response = $this->server->dispatch( $request );
 
-		$this->assertTrue( $this->plugin()->rest_pre_serve_request( true, $response, $request, $GLOBALS['wp_rest_server'] ) );
+		$this->assertTrue( $this->plugin()->rest_pre_serve_request( true, $response, $request, $this->server ) );
 	}
 
 	/**
@@ -299,11 +273,9 @@ class WP_REST_oEmbed_Test_Controller extends WP_oEmbed_TestCase {
 	 * Test the availability of the item's schema for display / public consumption purposes
 	 */
 	public function test_get_item_schema() {
-		$this->class->register_routes();
-
-		$request  = new WP_REST_Request( 'OPTIONS', '/wp/v2/oembed' );
-		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
-		$data = $response->get_data();
+		$request    = new WP_REST_Request( 'OPTIONS', '/wp/v2/oembed' );
+		$response = rest_handle_options_request( null, $this->server, $request );
+		$data       = $response->get_data();
 		$properties = $data['schema']['properties'];
 		$this->assertEquals( 11, count( $properties ) );
 		$this->assertArrayHasKey( 'type', $properties );
