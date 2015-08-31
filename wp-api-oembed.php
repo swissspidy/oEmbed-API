@@ -238,7 +238,8 @@ function get_oembed_response_data( $post, $width ) {
 	/**
 	 * Filters the oEmbed response data.
 	 *
-	 * @param array $data The response data.
+	 * @param array   $data The response data.
+	 * @param WP_Post $post The post object.
 	 */
 	$data = apply_filters( 'rest_oembed_response_data', array(
 		'version'       => '1.0',
@@ -251,7 +252,7 @@ function get_oembed_response_data( $post, $width ) {
 		'width'         => $width,
 		'height'        => $height,
 		'html'          => get_post_embed_html( $post, $width, $height ),
-	) );
+	), $post );
 
 	return $data;
 }
