@@ -93,6 +93,31 @@ class WP_oEmbed_Test_Frontend extends WP_oEmbed_TestCase {
 	}
 
 	/**
+	 * Test filter_oembed_result_trusted method for current site.
+	 */
+	function test_filter_oembed_result_current_site() {
+		$html   = '<p></p><iframe onload="alert(1)"></iframe>';
+		$actual = $this->class->filter_oembed_result( $html,  home_url( '/' ) );
+
+		$this->assertEquals( '<iframe sandbox="allow-scripts" security="restricted"></iframe>', $actual );
+	}
+
+	/**
+	 * Test filter_oembed_result_trusted method without iframe.
+	 */
+	function test_filter_oembed_result_no_iframe() {
+		$html   = '<span>Hello</span><p>World</p>';
+		$actual = $this->class->filter_oembed_result( $html, '' );
+
+		$this->assertEquals( 'HelloWorld', $actual );
+
+		$html   = '<div><p></p></div><script></script>';
+		$actual = $this->class->filter_oembed_result( $html, '' );
+
+		$this->assertEquals( '', $actual );
+	}
+
+	/**
 	 * Test if the secret is appended to the URL.
 	 */
 	function test_filter_oembed_result_secret() {
