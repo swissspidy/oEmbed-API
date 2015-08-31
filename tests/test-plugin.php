@@ -161,6 +161,7 @@ class WP_oEmbed_Test_Plugin extends WP_oEmbed_TestCase {
 	 */
 	function test_get_oembed_endpoint_url() {
 		$this->assertEquals( home_url() . '/?oembed=true', get_oembed_endpoint_url() );
+		$this->assertEquals( home_url() . '/?oembed=true', get_oembed_endpoint_url( '', 'json' ) );
 		$this->assertEquals( home_url() . '/?oembed=true', get_oembed_endpoint_url( '', 'xml' ) );
 
 		$post_id = $this->factory->post->create();
