@@ -211,16 +211,20 @@ class WP_oEmbed_Plugin {
 	public function rest_pre_serve_request( $served, $result, $request, $server ) {
 		$params = $request->get_params();
 
-		if ( '/wp/v2/oembed' !== $request->get_route() || 'xml' !== $params['format'] ) {
+		if ( '/wp/v2/oembed' !== $request->get_route() || 'GET' !== $request->get_method() ) {
 			return $served;
 		}
 
-		if ( 'HEAD' === $request->get_method() ) {
+		if ( ! isset( $params['format'] ) || 'xml' !== $params['format'] ) {
 			return $served;
 		}
 
 		// Embed links inside the request.
 		$data = $server->response_to_data( $result, false );
+
+		if ( 404 === $result->get_status() ) {
+			$data = $data [0];
+		}
 
 		/**
 		 * Filter the XML response.
@@ -231,6 +235,12 @@ class WP_oEmbed_Plugin {
 		 * @return string
 		 */
 		$result = apply_filters( 'rest_oembed_xml_response', false, $data );
+
+		// Bail if there's no XML.
+		if ( ! $result ) {
+			status_header( 501 );
+			die( 'Not implemented' );
+		}
 
 		if ( ! headers_sent() ) {
 			$server->send_header( 'Content-Type', 'text/xml; charset=' . get_option( 'blog_charset' ) );
