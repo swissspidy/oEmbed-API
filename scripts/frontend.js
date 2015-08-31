@@ -1,8 +1,11 @@
 function receiveEmbedMessage( e ) {
-	if ( 'height' == e.data.message ) {
-		var iframes = document.getElementsByTagName( 'iframe' );
-		for( var ii = 0; ii < iframes.length; ii++ ) {
-			if ( iframes[ ii ].getAttribute( 'data-secret' ) == e.data.secret ) {
+	var iframes = document.getElementsByTagName( 'iframe' );
+	for ( var ii = 0; ii < iframes.length; ii++ ) {
+		if ( iframes[ ii ].getAttribute( 'data-secret' ) == e.data.secret ) {
+			var source = iframes[ ii ];
+
+			// Resize the iframe on request.
+			if ( 'height' == e.data.message ) {
 				var height = e.data.value;
 				if ( height > 600 ) {
 					height = 600;
@@ -10,7 +13,19 @@ function receiveEmbedMessage( e ) {
 					height = 100;
 				}
 
-				iframes[ ii ].height = (height) + "px";
+				source.height = (height) + "px";
+			}
+
+			// Link to a specific URL on request.
+			if ( 'link' == e.data.message ) {
+				var sourceURL = document.createElement( 'a' ), targetURL = document.createElement( 'a' );
+				sourceURL.href = source.getAttribute( 'href' );
+				targetURL.href = e.data.value;
+
+				// Only continue if link hostname matches iframe's hostname.
+				if ( targetURL.host === sourceURL.host ) {
+					location.href = e.data.value;
+				}
 			}
 		}
 	}

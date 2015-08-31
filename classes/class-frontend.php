@@ -260,6 +260,28 @@ class WP_oEmbed_Frontend {
 					// Send this document's height to the parent (embedding) site.
 					window.parent.postMessage( { 'message': 'height', 'value': embed.clientHeight + 2, 'secret': secret }, '*' );
 
+					// Detect clicks to external (_top) links.
+					var links = document.getElementsByTagName( 'a' );
+					for ( var i = 0; i < links.length; i++ ) {
+						if ( '_top' === links[ i ].getAttribute( 'target' ) ) {
+							links[ i ].onclick = function ( e ) {
+								if ( e.target.hasAttribute( 'href' ) ) {
+									var href = e.target.getAttribute( 'href' );
+								} else {
+									var href = e.target.parentElement.getAttribute( 'href' );
+								}
+
+								// Send link target to the parent (embedding) site.
+								window.parent.postMessage( {
+									'message': 'link',
+									'value': href,
+									'secret': secret
+								}, '*' );
+								e.preventDefault();
+							}
+						}
+					}
+
 					// Select content when clicking on the input field.
 					document.getElementsByClassName('wp-embed-share-input')[0].onclick = function () {
 						this.select();
