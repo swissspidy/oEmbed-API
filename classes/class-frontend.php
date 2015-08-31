@@ -135,18 +135,19 @@ class WP_oEmbed_Frontend {
 
 			.wp-embed-meta {
 				float: left;
+				position: relative;
 			}
 
 			.wp-embed-site-icon {
-				float: left;
 				height: 25px;
 				width: 25px;
 			}
 
 			.wp-embed-site-title {
-				float: left;
+				display: inline;
 				margin-top: 2px;
-				margin-left: 10px;
+				position: absolute;
+				left: 35px;
 				font-weight: bold;
 			}
 
