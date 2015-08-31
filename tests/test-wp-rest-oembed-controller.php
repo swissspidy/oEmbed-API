@@ -294,4 +294,28 @@ class WP_REST_oEmbed_Test_Controller extends WP_oEmbed_TestCase {
 
 		update_option( 'permalink_structure', '' );
 	}
+
+	/**
+	 * Test the availability of the item's schema for display / public consumption purposes
+	 */
+	public function test_get_item_schema() {
+		$this->class->register_routes();
+
+		$request  = new WP_REST_Request( 'OPTIONS', '/wp/v2/oembed' );
+		$response = $GLOBALS['wp_rest_server']->dispatch( $request );
+		$data = $response->get_data();
+		$properties = $data['schema']['properties'];
+		$this->assertEquals( 11, count( $properties ) );
+		$this->assertArrayHasKey( 'type', $properties );
+		$this->assertArrayHasKey( 'version', $properties );
+		$this->assertArrayHasKey( 'width', $properties );
+		$this->assertArrayHasKey( 'height', $properties );
+		$this->assertArrayHasKey( 'title', $properties );
+		$this->assertArrayHasKey( 'url', $properties );
+		$this->assertArrayHasKey( 'html', $properties );
+		$this->assertArrayHasKey( 'author_name', $properties );
+		$this->assertArrayHasKey( 'author_url', $properties );
+		$this->assertArrayHasKey( 'provider_name', $properties );
+		$this->assertArrayHasKey( 'provider_url', $properties );
+	}
 }
