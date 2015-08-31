@@ -50,16 +50,16 @@ class WP_oEmbed_Response {
 
 		if ( 0 === $post_id ) {
 			status_header( 404 );
-			die( 'Not Found' );
+			return 'Not Found';
 		}
 
 		$data = get_oembed_response_data( $post_id, $this->request['maxwidth'] );
 
 		if ( 'json' === $this->request['format'] ) {
-			$this->json_response( $data, $this->request['callback'] );
+			return $this->json_response( $data, $this->request['callback'] );
 		}
 
-		$this->xml_response( $data );
+		return $this->xml_response( $data );
 	}
 
 	/**
@@ -67,6 +67,8 @@ class WP_oEmbed_Response {
 	 *
 	 * @param array       $data     The oEmbed response data.
 	 * @param string|bool $callback JSONP callback.
+	 *
+	 * @return string The JSON response data.
 	 */
 	public function json_response( $data, $callback ) {
 		if ( ! is_string( $this->request['callback'] ) || preg_match( '/\W\./', $this->request['callback'] ) ) {
@@ -88,7 +90,7 @@ class WP_oEmbed_Response {
 		// Bail if the result couldn't be JSON encoded.
 		if ( ! $result ) {
 			status_header( 501 );
-			die( 'Not implemented' );
+			return 'Not implemented';
 		}
 
 		if ( ! headers_sent() ) {
@@ -98,18 +100,18 @@ class WP_oEmbed_Response {
 		}
 
 		if ( $this->request['callback'] ) {
-			echo '/**/' . $this->request['callback'] . '(' . $result . ')';
-			die();
+			return '/**/' . $this->request['callback'] . '(' . $result . ')';
 		}
 
-		echo $result;
-		die();
+		return $result;
 	}
 
 	/**
 	 * Print the XML response.
 	 *
 	 * @param array $data The oEmbed response data.
+	 *
+	 * @return string The XML response data.
 	 */
 	public function xml_response( $data ) {
 		/**
@@ -132,8 +134,6 @@ class WP_oEmbed_Response {
 			header( 'Content-Type: text/xml; charset=' . get_option( 'blog_charset' ) );
 		}
 
-		echo $result;
-
-		die();
+		return $result;
 	}
 }

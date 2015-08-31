@@ -157,7 +157,8 @@ class WP_oEmbed_Plugin {
 			'callback' => $callback,
 		) );
 
-		$response->dispatch();
+		echo $response->dispatch();
+		exit;
 	}
 	/**
 	 * Add this site to the whitelist of oEmbed providers.
