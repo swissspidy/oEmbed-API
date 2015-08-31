@@ -433,9 +433,7 @@ class WP_oEmbed_Frontend {
 	 * @return string The filtered oEmbed HTML.
 	 */
 	public function filter_oembed_result( $html, $url ) {
-		if ( ! function_exists( '_wp_oembed_get_object' ) ) {
-			require_once( ABSPATH . WPINC . '/class-oembed.php' );
-		}
+		require_once( ABSPATH . WPINC . '/class-oembed.php' );
 		$wp_oembed = _wp_oembed_get_object();
 
 		$trusted = $current_site = false;
