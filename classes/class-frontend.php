@@ -330,17 +330,34 @@ class WP_oEmbed_Frontend {
 	 * @todo Use `.screen-reader-text` where needed.
 	 * @todo Add hooks.
 	 *
+	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+	 *
 	 * @param WP_Post $post The current post object.
 	 */
 	public function rest_oembed_output( $post ) {
-		$post_content = strip_tags( $post->post_content );
-		$words        = str_word_count( $post_content );
+		$post_content = $post->post_content;
 
-		if ( count( $words ) > 35 ) {
-			$more_words   = count( $words ) - 30;
-			$post_content = implode( ' ', array_slice( $words, 0, 30 ) );
-			$post_content .= sprintf( ' <span class="wp-embed-more>"(' . _n( '%d word', '%d words', $more_words, 'oembed-api' ) . ')</span>', $more_words );
+		$num_words = apply_filters( 'rest_oembed_output_excerpt_length', 35, $post );
+
+		$words_array = preg_split( "/[\n\r\t ]+/", $post_content, $num_words + 1, PREG_SPLIT_NO_EMPTY );
+
+		/*
+		 * translators: If your word count is based on single characters (e.g. East Asian characters),
+		 * enter 'characters_excluding_spaces' or 'characters_including_spaces'. Otherwise, enter 'words'.
+		 * Do not translate into your own language.
+		 */
+		if ( strpos( _x( 'words', 'Word count type. Do not translate!', 'oembed-api' ), 'characters' ) === 0 && preg_match( '/^utf\-?8$/i', get_option( 'blog_charset' ) ) ) {
+			$text = trim( preg_replace( "/[\n\r\t ]+/", ' ', $post_content ), ' ' );
+			preg_match_all( '/./u', $text, $words_array );
+			$words_array = array_slice( $words_array[0], 0, $num_words + 1 );
 		}
+
+		$more = sprintf(
+			'(' . _n( '%d word', '%d words', count( $words_array ), 'oembed-api' ) . ')',
+			count( $words_array )
+		);
+
+		$post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embed-more">' . $more . '</span>' );
 		?>
 		<html>
 		<head>

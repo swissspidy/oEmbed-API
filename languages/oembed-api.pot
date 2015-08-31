@@ -24,27 +24,27 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: classes/class-frontend.php:319
+#: classes/class-frontend.php:356
 msgid "%d word"
 msgid_plural "%d words"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/class-frontend.php:357
+#: classes/class-frontend.php:397
 msgid "%s <span class=\"screen-reader-text\">Comment</span>"
 msgid_plural "%s <span class=\"screen-reader-text\">Comments</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/class-frontend.php:371
+#: classes/class-frontend.php:411
 msgid "Open sharing dialog"
 msgstr ""
 
-#: classes/class-frontend.php:379
+#: classes/class-frontend.php:419
 msgid "Close dialog"
 msgstr ""
 
-#: classes/class-frontend.php:384
+#: classes/class-frontend.php:424
 msgid "Copy and paste this URL into your site to embed:"
 msgstr ""
 
@@ -74,4 +74,13 @@ msgstr ""
 
 #. Author URI of the plugin/theme
 msgid "https://pascalbirchler.com"
+msgstr ""
+
+#: classes/class-frontend.php:349
+#. translators: If your word count is based on single characters (e.g. East
+#. Asian characters), enter 'characters_excluding_spaces' or
+#. 'characters_including_spaces'. Otherwise, enter 'words'. Do not translate
+#. into your own language.
+msgctxt "Word count type. Do not translate!"
+msgid "words"
 msgstr ""

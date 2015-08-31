@@ -97,7 +97,7 @@ class WP_oEmbed_Test_Frontend extends WP_oEmbed_TestCase {
 	 */
 	function test_filter_oembed_result_current_site() {
 		$html   = '<p></p><iframe onload="alert(1)"></iframe>';
-		$actual = $this->class->filter_oembed_result( $html,  home_url( '/' ) );
+		$actual = $this->class->filter_oembed_result( $html, home_url( '/' ) );
 
 		$this->assertEquals( '<iframe sandbox="allow-scripts" security="restricted"></iframe>', $actual );
 	}
@@ -130,5 +130,39 @@ class WP_oEmbed_Test_Frontend extends WP_oEmbed_TestCase {
 		$this->assertTrue( isset( $matches[1] ) );
 		$this->assertTrue( isset( $matches[2] ) );
 		$this->assertEquals( $matches[1], $matches[2] );
+	}
+
+	/**
+	 * Test add_host_js method.
+	 */
+	function test_add_host_js() {
+		ob_start();
+		$this->class->add_host_js();
+		$actual = ob_get_clean();
+
+		$this->assertNotFalse( strpos( $actual, '<script type="text/javascript">' ) );
+	}
+
+	/**
+	 * Test rest_oembed_output method.
+	 */
+	function test_rest_oembed_output() {
+		$user = $this->factory->user->create_and_get( array(
+			'display_name' => 'John Doe',
+		) );
+		$post = $this->factory->post->create_and_get( array(
+			'post_author'  => $user->ID,
+			'post_title'   => 'Hello World',
+			'post_content' => 'Foo Bar',
+		) );
+
+		ob_start();
+		$this->class->rest_oembed_output( $post );
+		$actual = ob_get_clean();
+
+		$doc = new DOMDocument();
+		$this->assertTrue( $doc->loadHTML( $actual ) );
+
+		$this->assertNotFalse( strpos( $doc->saveHTML(), '<p class="wp-embed-excerpt">Foo Bar</p>' ) );
 	}
 }
