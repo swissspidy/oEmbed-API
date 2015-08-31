@@ -35,7 +35,7 @@ class WP_oEmbed_Response {
 	public function dispatch() {
 		if ( ! in_array( $this->request['format'], array( 'json', 'xml' ) ) ) {
 			status_header( 501 );
-			die( 'Unsupported format' );
+			return 'Unsupported format';
 		}
 
 		$post_id = url_to_postid( $this->request['url'] );
@@ -127,7 +127,7 @@ class WP_oEmbed_Response {
 		// Bail if there's no XML.
 		if ( ! $result ) {
 			status_header( 501 );
-			die( 'Not implemented' );
+			return 'Not implemented';
 		}
 
 		if ( ! headers_sent() ) {
