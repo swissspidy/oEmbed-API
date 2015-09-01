@@ -33,7 +33,7 @@ defined( 'WPINC' ) or die;
 
 // Pull in the plugin classes and initialize.
 include( dirname( __FILE__ ) . '/classes/class-wp-rest-oembed-controller.php' );
-include( dirname( __FILE__ ) . '/classes/class-oembed-response.php' );
+include( dirname( __FILE__ ) . '/classes/class-wp-legacy-oembed-controller.php' );
 include( dirname( __FILE__ ) . '/classes/class-frontend.php' );
 include( dirname( __FILE__ ) . '/classes/class-plugin.php' );
 
@@ -103,7 +103,7 @@ function get_post_embed_url( $post = null ) {
  * @return string
  */
 function get_oembed_endpoint_url( $permalink = '', $format = false ) {
-	$url = add_query_arg( array( 'oembed' => 'true' ), home_url( '/' ) );
+	$url = '';
 
 	if ( function_exists( 'rest_url' ) ) {
 		$url = rest_url( 'wp/v2/oembed' );
