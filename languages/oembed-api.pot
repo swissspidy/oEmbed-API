@@ -25,8 +25,8 @@ msgstr ""
 "X-Textdomain-Support: yes\n"
 
 #: classes/class-frontend.php:356
-msgid "%d word"
-msgid_plural "%d words"
+msgid "&hellip; (%d word)"
+msgid_plural "&hellip; (%d words)"
 msgstr[0] ""
 msgstr[1] ""
 

@@ -353,7 +353,7 @@ class WP_oEmbed_Frontend {
 		}
 
 		$more = sprintf(
-			'(' . _n( '%d word', '%d words', count( $words_array ), 'oembed-api' ) . ')',
+			_n( '&hellip; (%d word)', '&hellip; (%d words)', count( $words_array ), 'oembed-api' ),
 			count( $words_array )
 		);
 
