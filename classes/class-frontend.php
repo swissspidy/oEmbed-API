@@ -204,7 +204,26 @@ class WP_oEmbed_Frontend {
 				visibility: hidden;
 			}
 
-			a.wp-embed-share-dialog-close {
+			.wp-embed-share-dialog-open,
+			.wp-embed-share-dialog-close {
+				background: transparent;
+				border: none;
+				cursor: pointer;
+			}
+
+			.wp-embed-share-dialog-open {
+				color: #82878c;
+			}
+
+			.wp-embed-share-dialog-open:hover {
+				color: #0073aa;
+			}
+
+			.wp-embed-share-dialog-open .dashicons {
+				display: inline;
+			}
+
+			.wp-embed-share-dialog-close {
 				position: absolute;
 				top: 20px;
 				right: 20px;
@@ -212,7 +231,7 @@ class WP_oEmbed_Frontend {
 				font-size: 22px;
 			}
 
-			a.wp-embed-share-dialog-close:hover {
+			.wp-embed-share-dialog-close:hover {
 				text-decoration: none;
 			}
 
@@ -430,18 +449,16 @@ class WP_oEmbed_Frontend {
 					</a>
 				</div>
 				<div class="wp-embed-share">
-					<a href="#" class="wp-embed-share-dialog-open">
+					<button type="button" class="wp-embed-share-dialog-open" aria-label="<?php _e( 'Open sharing dialog', 'oembed-api' ); ?>">
 						<span class="dashicons dashicons-share"></span>
-						<span class="screen-reader-text"><?php _e( 'Open sharing dialog', 'oembed-api' ); ?></span>
-					</a>
+					</button>
 				</div>
 			</div>
 			<div class="wp-embed-share-dialog hidden">
 				<div class="wp-embed-share-dialog-content">
-					<a href="#" class="wp-embed-share-dialog-close">
+					<button type="button" class="wp-embed-share-dialog-close" aria-label="<?php _e( 'Close sharing dialog', 'oembed-api' ); ?>">
 						<span class="dashicons dashicons-no"></span>
-						<span class="screen-reader-text"><?php _e( 'Close dialog', 'oembed-api' ); ?></span>
-					</a>
+					</button>
 
 					<div class="wp-embed-share-dialog-text">
 						<h2 class="wp-embed-share-title">
