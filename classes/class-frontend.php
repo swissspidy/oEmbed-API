@@ -108,6 +108,15 @@ class WP_oEmbed_Frontend {
 				text-decoration: underline;
 			}
 
+			.wp-embed-featured-image {
+				margin-bottom: 20px;
+			}
+
+			.wp-embed-featured-image img {
+				width: 100%;
+				height: auto;
+			}
+
 			.wp-embed-heading {
 				margin: 0 0 15px;
 				font-weight: bold;
@@ -372,6 +381,14 @@ class WP_oEmbed_Frontend {
 		</head>
 		<body>
 		<div class="wp-embed">
+			<?php if ( has_post_thumbnail() ) : ?>
+			<div class="wp-embed-featured-image">
+				<a href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>" target="_top">
+					<?php the_post_thumbnail( array( 600, 340 ) ); ?>
+				</a>
+			</div>
+			<?php endif; ?>
+
 			<h1 class="wp-embed-heading">
 				<a href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>" target="_top">
 					<?php echo esc_html( $post->post_title ); ?>
