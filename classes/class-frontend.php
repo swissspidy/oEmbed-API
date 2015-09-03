@@ -250,6 +250,10 @@ class WP_oEmbed_Frontend {
 			(function ( window, document ) {
 				var hash, secret, share_dialog, embed, resize_limiter;
 
+				if ( window.self === window.top ) {
+					return;
+				}
+
 				window.onload = function () {
 					hash = window.location.hash;
 					secret = hash.replace( /.*secret=([\d\w]{10}).*/, '$1' );
