@@ -259,15 +259,32 @@ class WP_oEmbed_Frontend {
 			(function ( window, document ) {
 				var hash, secret, share_dialog, embed, resize_limiter;
 
-				if ( window.self === window.top ) {
-					return;
-				}
-
 				window.onload = function () {
+					share_dialog = document.getElementsByClassName('wp-embed-share-dialog')[0];
+
+					// Select content when clicking on the input field.
+					document.getElementsByClassName('wp-embed-share-input')[0].onclick = function () {
+						this.select();
+					};
+
+					// Open the share dialog.
+					document.getElementsByClassName('wp-embed-share-dialog-open')[0].onclick = function (e) {
+						share_dialog.className = share_dialog.className.replace('hidden', '');
+						e.preventDefault();
+					};
+
+					// Close the share dialog.
+					document.getElementsByClassName('wp-embed-share-dialog-close')[0].onclick = function (e) {
+						share_dialog.className += ' hidden';
+						e.preventDefault();
+					};
+
+					if ( window.self === window.top ) {
+						return;
+					}
+
 					hash = window.location.hash;
 					secret = hash.replace( /.*secret=([\d\w]{10}).*/, '$1' );
-
-					share_dialog = document.getElementsByClassName('wp-embed-share-dialog')[0];
 
 					embed = document.getElementsByClassName( 'wp-embed' )[0];
 
@@ -295,26 +312,13 @@ class WP_oEmbed_Frontend {
 							}
 						}
 					}
-
-					// Select content when clicking on the input field.
-					document.getElementsByClassName('wp-embed-share-input')[0].onclick = function () {
-						this.select();
-					};
-
-					// Open the share dialog.
-					document.getElementsByClassName('wp-embed-share-dialog-open')[0].onclick = function (e) {
-						share_dialog.className = share_dialog.className.replace('hidden', '');
-						e.preventDefault();
-					};
-
-					// Close the share dialog.
-					document.getElementsByClassName('wp-embed-share-dialog-close')[0].onclick = function (e) {
-						share_dialog.className += ' hidden';
-						e.preventDefault();
-					};
 				};
 
 				window.onresize = function () {
+					if ( window.self === window.top ) {
+						return;
+					}
+
 					// We need to limit how often we send the message, otherwise we're just wasting CPU.
 					if ( resize_limiter ) {
 						return;
