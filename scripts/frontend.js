@@ -19,7 +19,7 @@ function receiveEmbedMessage( e ) {
 			// Link to a specific URL on request.
 			if ( 'link' == e.data.message ) {
 				var sourceURL = document.createElement( 'a' ), targetURL = document.createElement( 'a' );
-				sourceURL.href = source.getAttribute( 'href' );
+				sourceURL.href = source.getAttribute( 'src' );
 				targetURL.href = e.data.value;
 
 				// Only continue if link hostname matches iframe's hostname.
