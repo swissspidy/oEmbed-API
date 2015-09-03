@@ -24,27 +24,27 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: classes/class-frontend.php:356
+#: classes/class-frontend.php:398
 msgid "&hellip; (%d word)"
 msgid_plural "&hellip; (%d words)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/class-frontend.php:397
+#: classes/class-frontend.php:443
+msgid "Open sharing dialog"
+msgstr ""
+
+#: classes/class-frontend.php:452
 msgid "%s <span class=\"screen-reader-text\">Comment</span>"
 msgid_plural "%s <span class=\"screen-reader-text\">Comments</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/class-frontend.php:411
-msgid "Open sharing dialog"
+#: classes/class-frontend.php:466
+msgid "Close sharing dialog"
 msgstr ""
 
-#: classes/class-frontend.php:419
-msgid "Close dialog"
-msgstr ""
-
-#: classes/class-frontend.php:424
+#: classes/class-frontend.php:472
 msgid "Copy and paste this URL into your site to embed:"
 msgstr ""
 
@@ -54,6 +54,10 @@ msgstr ""
 
 #: classes/class-wp-rest-oembed-controller.php:67
 msgid "Invalid format."
+msgstr ""
+
+#: wp-api-oembed.php:165
+msgid "Embedded WordPress Post"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
@@ -76,7 +80,7 @@ msgstr ""
 msgid "https://pascalbirchler.com"
 msgstr ""
 
-#: classes/class-frontend.php:349
+#: classes/class-frontend.php:392
 #. translators: If your word count is based on single characters (e.g. East
 #. Asian characters), enter 'characters_excluding_spaces' or
 #. 'characters_including_spaces'. Otherwise, enter 'words'. Do not translate
