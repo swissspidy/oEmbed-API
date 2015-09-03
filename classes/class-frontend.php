@@ -291,21 +291,21 @@ class WP_oEmbed_Frontend {
 				var hash, secret, share_dialog, embed, resize_limiter;
 
 				window.onload = function () {
-					share_dialog = document.getElementsByClassName('wp-embed-share-dialog')[0];
+					share_dialog = document.getElementsByClassName( 'wp-embed-share-dialog' )[ 0 ];
 
 					// Select content when clicking on the input field.
-					document.getElementsByClassName('wp-embed-share-input')[0].onclick = function () {
+					document.getElementsByClassName( 'wp-embed-share-input' )[ 0 ].onclick = function () {
 						this.select();
 					};
 
 					// Open the share dialog.
-					document.getElementsByClassName('wp-embed-share-dialog-open')[0].onclick = function (e) {
-						share_dialog.className = share_dialog.className.replace('hidden', '');
+					document.getElementsByClassName( 'wp-embed-share-dialog-open' )[ 0 ].onclick = function ( e ) {
+						share_dialog.className = share_dialog.className.replace( 'hidden', '' );
 						e.preventDefault();
 					};
 
 					// Close the share dialog.
-					document.getElementsByClassName('wp-embed-share-dialog-close')[0].onclick = function (e) {
+					document.getElementsByClassName( 'wp-embed-share-dialog-close' )[ 0 ].onclick = function ( e ) {
 						share_dialog.className += ' hidden';
 						e.preventDefault();
 					};
@@ -317,10 +317,14 @@ class WP_oEmbed_Frontend {
 					hash = window.location.hash;
 					secret = hash.replace( /.*secret=([\d\w]{10}).*/, '$1' );
 
-					embed = document.getElementsByClassName( 'wp-embed' )[0];
+					embed = document.getElementsByClassName( 'wp-embed' )[ 0 ];
 
 					// Send this document's height to the parent (embedding) site.
-					window.parent.postMessage( { 'message': 'height', 'value': embed.clientHeight + 2, 'secret': secret }, '*' );
+					window.parent.postMessage( {
+						'message': 'height',
+						'value': embed.clientHeight + 2,
+						'secret': secret
+					}, '*' );
 
 					// Detect clicks to external (_top) links.
 					var links = document.getElementsByTagName( 'a' );
@@ -422,11 +426,11 @@ class WP_oEmbed_Frontend {
 		<body>
 		<div class="wp-embed">
 			<?php if ( has_post_thumbnail() ) : ?>
-			<div class="wp-embed-featured-image">
-				<a href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>" target="_top">
-					<?php the_post_thumbnail( array( 600, 340 ) ); ?>
-				</a>
-			</div>
+				<div class="wp-embed-featured-image">
+					<a href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>" target="_top">
+						<?php the_post_thumbnail( array( 600, 340 ) ); ?>
+					</a>
+				</div>
 			<?php endif; ?>
 
 			<h1 class="wp-embed-heading">
@@ -514,7 +518,7 @@ class WP_oEmbed_Frontend {
 		$trusted = $current_site = false;
 
 		foreach ( $wp_oembed->providers as $matchmask => $data ) {
-			$regex = $data[1];
+			$regex        = $data[1];
 			$originalmask = $matchmask;
 
 			// Turn the asterisk-type provider URLs into regex.
