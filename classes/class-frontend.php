@@ -504,6 +504,7 @@ class WP_oEmbed_Frontend {
 				'marginwidth'  => true,
 				'marginheight' => true,
 				'scrolling'    => true,
+				'title'        => true,
 			),
 		);
 
