@@ -48,8 +48,6 @@ class WP_oEmbed_Frontend {
 
 	/**
 	 * Add JS to handle the messages from the embedded iframes.
-	 *
-	 * @todo: Think of a better way to restrict the height.
 	 */
 	public function add_host_js() {
 		?>
@@ -371,7 +369,6 @@ class WP_oEmbed_Frontend {
 	/**
 	 * Output the HTML that gets embedded
 	 *
-	 * @todo Use `.screen-reader-text` where needed.
 	 * @todo Add hooks.
 	 *
 	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
