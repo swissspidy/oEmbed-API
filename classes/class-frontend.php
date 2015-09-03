@@ -339,7 +339,7 @@ class WP_oEmbed_Frontend {
 
 		$num_words = apply_filters( 'rest_oembed_output_excerpt_length', 35, $post );
 
-		$words_array = preg_split( "/[\n\r\t ]+/", $post_content, $num_words + 1, PREG_SPLIT_NO_EMPTY );
+		$total_words = preg_split( "/[\n\r\t ]+/", $post_content, - 1, PREG_SPLIT_NO_EMPTY );
 
 		/*
 		 * translators: If your word count is based on single characters (e.g. East Asian characters),
@@ -348,13 +348,12 @@ class WP_oEmbed_Frontend {
 		 */
 		if ( strpos( _x( 'words', 'Word count type. Do not translate!', 'oembed-api' ), 'characters' ) === 0 && preg_match( '/^utf\-?8$/i', get_option( 'blog_charset' ) ) ) {
 			$text = trim( preg_replace( "/[\n\r\t ]+/", ' ', $post_content ), ' ' );
-			preg_match_all( '/./u', $text, $words_array );
-			$words_array = array_slice( $words_array[0], 0, $num_words + 1 );
+			preg_match_all( '/./u', $text, $total_words );
 		}
 
 		$more = sprintf(
-			_n( '&hellip; (%d word)', '&hellip; (%d words)', count( $words_array ), 'oembed-api' ),
-			count( $words_array )
+			_n( '&hellip; (%d word)', '&hellip; (%d words)', count( $total_words ), 'oembed-api' ),
+			count( $total_words )
 		);
 
 		$post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embed-more">' . $more . '</span>' );
