@@ -87,7 +87,7 @@ class WP_oEmbed_Frontend {
 
 			.wp-embed {
 				width: 100%;
-				padding: 25px 30px;
+				padding: 25px;
 				font: 400 14px/1.5 'Open Sans', sans-serif;
 				color: #82878c;
 				background: white;
