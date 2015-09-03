@@ -82,8 +82,6 @@ class WP_oEmbed_Response {
 		 *
 		 * @param string $result The encoded JSON.
 		 * @param array  $data   The original oEmbed response data.
-		 *
-		 * @return string
 		 */
 		$result = apply_filters( 'rest_oembed_json_response', $result, $data );
 
@@ -119,8 +117,6 @@ class WP_oEmbed_Response {
 		 *
 		 * @param string $result The built XML.
 		 * @param array  $data   The original oEmbed response data.
-		 *
-		 * @return string
 		 */
 		$result = apply_filters( 'rest_oembed_xml_response', false, $data );
 

@@ -131,8 +131,6 @@ function get_oembed_endpoint_url( $permalink = '', $format = false ) {
 	 * @param string $url       The URL to the oEmbed endpoint.
 	 * @param string $permalink The permalink used for the `url` query arg.
 	 * @param string $format    The requested response format.
-	 *
-	 * @return string
 	 */
 	$url = apply_filters( 'rest_oembed_endpoint_url', $url, $permalink, $format );
 

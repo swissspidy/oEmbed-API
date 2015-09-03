@@ -127,8 +127,6 @@ class WP_oEmbed_Plugin {
 		 * Filter the default oEmbed response format.
 		 *
 		 * @param string $format oEmbed response format. Defaults to json.
-		 *
-		 * @return string
 		 */
 		$format = apply_filters( 'rest_oembed_default_format', 'json' );
 
@@ -140,8 +138,6 @@ class WP_oEmbed_Plugin {
 		 * Filter the maxwidth oEmbed parameter.
 		 *
 		 * @param int $maxwidth Maximum allowed width. Defaults to 600.
-		 *
-		 * @return int
 		 */
 		$maxwidth = apply_filters( 'rest_oembed_default_width', 600 );
 		if ( isset( $wp_query->query_vars['maxwidth'] ) ) {
@@ -232,8 +228,6 @@ class WP_oEmbed_Plugin {
 		 *
 		 * @param string $result The built XML.
 		 * @param array  $data   The original oEmbed response data.
-		 *
-		 * @return string
 		 */
 		$result = apply_filters( 'rest_oembed_xml_response', false, $data );
 

@@ -41,6 +41,11 @@ class WP_oEmbed_Frontend {
 			$output .= '<link rel="alternate" type="text/xml+oembed" href="' . esc_url( get_oembed_endpoint_url( get_permalink(), 'xml' ) ) . '" />' . "\n";
 		}
 
+		/**
+		 * Filter the oEmbed discovery links.
+		 *
+		 * @param string $output HTML of the discovery links.
+		 */
 		$output = apply_filters( 'rest_oembed_discovery_links', $output );
 
 		echo $output;
@@ -378,6 +383,12 @@ class WP_oEmbed_Frontend {
 	public function rest_oembed_output( $post ) {
 		$post_content = $post->post_content;
 
+		/**
+		 * Filter the post excerpt lenght in the oEmbed output.
+		 *
+		 * @param int     $num_words Number of words. Defaults to 35.
+		 * @param WP_Post $post      The current post object.
+		 */
 		$num_words = apply_filters( 'rest_oembed_output_excerpt_length', 35, $post );
 
 		$total_words = preg_split( "/[\n\r\t ]+/", $post_content, - 1, PREG_SPLIT_NO_EMPTY );
