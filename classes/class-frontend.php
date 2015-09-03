@@ -166,6 +166,7 @@ class WP_oEmbed_Frontend {
 			}
 
 			.wp-embed-social .dashicons {
+				line-height: 25px;
 				-webkit-transition: color .1s ease-in;
 				transition: color .1s ease-in;
 			}
@@ -177,7 +178,11 @@ class WP_oEmbed_Frontend {
 
 			.wp-embed-comments,
 			.wp-embed-share {
-				display: inline;
+				float: right;
+			}
+
+			.wp-embed-comments a {
+				line-height: 25px;
 			}
 
 			.wp-embed-share {
@@ -206,6 +211,8 @@ class WP_oEmbed_Frontend {
 
 			.wp-embed-share-dialog-open,
 			.wp-embed-share-dialog-close {
+				margin: 0;
+				padding: 0;
 				background: transparent;
 				border: none;
 				cursor: pointer;
@@ -432,6 +439,11 @@ class WP_oEmbed_Frontend {
 				</div>
 			</div>
 			<div class="wp-embed-social">
+				<div class="wp-embed-share">
+					<button type="button" class="wp-embed-share-dialog-open" aria-label="<?php _e( 'Open sharing dialog', 'oembed-api' ); ?>">
+						<span class="dashicons dashicons-share"></span>
+					</button>
+				</div>
 				<div class="wp-embed-comments">
 					<a href="<?php echo esc_url( get_comments_link( $post->ID ) ); ?>" target="_top">
 						<span class="dashicons dashicons-admin-comments"></span>
@@ -447,11 +459,6 @@ class WP_oEmbed_Frontend {
 						);
 						?>
 					</a>
-				</div>
-				<div class="wp-embed-share">
-					<button type="button" class="wp-embed-share-dialog-open" aria-label="<?php _e( 'Open sharing dialog', 'oembed-api' ); ?>">
-						<span class="dashicons dashicons-share"></span>
-					</button>
 				</div>
 			</div>
 			<div class="wp-embed-share-dialog hidden">
