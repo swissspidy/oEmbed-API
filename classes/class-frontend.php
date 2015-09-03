@@ -273,6 +273,7 @@ class WP_oEmbed_Frontend {
 				height: 28px;
 				padding: 0 5px;
 				text-align: center;
+				font: 400 14px/1.5 'Open Sans', sans-serif;
 			}
 		</style>
 		<?php
