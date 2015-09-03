@@ -269,6 +269,7 @@ class WP_oEmbed_Frontend {
 				border: 0;
 				height: 28px;
 				padding: 0 5px;
+				text-align: center;
 			}
 		</style>
 		<?php
