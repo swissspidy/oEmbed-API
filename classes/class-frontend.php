@@ -505,7 +505,7 @@ class WP_oEmbed_Frontend {
 	 * @param string $html The unfiltered oEmbed HTML.
 	 * @param string $url  URL of the content to be embedded.
 	 *
-	 * @return string The filtered oEmbed HTML.
+	 * @return string
 	 */
 	public function filter_oembed_result( $html, $url ) {
 		require_once( ABSPATH . WPINC . '/class-oembed.php' );

@@ -72,7 +72,7 @@ register_deactivation_hook( __FILE__, 'oembed_api_deactivate_plugin' );
  *
  * @param int|WP_Post $post Post ID or object. Defaults to the current post.
  *
- * @return bool|string URL on success, false otherwise.
+ * @return string|false
  */
 function get_post_embed_url( $post = null ) {
 	$post = get_post( $post );
@@ -144,7 +144,7 @@ function get_oembed_endpoint_url( $permalink = '', $format = false ) {
  * @param int         $width  The width for the response.
  * @param int         $height The height for the response.
  *
- * @return bool|string Embed code on success, false otherwise.
+ * @return string|false
  */
 function get_post_embed_html( $post = null, $width, $height ) {
 	$post = get_post( $post );
@@ -182,7 +182,7 @@ function get_post_embed_html( $post = null, $width, $height ) {
  * @param WP_Post|int $post  Post object or ID.
  * @param int         $width The requested width.
  *
- * @return mixed|void
+ * @return array|false
  */
 function get_oembed_response_data( $post, $width ) {
 	/**

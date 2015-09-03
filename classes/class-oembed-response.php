@@ -68,7 +68,7 @@ class WP_oEmbed_Response {
 	 * @param array       $data     The oEmbed response data.
 	 * @param string|bool $callback JSONP callback.
 	 *
-	 * @return string The JSON response data.
+	 * @return string
 	 */
 	public function json_response( $data, $callback ) {
 		if ( ! is_string( $this->request['callback'] ) || preg_match( '/[^\w\.]/', $this->request['callback'] ) ) {
@@ -109,7 +109,7 @@ class WP_oEmbed_Response {
 	 *
 	 * @param array $data The oEmbed response data.
 	 *
-	 * @return string The XML response data.
+	 * @return string
 	 */
 	public function xml_response( $data ) {
 		/**

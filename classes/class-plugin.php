@@ -249,10 +249,10 @@ class WP_oEmbed_Plugin {
 	/**
 	 * Create an XML string from the oEmbed response data
 	 *
-	 * @param string|false $result The   XML response string.
+	 * @param string|false $result The XML response string.
 	 * @param array        $data   The original oEmbed response data.
 	 *
-	 * @return string|bool XML string on success, false otherwise.
+	 * @return string|false
 	 */
 	public function create_xml( $result, $data ) {
 		$oembed = new SimpleXMLElement( '<oembed></oembed>' );
