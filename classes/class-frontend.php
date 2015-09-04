@@ -321,9 +321,9 @@ class WP_oEmbed_Frontend {
 
 					// Send this document's height to the parent (embedding) site.
 					window.parent.postMessage( {
-						'message': 'height',
-						'value': embed.clientHeight + 2,
-						'secret': secret
+						message: 'height',
+						value: embed.clientHeight + 2,
+						secret: secret
 					}, '*' );
 
 					// Detect clicks to external (_top) links.
@@ -339,9 +339,9 @@ class WP_oEmbed_Frontend {
 
 								// Send link target to the parent (embedding) site.
 								window.parent.postMessage( {
-									'message': 'link',
-									'value': href,
-									'secret': secret
+									message: 'link',
+									value: href,
+									secret: secret
 								}, '*' );
 								e.preventDefault();
 							}
@@ -366,9 +366,9 @@ class WP_oEmbed_Frontend {
 					}, 50 );
 					// Send this document's height to the parent (embedding) site.
 					window.parent.postMessage( {
-						'message': 'height',
-						'value': embed.clientHeight + 2,
-						'secret': secret
+						message: 'height',
+						value: embed.clientHeight + 2,
+						secret: secret
 					}, '*' );
 				};
 			})( window, document );
