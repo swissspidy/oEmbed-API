@@ -417,6 +417,7 @@ class WP_oEmbed_Frontend {
 
 		$post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embed-more">' . $more . '</span>' );
 		?>
+		<!DOCTYPE html>
 		<html>
 		<head>
 			<title><?php esc_html_e( $post->post_title, 'oembed-api' ); ?></title>
