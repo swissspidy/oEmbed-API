@@ -288,6 +288,8 @@ class WP_oEmbed_Frontend {
 		?>
 		<script type="text/javascript">
 			(function ( window, document ) {
+				'use strict';
+
 				var hash, secret, share_dialog, embed, resize_limiter;
 
 				window.onload = function () {
