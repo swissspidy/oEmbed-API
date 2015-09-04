@@ -56,6 +56,10 @@ This plugin is fully compliant with the JSON specification at [oEmbed.com](http:
 
 Yes.
 
+### How can I replace the blue WordPress logo in my embeds? ###
+
+The WordPress logo is displayed when there’s no site icon available. Site icons represent your site in browser tabs, bookmark menus, and on the home screen of mobile devices. Add your unique site icon in the Customizer and it will be used in the embed too.
+
 ## Screenshots ##
 
 1. Example of how embedding a WordPress post looks like.
