@@ -295,18 +295,15 @@ class WP_oEmbed_Frontend {
 				window.onload = function () {
 					share_dialog = document.getElementsByClassName( 'wp-embed-share-dialog' )[ 0 ];
 
-					// Select content when clicking on the input field.
 					document.getElementsByClassName( 'wp-embed-share-input' )[ 0 ].onclick = function ( e ) {
 						e.target.select();
 					};
 
-					// Open the share dialog.
 					document.getElementsByClassName( 'wp-embed-share-dialog-open' )[ 0 ].onclick = function ( e ) {
 						share_dialog.className = share_dialog.className.replace( 'hidden', '' );
 						e.preventDefault();
 					};
 
-					// Close the share dialog.
 					document.getElementsByClassName( 'wp-embed-share-dialog-close' )[ 0 ].onclick = function ( e ) {
 						share_dialog.className += ' hidden';
 						e.preventDefault();
@@ -321,14 +318,18 @@ class WP_oEmbed_Frontend {
 
 					embed = document.getElementsByClassName( 'wp-embed' )[ 0 ];
 
-					// Send this document's height to the parent (embedding) site.
+					/**
+					 * Send this document's height to the parent (embedding) site.
+					 */
 					window.parent.postMessage( {
 						message: 'height',
 						value: embed.clientHeight + 2,
 						secret: secret
 					}, '*' );
 
-					// Detect clicks to external (_top) links.
+					/**
+					 * Detect clicks to external (_top) links.
+					 */
 					var links = document.getElementsByTagName( 'a' );
 					for ( var i = 0; i < links.length; i++ ) {
 						if ( '_top' === links[ i ].getAttribute( 'target' ) ) {
@@ -339,7 +340,9 @@ class WP_oEmbed_Frontend {
 									var href = e.target.parentElement.getAttribute( 'href' );
 								}
 
-								// Send link target to the parent (embedding) site.
+								/**
+								 * Send link target to the parent (embedding) site.
+								 */
 								window.parent.postMessage( {
 									message: 'link',
 									value: href,
@@ -351,22 +354,31 @@ class WP_oEmbed_Frontend {
 					}
 				};
 
+				/**
+				* Iframe resize handler.
+				*/
 				window.onresize = function () {
 					if ( window.self === window.top ) {
 						return;
 					}
 
-					// We need to limit how often we send the message, otherwise we're just wasting CPU.
+					/**
+					* We need to limit how often we send the message,
+					* otherwise we're just wasting CPU.
+					* */
 					if ( resize_limiter ) {
 						return;
 					}
 					resize_limiter = true;
-					// Call onresize immediately, in case the resize finished before we got the final size.
+
+					/**
+					 * Call onresize immediately, in case the resize finished before we got the final size.
+					 */
 					setTimeout( function () {
 						resize_limiter = false;
 						window.onresize();
 					}, 50 );
-					// Send this document's height to the parent (embedding) site.
+
 					window.parent.postMessage( {
 						message: 'height',
 						value: embed.clientHeight + 2,
