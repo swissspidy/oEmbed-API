@@ -296,8 +296,8 @@ class WP_oEmbed_Frontend {
 					share_dialog = document.getElementsByClassName( 'wp-embed-share-dialog' )[ 0 ];
 
 					// Select content when clicking on the input field.
-					document.getElementsByClassName( 'wp-embed-share-input' )[ 0 ].onclick = function () {
-						this.select();
+					document.getElementsByClassName( 'wp-embed-share-input' )[ 0 ].onclick = function ( e ) {
+						e.target.select();
 					};
 
 					// Open the share dialog.
