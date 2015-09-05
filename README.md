@@ -4,7 +4,7 @@ Donate link:
 Tags:              oembed, api  
 Requires at least: 4.3  
 Tested up to:      4.3  
-Stable tag:        0.4.0  
+Stable tag:        0.5.0  
 License:           GPLv2 or later  
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -72,6 +72,13 @@ Join the discussion on [Trac](https://core.trac.wordpress.org/ticket/32522) and 
 
 ## Changelog ##
 
+### 0.5.0 ###
+* Accessibility improvements.
+* Various JavaScript bug fixes, mainly related to click handling.
+* Now displays the featured image if available.
+* Bug fix related to word count
+* CSS improvements
+
 ### 0.4.0 ###
 * Now also works without the REST API enabled.
 * Lots of bug fixes and refactoring.
@@ -86,6 +93,9 @@ Join the discussion on [Trac](https://core.trac.wordpress.org/ticket/32522) and 
 * First release
 
 ## Upgrade Notice ##
+
+### 0.5.0 ###
+This update includes dozens of bug fixes and even some accessibility improvements. Now displays featured images, too!
 
 ### 0.4.0 ###
 You can now use this plugin without the REST API too!
