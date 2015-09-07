@@ -79,7 +79,7 @@ class WP_oEmbed_Test_Frontend extends WP_oEmbed_TestCase {
 		$html   = '<p></p><iframe onload="alert(1)"></iframe>';
 		$actual = $this->class->filter_oembed_result( $html, '' );
 
-		$this->assertEquals( '<iframe sandbox="allow-scripts"></iframe>', $actual );
+		$this->assertEquals( '<iframe sandbox="allow-scripts" security="restricted"></iframe>', $actual );
 	}
 
 	/**
@@ -89,7 +89,7 @@ class WP_oEmbed_Test_Frontend extends WP_oEmbed_TestCase {
 		$html   = '<div><iframe></iframe><iframe></iframe><p></p></div>';
 		$actual = $this->class->filter_oembed_result( $html, '' );
 
-		$this->assertEquals( '<iframe sandbox="allow-scripts"></iframe>', $actual );
+		$this->assertEquals( '<iframe sandbox="allow-scripts" security="restricted"></iframe>', $actual );
 	}
 
 	/**
@@ -99,7 +99,7 @@ class WP_oEmbed_Test_Frontend extends WP_oEmbed_TestCase {
 		$html   = '<p></p><iframe onload="alert(1)"></iframe>';
 		$actual = $this->class->filter_oembed_result( $html, home_url( '/' ) );
 
-		$this->assertEquals( '<iframe sandbox="allow-scripts"></iframe>', $actual );
+		$this->assertEquals( '<iframe sandbox="allow-scripts" security="restricted"></iframe>', $actual );
 	}
 
 	/**
