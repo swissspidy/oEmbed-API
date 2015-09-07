@@ -156,7 +156,7 @@ function get_post_embed_html( $post = null, $width, $height ) {
 	$embed_url = get_post_embed_url( $post );
 
 	$output = sprintf(
-		'<iframe sandbox="allow-scripts" security="restricted" src="%1$s" width="%2$d" height="%3$d" title="%4$s" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>',
+		'<iframe sandbox="allow-scripts" src="%1$s" width="%2$d" height="%3$d" title="%4$s" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>',
 		esc_url( $embed_url ),
 		$width,
 		$height,
