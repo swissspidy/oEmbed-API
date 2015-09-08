@@ -97,7 +97,11 @@ $post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embe
 			height: auto;
 		}
 
-		.wp-embed-heading {
+		.wp-embed p {
+			margin: 0;
+		}
+
+		p.wp-embed-heading {
 			margin: 0 0 15px;
 			font-weight: bold;
 			font-size: 22px;
@@ -106,10 +110,6 @@ $post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embe
 
 		.wp-embed-heading a {
 			color: #32373c;
-		}
-
-		.wp-embed p {
-			margin: 0;
 		}
 
 		.wp-embed-more {
@@ -236,7 +236,7 @@ $post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embe
 			padding: 0 20px;
 		}
 
-		.wp-embed-share-title {
+		p.wp-embed-share-title {
 			margin: 0 0 15px;
 			font-weight: bold;
 			font-size: 18px;
@@ -365,11 +365,11 @@ $post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embe
 		</div>
 	<?php endif; ?>
 
-	<h1 class="wp-embed-heading">
+	<p class="wp-embed-heading">
 		<a href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>" target="_top">
 			<?php echo esc_html( $post->post_title ); ?>
 		</a>
-	</h1>
+	</p>
 
 	<p class="wp-embed-excerpt"><?php echo $post_content; ?></p>
 
@@ -414,9 +414,9 @@ $post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embe
 			</button>
 
 			<div class="wp-embed-share-dialog-text">
-				<h2 class="wp-embed-share-title">
+				<p class="wp-embed-share-title">
 					<?php _e( 'Copy and paste this URL into your site to embed:', 'oembed-api' ); ?>
-				</h2>
+				</p>
 				<?php
 				printf(
 					'<input type="text" value="%s" class="wp-embed-share-input" />',
