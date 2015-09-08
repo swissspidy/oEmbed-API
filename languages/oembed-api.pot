@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2+.
 msgid ""
 msgstr ""
-"Project-Id-Version: oEmbed API 0.4.0\n"
+"Project-Id-Version: oEmbed API 0.5.0\n"
 "Report-Msgid-Bugs-To: https://pascalbirchler.com\n"
 "POT-Creation-Date: 2015-07-27 13:00:02+00:00\n"
 "MIME-Version: 1.0\n"
@@ -24,40 +24,40 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: classes/class-frontend.php:426
+#: includes/class-wp-rest-oembed-controller.php:62
+msgid "Invalid URL."
+msgstr ""
+
+#: includes/class-wp-rest-oembed-controller.php:67
+msgid "Invalid format."
+msgstr ""
+
+#: includes/functions.php:121
+msgid "Embedded WordPress Post"
+msgstr ""
+
+#: includes/template.php:37
 msgid "&hellip; (%d word)"
 msgid_plural "&hellip; (%d words)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/class-frontend.php:472
+#: includes/template.php:389
 msgid "Open sharing dialog"
 msgstr ""
 
-#: classes/class-frontend.php:481
+#: includes/template.php:398
 msgid "%s <span class=\"screen-reader-text\">Comment</span>"
 msgid_plural "%s <span class=\"screen-reader-text\">Comments</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/class-frontend.php:495
+#: includes/template.php:412
 msgid "Close sharing dialog"
 msgstr ""
 
-#: classes/class-frontend.php:501
+#: includes/template.php:418
 msgid "Copy and paste this URL into your site to embed:"
-msgstr ""
-
-#: classes/class-wp-rest-oembed-controller.php:62
-msgid "Invalid URL."
-msgstr ""
-
-#: classes/class-wp-rest-oembed-controller.php:67
-msgid "Invalid format."
-msgstr ""
-
-#: wp-api-oembed.php:163
-msgid "Embedded WordPress Post"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
@@ -80,7 +80,7 @@ msgstr ""
 msgid "https://pascalbirchler.com"
 msgstr ""
 
-#: classes/class-frontend.php:420
+#: includes/template.php:31
 #. translators: If your word count is based on single characters (e.g. East
 #. Asian characters), enter 'characters_excluding_spaces' or
 #. 'characters_including_spaces'. Otherwise, enter 'words'. Do not translate

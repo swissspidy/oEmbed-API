@@ -17,7 +17,7 @@
 			<directory suffix=".php">.</directory>
 		</blacklist>
 		<whitelist>
-			<directory suffix=".php">./classes</directory>
+			<directory suffix=".php">./includes</directory>
 			<file>./wp-api-oembed.php</file>
 		</whitelist>
 	</filter>

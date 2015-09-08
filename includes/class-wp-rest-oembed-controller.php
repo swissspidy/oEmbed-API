@@ -25,7 +25,7 @@ class WP_REST_oEmbed_Controller {
 						'sanitize_callback' => 'esc_url_raw',
 					),
 					'format'   => array(
-						'default'           => apply_filters( 'rest_oembed_default_format', 'json' ),
+						'default'           => 'json',
 						'sanitize_callback' => 'sanitize_text_field',
 					),
 					'maxwidth' => array(

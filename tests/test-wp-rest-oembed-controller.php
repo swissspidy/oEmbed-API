@@ -8,13 +8,7 @@
 /**
  * Class WP_REST_oEmbed_Test_Endpoint.
  */
-class WP_REST_oEmbed_Test_Controller extends WP_oEmbed_TestCase {
-	/**
-	 * API route class instance.
-	 * @var WP_REST_oEmbed_Controller
-	 */
-	protected $class;
-
+class WP_REST_oEmbed_Test_Controller extends WP_UnitTestCase {
 	/**
 	 * Load the REST API.
 	 */
@@ -200,7 +194,7 @@ class WP_REST_oEmbed_Test_Controller extends WP_oEmbed_TestCase {
 		$response = $this->server->dispatch( $request );
 
 		ob_start();
-		$this->plugin()->rest_pre_serve_request( true, $response, $request, $this->server );
+		_oembed_rest_pre_serve_request( true, $response, $request, $this->server );
 		$output = ob_get_clean();
 
 		$xml = simplexml_load_string( $output );
@@ -219,7 +213,7 @@ class WP_REST_oEmbed_Test_Controller extends WP_oEmbed_TestCase {
 
 		$response = $this->server->dispatch( $request );
 
-		$this->assertTrue( $this->plugin()->rest_pre_serve_request( true, $response, $request, $this->server ) );
+		$this->assertTrue( _oembed_rest_pre_serve_request( true, $response, $request, $this->server ) );
 	}
 
 	/**
@@ -234,7 +228,7 @@ class WP_REST_oEmbed_Test_Controller extends WP_oEmbed_TestCase {
 
 		$response = $this->server->dispatch( $request );
 
-		$this->assertTrue( $this->plugin()->rest_pre_serve_request( true, $response, $request, $this->server ) );
+		$this->assertTrue( _oembed_rest_pre_serve_request( true, $response, $request, $this->server ) );
 	}
 
 	/**

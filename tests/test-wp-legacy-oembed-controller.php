@@ -8,12 +8,12 @@
 /**
  * Class WP_oEmbed_Test_Response.
  */
-class WP_Legacy_oEmbed_Test_Controller extends WP_oEmbed_TestCase {
+class WP_Legacy_oEmbed_Test_Controller extends WP_UnitTestCase {
 	/**
 	 * Test a request with a wrong URL.
 	 */
 	function test_request_with_bad_url() {
-		// WP_Query arguments
+		// WP_Query arguments.
 		$request = array(
 			'url'      => '',
 			'format'   => 'json',
@@ -30,7 +30,7 @@ class WP_Legacy_oEmbed_Test_Controller extends WP_oEmbed_TestCase {
 	function test_request_invalid_format() {
 		$post_id = $this->factory->post->create();
 
-		// WP_Query arguments
+		// WP_Query arguments.
 		$request = array(
 			'url'	  => get_permalink( $post_id ),
 			'format'   => 'random',
@@ -55,7 +55,7 @@ class WP_Legacy_oEmbed_Test_Controller extends WP_oEmbed_TestCase {
 			'post_title'  => 'Hello World',
 		) );
 
-		// WP_Query arguments
+		// WP_Query arguments.
 		$request = array(
 			'url'	  => get_permalink( $post->ID ),
 			'format'   => 'json',

@@ -14,31 +14,6 @@ defined( 'WPINC' ) or die;
  */
 class WP_Legacy_oEmbed_Controller {
 	/**
-	 * Adds hooks.
-	 */
-	public function add_hooks() {
-		// Load fallback if REST API isn't available.
-		if ( ! defined( 'REST_API_VERSION' ) || ! version_compare( REST_API_VERSION, '2.0-beta3', '>=' ) ) {
-			// Add needed query vars.
-			add_action( 'query_vars', array( $this, 'add_query_vars' ) );
-
-			// Hook into parse_query.
-			add_action( 'parse_query', array( $this, 'parse_query' ) );
-		}
-	}
-
-	/**
-	 * Add the query vars we need.
-	 *
-	 * @param array $query_vars Registered query vars.
-	 *
-	 * @return array
-	 */
-	public function add_query_vars( $query_vars ) {
-		return array_merge( $query_vars, array( 'oembed', 'format', 'url', '_jsonp', 'maxwidth' ) );
-	}
-
-	/**
 	 * Hook into the query parsing to detect oEmbed requests.
 	 *
 	 * If an oEmbed request is made, trigger the output.
@@ -61,14 +36,7 @@ class WP_Legacy_oEmbed_Controller {
 
 		$url = esc_url_raw( $wp_query->query_vars['url'] );
 
-		/**
-		 * Filter the default oEmbed response format.
-		 *
-		 * @param string $format oEmbed response format. Defaults to json.
-		 *
-		 * @return string
-		 */
-		$format = apply_filters( 'rest_oembed_default_format', 'json' );
+		$format = 'json';
 
 		if ( isset( $wp_query->query_vars['format'] ) ) {
 			$format = sanitize_text_field( $wp_query->query_vars['format'] );
@@ -103,6 +71,7 @@ class WP_Legacy_oEmbed_Controller {
 	 * Handle the whole request and print the response.
 	 *
 	 * @param array $request The request arguments.
+	 * @return string The oEmbed API response.
 	 */
 	public function dispatch( $request ) {
 		if ( ! in_array( $request['format'], array( 'json', 'xml' ) ) ) {

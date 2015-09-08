@@ -31,31 +31,41 @@
 
 defined( 'WPINC' ) or die;
 
-// Pull in the plugin classes and initialize.
-include( dirname( __FILE__ ) . '/classes/class-wp-rest-oembed-controller.php' );
-include( dirname( __FILE__ ) . '/classes/class-wp-legacy-oembed-controller.php' );
-include( dirname( __FILE__ ) . '/classes/class-frontend.php' );
-include( dirname( __FILE__ ) . '/classes/class-plugin.php' );
-
 /**
  * Init our plugin.
  */
 function oembed_api_init() {
-	$oembed_api = new WP_oEmbed_Plugin();
-	$oembed_api->add_hooks();
+	// Pull in the plugin classes and template tags.
+	include( dirname( __FILE__ ) . '/includes/class-wp-rest-oembed-controller.php' );
+	include( dirname( __FILE__ ) . '/includes/class-wp-legacy-oembed-controller.php' );
+	include( dirname( __FILE__ ) . '/includes/functions.php' );
 
-	$oembed_legacy_controller = new WP_Legacy_oEmbed_Controller();
-	$oembed_legacy_controller->add_hooks();
+	// Sets up the default filters and actions.
+	include( dirname( __FILE__ ) . '/includes/default-filters.php' );
 }
 
-add_action( 'plugins_loaded', 'oembed_api_init' );
+/**
+ * Deactivate the oEmbed feature plugin.
+ */
+function wp_oembed_maybe_deacitvate() {
+	deactivate_plugins( plugin_basename( __FILE__ ) );
+}
+
+// Bail early if functionality is already built into core.
+if ( function_exists( 'get_oembed_endpoint_url' ) ) {
+	add_action( 'admin_notices', 'wp_oembed_maybe_deacitvate' );
+} else {
+	register_activation_hook( __FILE__, 'oembed_api_activate_plugin' );
+	register_deactivation_hook( __FILE__, 'oembed_api_deactivate_plugin' );
+
+	add_action( 'plugins_loaded', 'oembed_api_init' );
+}
 
 /**
  * Add our rewrite endpoint on plugin activation.
  */
 function oembed_api_activate_plugin() {
-	$oembed_api = new WP_oEmbed_Plugin();
-	$oembed_api->add_rewrite_endpoint();
+	wp_oembed_rewrite_endpoint();
 	flush_rewrite_rules( false );
 }
 
@@ -66,192 +76,9 @@ function oembed_api_deactivate_plugin() {
 	flush_rewrite_rules( false );
 }
 
-register_activation_hook( __FILE__, 'oembed_api_activate_plugin' );
-register_deactivation_hook( __FILE__, 'oembed_api_deactivate_plugin' );
-
 /**
- * Get the URL to embed a specific post, for example in an iframe.
- *
- * @param int|WP_Post $post Post ID or object. Defaults to the current post.
- *
- * @return string|false
+ * Add our rewrite endpoint to permalinks and pages.
  */
-function get_post_embed_url( $post = null ) {
-	$post = get_post( $post );
-
-	if ( ! $post ) {
-		return false;
-	}
-
-	$embed_url = add_query_arg( array( 'embed' => 'true' ), get_permalink( $post ) );
-
-	if ( get_option( 'permalink_structure' ) ) {
-		$embed_url = trailingslashit( get_permalink( $post ) ) . user_trailingslashit( 'embed' );
-	}
-
-	return $embed_url;
-}
-
-/**
- * Get the oEmbed endpoint URL for a given permalink.
- *
- * Pass an empty string as the first argument
- * to get the endpoint base URL.
- *
- * @param string      $permalink The permalink used for the `url` query arg.
- * @param string|bool $format    The requested response format.
- *                               Provide false to get the default format.
- *
- * @return string
- */
-function get_oembed_endpoint_url( $permalink = '', $format = false ) {
-	$url = add_query_arg( array( 'oembed' => 'true' ), home_url( '/' ) );
-
-	if ( function_exists( 'rest_url' ) ) {
-		$url = rest_url( 'wp/v2/oembed' );
-	}
-
-	/** This filter is defined in classes/class-plugin.php */
-	$default_format = apply_filters( 'rest_oembed_default_format', 'json' );
-
-	if ( $format === $default_format ) {
-		$format = false;
-	}
-
-	if ( '' !== $permalink ) {
-		$url = add_query_arg( array(
-			'url'    => $permalink,
-			'format' => $format,
-		), $url );
-	}
-
-	/**
-	 * Filter the oEmbed endpoint URL.
-	 *
-	 * @param string $url       The URL to the oEmbed endpoint.
-	 * @param string $permalink The permalink used for the `url` query arg.
-	 * @param string $format    The requested response format.
-	 */
-	$url = apply_filters( 'rest_oembed_endpoint_url', $url, $permalink, $format );
-
-	return $url;
-}
-
-/**
- * Get the embed code fpr a specific post.
- *
- * @param int|WP_Post $post   Post ID or object. Defaults to the current post.
- * @param int         $width  The width for the response.
- * @param int         $height The height for the response.
- *
- * @return string|false
- */
-function get_post_embed_html( $post = null, $width, $height ) {
-	$post = get_post( $post );
-
-	if ( ! $post ) {
-		return false;
-	}
-
-	$embed_url = get_post_embed_url( $post );
-
-	$output = sprintf(
-		'<iframe sandbox="allow-scripts" security="restricted" src="%1$s" width="%2$d" height="%3$d" title="%4$s" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>',
-		esc_url( $embed_url ),
-		$width,
-		$height,
-		__( 'Embedded WordPress Post', 'oembed-api' )
-	);
-
-	/**
-	 * Filters the oEmbed HTML output.
-	 *
-	 * @param string  $output The default HTML.
-	 * @param WP_Post $post   Current post object.
-	 * @param int     $width  Width of the response.
-	 * @param int     $height Height of the response.
-	 */
-	$output = apply_filters( 'rest_oembed_html', $output, $post, $width, $height );
-
-	return $output;
-}
-
-/**
- * Get the oEmbed data for a given post.
- *
- * @param WP_Post|int $post  Post object or ID.
- * @param int         $width The requested width.
- *
- * @return array|false
- */
-function get_oembed_response_data( $post, $width ) {
-	/**
-	 * Current post object.
-	 *
-	 * @var WP_Post $post
-	 */
-	$post = get_post( $post );
-
-	if ( ! $post ) {
-		return false;
-	}
-
-	/**
-	 * User object for the post author.
-	 *
-	 * @var WP_User $author
-	 */
-	$author = get_userdata( $post->post_author );
-
-	// If a post doesn't have an author, fall back to the site's name.
-	$author_name = get_bloginfo( 'name' );
-	$author_url  = get_home_url();
-
-	if ( $author ) {
-		$author_name = $author->display_name;
-		$author_url  = get_author_posts_url( $author->ID, $author->user_nicename );
-	}
-
-	/**
-	 * Filter the allowed minimum width for the oEmbed response.
-	 *
-	 * @param int $width The minimum width. Defaults to 200.
-	 */
-	$minwidth = apply_filters( 'rest_oembed_minwidth', 200 );
-
-	/**
-	 * Filter the allowed maximum width for the oEmbed response.
-	 *
-	 * @param int $width The maximum width. Defaults to 600.
-	 */
-	$maxwidth = apply_filters( 'rest_oembed_maxwidth', 600 );
-
-	if ( $width < $minwidth ) {
-		$width = $minwidth;
-	} else if ( $width > $maxwidth ) {
-		$width = $maxwidth;
-	}
-
-	$height = ceil( $width / 16 * 9 );
-
-	/**
-	 * Filters the oEmbed response data.
-	 *
-	 * @param array   $data The response data.
-	 * @param WP_Post $post The post object.
-	 */
-	$data = apply_filters( 'rest_oembed_response_data', array(
-		'version'       => '1.0',
-		'provider_name' => get_bloginfo( 'name' ),
-		'provider_url'  => get_home_url(),
-		'author_name'   => $author_name,
-		'author_url'    => $author_url,
-		'title'         => $post->post_title,
-		'type'          => 'rich',
-		'width'         => $width,
-		'height'        => $height,
-		'html'          => get_post_embed_html( $post, $width, $height ),
-	), $post );
-
-	return $data;
+function wp_oembed_rewrite_endpoint() {
+	add_rewrite_endpoint( 'embed', EP_PERMALINK | EP_PAGES | EP_ATTACHMENT );
 }

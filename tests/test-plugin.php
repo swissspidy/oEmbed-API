@@ -8,12 +8,12 @@
 /**
  * Class WP_oEmbed_Test_Plugin.
  */
-class WP_oEmbed_Test_Plugin extends WP_oEmbed_TestCase {
+class WP_oEmbed_Test_Plugin extends WP_UnitTestCase {
 	/**
 	 * The plugin should be installed and activated.
 	 */
 	function test_plugin_activated() {
-		$this->assertTrue( class_exists( 'WP_oEmbed_Plugin' ) );
+		$this->assertTrue( function_exists( 'wp_oembed_rewrite_endpoint' ) );
 	}
 
 	/**
@@ -42,7 +42,7 @@ class WP_oEmbed_Test_Plugin extends WP_oEmbed_TestCase {
 		wp_oembed_remove_provider( home_url( '/*' ) );
 		$this->assertArrayNotHasKey( home_url( '/*' ), $oembed->providers );
 
-		$this->plugin()->add_oembed_provider();
+		wp_oembed_add_site_as_provider();
 
 		$this->assertArrayHasKey( home_url( '/*' ), $oembed->providers );
 		$this->assertEquals( array( get_oembed_endpoint_url(), false ), $oembed->providers[ home_url( '/*' ) ] );

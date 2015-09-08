@@ -31,9 +31,9 @@ before_script:
 
 script:
   - grunt checktextdomain
-  - if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.2" ]]; then vendor/bin/phpmd classes text cleancode,codesize,naming,unusedcode; fi
-  - if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.2" ]]; then vendor/bin/phpcpd -n classes; fi
-  - vendor/bin/phpcs -n --report=emacs --standard=phpcs.ruleset.xml classes
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.2" ]]; then vendor/bin/phpmd includes text cleancode,codesize,naming,unusedcode; fi
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.2" ]]; then vendor/bin/phpcpd -n includes; fi
+  - vendor/bin/phpcs -n --report=emacs --standard=phpcs.ruleset.xml includes
   - phpunit --coverage-clover clover.xml
 
 after_script:

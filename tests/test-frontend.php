@@ -8,37 +8,13 @@
 /**
  * Class WP_oEmbed_Test_Frontend.
  */
-class WP_oEmbed_Test_Frontend extends WP_oEmbed_TestCase {
-	/**
-	 * API route class instance.
-	 * @var WP_oEmbed_Frontend
-	 */
-	protected $class;
-
-	/**
-	 * Runs before each test.
-	 */
-	function setUp() {
-		parent::setUp();
-
-		$this->class = new WP_oEmbed_Frontend();
-	}
-
-	/**
-	 * Runs after each test.
-	 */
-	function tearDown() {
-		parent::tearDown();
-
-		unset( $this->class );
-	}
-
+class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	/**
 	 * Test output of add_oembed_discovery_links.
 	 */
 	function test_add_oembed_discovery_links_non_singular() {
 		ob_start();
-		$this->class->add_oembed_discovery_links();
+		oembed_add_discovery_links();
 		$actual = ob_get_clean();
 		$this->assertEquals( '', $actual );
 	}
@@ -53,7 +29,7 @@ class WP_oEmbed_Test_Frontend extends WP_oEmbed_TestCase {
 		$this->assertQueryTrue( 'is_single', 'is_singular' );
 
 		ob_start();
-		$this->class->add_oembed_discovery_links();
+		oembed_add_discovery_links();
 		$actual = ob_get_clean();
 
 		$expected = '<link rel="alternate" type="application/json+oembed" href="' . esc_url( get_oembed_endpoint_url( get_permalink() ) ) . '" />' . "\n";
@@ -67,7 +43,8 @@ class WP_oEmbed_Test_Frontend extends WP_oEmbed_TestCase {
 	 */
 	function test_filter_oembed_result_trusted() {
 		$html   = '<p></p><iframe onload="alert(1)"></iframe>';
-		$actual = $this->class->filter_oembed_result( $html, 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' );
+
+		$actual = wp_filter_oembed_result( $html, 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' );
 
 		$this->assertEquals( $html, $actual );
 	}
@@ -77,7 +54,7 @@ class WP_oEmbed_Test_Frontend extends WP_oEmbed_TestCase {
 	 */
 	function test_filter_oembed_result_untrusted() {
 		$html   = '<p></p><iframe onload="alert(1)"></iframe>';
-		$actual = $this->class->filter_oembed_result( $html, '' );
+		$actual = wp_filter_oembed_result( $html, '' );
 
 		$this->assertEquals( '<iframe sandbox="allow-scripts" security="restricted"></iframe>', $actual );
 	}
@@ -87,7 +64,7 @@ class WP_oEmbed_Test_Frontend extends WP_oEmbed_TestCase {
 	 */
 	function test_filter_oembed_result_multiple_tags() {
 		$html   = '<div><iframe></iframe><iframe></iframe><p></p></div>';
-		$actual = $this->class->filter_oembed_result( $html, '' );
+		$actual = wp_filter_oembed_result( $html, '' );
 
 		$this->assertEquals( '<iframe sandbox="allow-scripts" security="restricted"></iframe>', $actual );
 	}
@@ -97,7 +74,7 @@ class WP_oEmbed_Test_Frontend extends WP_oEmbed_TestCase {
 	 */
 	function test_filter_oembed_result_current_site() {
 		$html   = '<p></p><iframe onload="alert(1)"></iframe>';
-		$actual = $this->class->filter_oembed_result( $html, home_url( '/' ) );
+		$actual = wp_filter_oembed_result( $html, home_url( '/' ) );
 
 		$this->assertEquals( '<iframe sandbox="allow-scripts" security="restricted"></iframe>', $actual );
 	}
@@ -107,12 +84,12 @@ class WP_oEmbed_Test_Frontend extends WP_oEmbed_TestCase {
 	 */
 	function test_filter_oembed_result_no_iframe() {
 		$html   = '<span>Hello</span><p>World</p>';
-		$actual = $this->class->filter_oembed_result( $html, '' );
+		$actual = wp_filter_oembed_result( $html, '' );
 
 		$this->assertEquals( 'HelloWorld', $actual );
 
 		$html   = '<div><p></p></div><script></script>';
-		$actual = $this->class->filter_oembed_result( $html, '' );
+		$actual = wp_filter_oembed_result( $html, '' );
 
 		$this->assertEquals( '', $actual );
 	}
@@ -122,7 +99,7 @@ class WP_oEmbed_Test_Frontend extends WP_oEmbed_TestCase {
 	 */
 	function test_filter_oembed_result_secret() {
 		$html   = '<iframe src="https://wordpress.org"></iframe>';
-		$actual = $this->class->filter_oembed_result( $html, '' );
+		$actual = wp_filter_oembed_result( $html, '' );
 
 		$matches = array();
 		preg_match( '|src="https://wordpress.org#\?secret=([\w\d]+)" data-secret="([\w\d]+)"|', $actual, $matches );
@@ -137,7 +114,7 @@ class WP_oEmbed_Test_Frontend extends WP_oEmbed_TestCase {
 	 */
 	function test_add_host_js() {
 		ob_start();
-		$this->class->add_host_js();
+		oembed_add_host_js();
 		$actual = ob_get_clean();
 
 		$this->assertTrue( false !== strpos( $actual, '<script type="text/javascript">' ) );
@@ -150,14 +127,14 @@ class WP_oEmbed_Test_Frontend extends WP_oEmbed_TestCase {
 		$user = $this->factory->user->create_and_get( array(
 			'display_name' => 'John Doe',
 		) );
-		$post = $this->factory->post->create_and_get( array(
+		$GLOBALS['post'] = $this->factory->post->create_and_get( array(
 			'post_author'  => $user->ID,
 			'post_title'   => 'Hello World',
 			'post_content' => 'Foo Bar',
 		) );
 
 		ob_start();
-		$this->class->rest_oembed_output( $post );
+		include( dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php' );
 		$actual = ob_get_clean();
 
 		$doc = new DOMDocument();
