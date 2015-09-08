@@ -43,6 +43,9 @@ include( dirname( __FILE__ ) . '/classes/class-plugin.php' );
 function oembed_api_init() {
 	$oembed_api = new WP_oEmbed_Plugin();
 	$oembed_api->add_hooks();
+
+	$oembed_legacy_controller = new WP_Legacy_oEmbed_Controller();
+	$oembed_legacy_controller->add_hooks();
 }
 
 add_action( 'plugins_loaded', 'oembed_api_init' );
@@ -62,7 +65,6 @@ function oembed_api_activate_plugin() {
 function oembed_api_deactivate_plugin() {
 	flush_rewrite_rules( false );
 }
-
 
 register_activation_hook( __FILE__, 'oembed_api_activate_plugin' );
 register_deactivation_hook( __FILE__, 'oembed_api_deactivate_plugin' );
@@ -103,14 +105,10 @@ function get_post_embed_url( $post = null ) {
  * @return string
  */
 function get_oembed_endpoint_url( $permalink = '', $format = false ) {
-	$url = '';
+	$url = add_query_arg( array( 'oembed' => 'true' ), home_url( '/' ) );
 
 	if ( function_exists( 'rest_url' ) ) {
 		$url = rest_url( 'wp/v2/oembed' );
-	}
-
-	if ( '' === $permalink ) {
-		return $url;
 	}
 
 	/** This filter is defined in classes/class-plugin.php */
@@ -120,10 +118,12 @@ function get_oembed_endpoint_url( $permalink = '', $format = false ) {
 		$format = false;
 	}
 
-	$url = add_query_arg( array(
-		'url'    => $permalink,
-		'format' => $format,
-	), $url );
+	if ( '' !== $permalink ) {
+		$url = add_query_arg( array(
+			'url'    => $permalink,
+			'format' => $format,
+		), $url );
+	}
 
 	/**
 	 * Filter the oEmbed endpoint URL.
