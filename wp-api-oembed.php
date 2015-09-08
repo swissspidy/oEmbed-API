@@ -33,7 +33,7 @@ defined( 'WPINC' ) or die;
 
 // Pull in the plugin classes and initialize.
 include( dirname( __FILE__ ) . '/classes/class-wp-rest-oembed-controller.php' );
-include( dirname( __FILE__ ) . '/classes/class-oembed-response.php' );
+include( dirname( __FILE__ ) . '/classes/class-wp-legacy-oembed-controller.php' );
 include( dirname( __FILE__ ) . '/classes/class-frontend.php' );
 include( dirname( __FILE__ ) . '/classes/class-plugin.php' );
 
@@ -43,6 +43,9 @@ include( dirname( __FILE__ ) . '/classes/class-plugin.php' );
 function oembed_api_init() {
 	$oembed_api = new WP_oEmbed_Plugin();
 	$oembed_api->add_hooks();
+
+	$oembed_legacy_controller = new WP_Legacy_oEmbed_Controller();
+	$oembed_legacy_controller->add_hooks();
 }
 
 add_action( 'plugins_loaded', 'oembed_api_init' );
@@ -62,7 +65,6 @@ function oembed_api_activate_plugin() {
 function oembed_api_deactivate_plugin() {
 	flush_rewrite_rules( false );
 }
-
 
 register_activation_hook( __FILE__, 'oembed_api_activate_plugin' );
 register_deactivation_hook( __FILE__, 'oembed_api_deactivate_plugin' );
@@ -109,10 +111,6 @@ function get_oembed_endpoint_url( $permalink = '', $format = false ) {
 		$url = rest_url( 'wp/v2/oembed' );
 	}
 
-	if ( '' === $permalink ) {
-		return $url;
-	}
-
 	/** This filter is defined in classes/class-plugin.php */
 	$default_format = apply_filters( 'rest_oembed_default_format', 'json' );
 
@@ -120,10 +118,12 @@ function get_oembed_endpoint_url( $permalink = '', $format = false ) {
 		$format = false;
 	}
 
-	$url = add_query_arg( array(
-		'url'    => $permalink,
-		'format' => $format,
-	), $url );
+	if ( '' !== $permalink ) {
+		$url = add_query_arg( array(
+			'url'    => $permalink,
+			'format' => $format,
+		), $url );
+	}
 
 	/**
 	 * Filter the oEmbed endpoint URL.

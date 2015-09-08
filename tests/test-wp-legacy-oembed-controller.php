@@ -8,17 +8,20 @@
 /**
  * Class WP_oEmbed_Test_Response.
  */
-class WP_oEmbed_Test_Response extends WP_oEmbed_TestCase {
+class WP_Legacy_oEmbed_Test_Controller extends WP_oEmbed_TestCase {
 	/**
 	 * Test a request with a wrong URL.
 	 */
 	function test_request_with_bad_url() {
-		$response = new WP_oEmbed_Response( array(
+		// WP_Query arguments
+		$request = array(
 			'url'      => '',
 			'format'   => 'json',
-		) );
+		);
 
-		$this->assertEquals( 'Not Found', $response->dispatch() );
+		$legacy_controller = new WP_Legacy_oEmbed_Controller();
+
+		$this->assertEquals( 'Not Found', $legacy_controller->dispatch( $request ) );
 	}
 
 	/**
@@ -27,14 +30,17 @@ class WP_oEmbed_Test_Response extends WP_oEmbed_TestCase {
 	function test_request_invalid_format() {
 		$post_id = $this->factory->post->create();
 
-		$response = new WP_oEmbed_Response( array(
-			'url'      => get_permalink( $post_id ),
+		// WP_Query arguments
+		$request = array(
+			'url'	  => get_permalink( $post_id ),
 			'format'   => 'random',
 			'maxwidth' => 600,
 			'callback' => '',
-		) );
+		);
 
-		$this->assertEquals( 'Invalid format', $response->dispatch() );
+		$legacy_controller = new WP_Legacy_oEmbed_Controller();
+
+		$this->assertEquals( 'Invalid format', $legacy_controller->dispatch( $request ) );
 	}
 
 	/**
@@ -49,14 +55,18 @@ class WP_oEmbed_Test_Response extends WP_oEmbed_TestCase {
 			'post_title'  => 'Hello World',
 		) );
 
-		$response = new WP_oEmbed_Response( array(
-			'url'      => get_permalink( $post->ID ),
+		// WP_Query arguments
+		$request = array(
+			'url'	  => get_permalink( $post->ID ),
 			'format'   => 'json',
 			'maxwidth' => 600,
 			'callback' => '',
-		) );
+			'oembed'   => true,
+		);
 
-		$data = json_decode( $response->dispatch(), true );
+		$legacy_controller = new WP_Legacy_oEmbed_Controller();
+
+		$data = json_decode( $legacy_controller->dispatch( $request ), true );
 
 		$this->assertTrue( is_array( $data ) );
 
@@ -85,16 +95,18 @@ class WP_oEmbed_Test_Response extends WP_oEmbed_TestCase {
 			'post_title'  => 'Hello World',
 		) );
 
-		$response = new WP_oEmbed_Response( array(
+		$request = array(
 			'url'      => get_permalink( $post->ID ),
 			'format'   => 'json',
 			'maxwidth' => 600,
 			'callback' => '',
-		) );
+		);
+
+		$legacy_controller = new WP_Legacy_oEmbed_Controller();
 
 		add_filter( 'rest_oembed_json_response', '__return_false' );
 
-		$this->assertEquals( 'Not implemented', $response->dispatch() );
+		$this->assertEquals( 'Not implemented', $legacy_controller->dispatch( $request ) );
 	}
 
 	/**
@@ -109,14 +121,16 @@ class WP_oEmbed_Test_Response extends WP_oEmbed_TestCase {
 			'post_title'  => 'Hello World',
 		) );
 
-		$response = new WP_oEmbed_Response( array(
-			'url'      => get_permalink( $post->ID ),
+		$request = array(
+			'url'	  => get_permalink( $post->ID ),
 			'format'   => 'json',
 			'maxwidth' => 600,
 			'callback' => 'mycallback',
-		) );
+		);
 
-		$data = $response->dispatch();
+		$legacy_controller = new WP_Legacy_oEmbed_Controller();
+
+		$data = $legacy_controller->dispatch( $request );
 
 		$this->assertEquals( 0, strpos( $data, '/**/mycallback(' ) );
 	}
@@ -133,14 +147,16 @@ class WP_oEmbed_Test_Response extends WP_oEmbed_TestCase {
 			'post_title'  => 'Hello World',
 		) );
 
-		$response = new WP_oEmbed_Response( array(
-			'url'      => get_permalink( $post->ID ),
+		$request = array(
+			'url'	  => get_permalink( $post->ID ),
 			'format'   => 'xml',
 			'maxwidth' => 600,
 			'callback' => '',
-		) );
+		);
 
-		$data = $response->dispatch();
+		$legacy_controller = new WP_Legacy_oEmbed_Controller();
+
+		$data = $legacy_controller->dispatch( $request );
 
 		$xml = simplexml_load_string( $data );
 		$this->assertInstanceOf( 'SimpleXMLElement', $xml );
@@ -154,15 +170,17 @@ class WP_oEmbed_Test_Response extends WP_oEmbed_TestCase {
 			'post_title'  => 'Hello World',
 		) );
 
-		$response = new WP_oEmbed_Response( array(
-			'url'      => get_permalink( $post->ID ),
+		$request = array(
+			'url'	  => get_permalink( $post->ID ),
 			'format'   => 'xml',
 			'maxwidth' => 600,
 			'callback' => '',
-		) );
+		);
 
 		add_filter( 'rest_oembed_xml_response', '__return_false' );
 
-		$this->assertEquals( 'Not implemented', $response->dispatch() );
+		$legacy_controller = new WP_Legacy_oEmbed_Controller();
+
+		$this->assertEquals( 'Not implemented',  $legacy_controller->dispatch( $request ) );
 	}
 }
