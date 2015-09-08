@@ -2,8 +2,6 @@
 default:
 - 'checktextdomain'
 - 'makepot'
-- 'replace:header'
-- 'replace:plugin'
 
 # Pre commit task
 precommit:

@@ -3,7 +3,7 @@
  * Plugin Name: oEmbed API
  * Plugin URI:  https://github.com/swissspidy/oEmbed-API
  * Description: Allow others to easily embed your blog posts on their sites using oEmbed.
- * Version:     0.4.0
+ * Version:     0.5.0
  * Author:      Pascal Birchler
  * Author URI:  https://pascalbirchler.com
  * License:     GPLv2+
@@ -74,7 +74,7 @@ register_deactivation_hook( __FILE__, 'oembed_api_deactivate_plugin' );
  *
  * @param int|WP_Post $post Post ID or object. Defaults to the current post.
  *
- * @return bool|string URL on success, false otherwise.
+ * @return string|false
  */
 function get_post_embed_url( $post = null ) {
 	$post = get_post( $post );
@@ -131,8 +131,6 @@ function get_oembed_endpoint_url( $permalink = '', $format = false ) {
 	 * @param string $url       The URL to the oEmbed endpoint.
 	 * @param string $permalink The permalink used for the `url` query arg.
 	 * @param string $format    The requested response format.
-	 *
-	 * @return string
 	 */
 	$url = apply_filters( 'rest_oembed_endpoint_url', $url, $permalink, $format );
 
@@ -146,7 +144,7 @@ function get_oembed_endpoint_url( $permalink = '', $format = false ) {
  * @param int         $width  The width for the response.
  * @param int         $height The height for the response.
  *
- * @return bool|string Embed code on success, false otherwise.
+ * @return string|false
  */
 function get_post_embed_html( $post = null, $width, $height ) {
 	$post = get_post( $post );
@@ -158,10 +156,11 @@ function get_post_embed_html( $post = null, $width, $height ) {
 	$embed_url = get_post_embed_url( $post );
 
 	$output = sprintf(
-		'<iframe sandbox="allow-scripts" security="restricted" src="%1$s" width="%2$d" height="%3$d" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>',
+		'<iframe sandbox="allow-scripts" security="restricted" src="%1$s" width="%2$d" height="%3$d" title="%4$s" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>',
 		esc_url( $embed_url ),
 		$width,
-		$height
+		$height,
+		__( 'Embedded WordPress Post', 'oembed-api' )
 	);
 
 	/**
@@ -183,7 +182,7 @@ function get_post_embed_html( $post = null, $width, $height ) {
  * @param WP_Post|int $post  Post object or ID.
  * @param int         $width The requested width.
  *
- * @return mixed|void
+ * @return array|false
  */
 function get_oembed_response_data( $post, $width ) {
 	/**

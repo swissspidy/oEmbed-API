@@ -41,6 +41,11 @@ class WP_oEmbed_Frontend {
 			$output .= '<link rel="alternate" type="text/xml+oembed" href="' . esc_url( get_oembed_endpoint_url( get_permalink(), 'xml' ) ) . '" />' . "\n";
 		}
 
+		/**
+		 * Filter the oEmbed discovery links.
+		 *
+		 * @param string $output HTML of the discovery links.
+		 */
 		$output = apply_filters( 'rest_oembed_discovery_links', $output );
 
 		echo $output;
@@ -48,8 +53,6 @@ class WP_oEmbed_Frontend {
 
 	/**
 	 * Add JS to handle the messages from the embedded iframes.
-	 *
-	 * @todo: Think of a better way to restrict the height.
 	 */
 	public function add_host_js() {
 		?>
@@ -87,7 +90,7 @@ class WP_oEmbed_Frontend {
 
 			.wp-embed {
 				width: 100%;
-				padding: 25px 30px;
+				padding: 25px;
 				font: 400 14px/1.5 'Open Sans', sans-serif;
 				color: #82878c;
 				background: white;
@@ -106,6 +109,15 @@ class WP_oEmbed_Frontend {
 
 			.wp-embed a:hover {
 				text-decoration: underline;
+			}
+
+			.wp-embed-featured-image {
+				margin-bottom: 20px;
+			}
+
+			.wp-embed-featured-image img {
+				width: 100%;
+				height: auto;
 			}
 
 			.wp-embed-heading {
@@ -157,6 +169,7 @@ class WP_oEmbed_Frontend {
 			}
 
 			.wp-embed-social .dashicons {
+				line-height: 25px;
 				-webkit-transition: color .1s ease-in;
 				transition: color .1s ease-in;
 			}
@@ -168,7 +181,11 @@ class WP_oEmbed_Frontend {
 
 			.wp-embed-comments,
 			.wp-embed-share {
-				display: inline;
+				float: right;
+			}
+
+			.wp-embed-comments a {
+				line-height: 25px;
 			}
 
 			.wp-embed-share {
@@ -195,7 +212,28 @@ class WP_oEmbed_Frontend {
 				visibility: hidden;
 			}
 
-			a.wp-embed-share-dialog-close {
+			.wp-embed-share-dialog-open,
+			.wp-embed-share-dialog-close {
+				margin: 0;
+				padding: 0;
+				background: transparent;
+				border: none;
+				cursor: pointer;
+			}
+
+			.wp-embed-share-dialog-open {
+				color: #82878c;
+			}
+
+			.wp-embed-share-dialog-open:hover {
+				color: #0073aa;
+			}
+
+			.wp-embed-share-dialog-open .dashicons {
+				display: inline;
+			}
+
+			.wp-embed-share-dialog-close {
 				position: absolute;
 				top: 20px;
 				right: 20px;
@@ -203,7 +241,7 @@ class WP_oEmbed_Frontend {
 				font-size: 22px;
 			}
 
-			a.wp-embed-share-dialog-close:hover {
+			.wp-embed-share-dialog-close:hover {
 				text-decoration: none;
 			}
 
@@ -234,6 +272,8 @@ class WP_oEmbed_Frontend {
 				border: 0;
 				height: 28px;
 				padding: 0 5px;
+				text-align: center;
+				font: 400 14px/1.5 'Open Sans', sans-serif;
 			}
 		</style>
 		<?php
@@ -248,20 +288,48 @@ class WP_oEmbed_Frontend {
 		?>
 		<script type="text/javascript">
 			(function ( window, document ) {
+				'use strict';
+
 				var hash, secret, share_dialog, embed, resize_limiter;
 
 				window.onload = function () {
+					share_dialog = document.getElementsByClassName( 'wp-embed-share-dialog' )[ 0 ];
+
+					document.getElementsByClassName( 'wp-embed-share-input' )[ 0 ].onclick = function ( e ) {
+						e.target.select();
+					};
+
+					document.getElementsByClassName( 'wp-embed-share-dialog-open' )[ 0 ].onclick = function ( e ) {
+						share_dialog.className = share_dialog.className.replace( 'hidden', '' );
+						e.preventDefault();
+					};
+
+					document.getElementsByClassName( 'wp-embed-share-dialog-close' )[ 0 ].onclick = function ( e ) {
+						share_dialog.className += ' hidden';
+						e.preventDefault();
+					};
+
+					if ( window.self === window.top ) {
+						return;
+					}
+
 					hash = window.location.hash;
 					secret = hash.replace( /.*secret=([\d\w]{10}).*/, '$1' );
 
-					share_dialog = document.getElementsByClassName('wp-embed-share-dialog')[0];
+					embed = document.getElementsByClassName( 'wp-embed' )[ 0 ];
 
-					embed = document.getElementsByClassName( 'wp-embed' )[0];
+					/**
+					 * Send this document's height to the parent (embedding) site.
+					 */
+					window.parent.postMessage( {
+						message: 'height',
+						value: embed.clientHeight + 2,
+						secret: secret
+					}, '*' );
 
-					// Send this document's height to the parent (embedding) site.
-					window.parent.postMessage( { 'message': 'height', 'value': embed.clientHeight + 2, 'secret': secret }, '*' );
-
-					// Detect clicks to external (_top) links.
+					/**
+					 * Detect clicks to external (_top) links.
+					 */
 					var links = document.getElementsByTagName( 'a' );
 					for ( var i = 0; i < links.length; i++ ) {
 						if ( '_top' === links[ i ].getAttribute( 'target' ) ) {
@@ -272,51 +340,49 @@ class WP_oEmbed_Frontend {
 									var href = e.target.parentElement.getAttribute( 'href' );
 								}
 
-								// Send link target to the parent (embedding) site.
+								/**
+								 * Send link target to the parent (embedding) site.
+								 */
 								window.parent.postMessage( {
-									'message': 'link',
-									'value': href,
-									'secret': secret
+									message: 'link',
+									value: href,
+									secret: secret
 								}, '*' );
 								e.preventDefault();
 							}
 						}
 					}
-
-					// Select content when clicking on the input field.
-					document.getElementsByClassName('wp-embed-share-input')[0].onclick = function () {
-						this.select();
-					};
-
-					// Open the share dialog.
-					document.getElementsByClassName('wp-embed-share-dialog-open')[0].onclick = function (e) {
-						share_dialog.className = share_dialog.className.replace('hidden', '');
-						e.preventDefault();
-					};
-
-					// Close the share dialog.
-					document.getElementsByClassName('wp-embed-share-dialog-close')[0].onclick = function (e) {
-						share_dialog.className += ' hidden';
-						e.preventDefault();
-					};
 				};
 
+				/**
+				* Iframe resize handler.
+				*/
 				window.onresize = function () {
-					// We need to limit how often we send the message, otherwise we're just wasting CPU.
+					if ( window.self === window.top ) {
+						return;
+					}
+
+					/**
+					* We need to limit how often we send the message,
+					* otherwise we're just wasting CPU.
+					* */
 					if ( resize_limiter ) {
 						return;
 					}
 					resize_limiter = true;
-					// Call onresize immediately, in case the resize finished before we got the final size.
+
+					/**
+					 * Call onresize immediately, in case the resize finished before we got the final size.
+					 */
 					setTimeout( function () {
 						resize_limiter = false;
 						window.onresize();
 					}, 50 );
-					// Send this document's height to the parent (embedding) site.
+
 					window.parent.postMessage( {
-						'message': 'height',
-						'value': embed.clientHeight + 2,
-						'secret': secret
+						message: 'height',
+						value: embed.clientHeight + 2,
+						secret: secret
 					}, '*' );
 				};
 			})( window, document );
@@ -327,7 +393,6 @@ class WP_oEmbed_Frontend {
 	/**
 	 * Output the HTML that gets embedded
 	 *
-	 * @todo Use `.screen-reader-text` where needed.
 	 * @todo Add hooks.
 	 *
 	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
@@ -337,9 +402,15 @@ class WP_oEmbed_Frontend {
 	public function rest_oembed_output( $post ) {
 		$post_content = $post->post_content;
 
+		/**
+		 * Filter the post excerpt lenght in the oEmbed output.
+		 *
+		 * @param int     $num_words Number of words. Defaults to 35.
+		 * @param WP_Post $post      The current post object.
+		 */
 		$num_words = apply_filters( 'rest_oembed_output_excerpt_length', 35, $post );
 
-		$words_array = preg_split( "/[\n\r\t ]+/", $post_content, $num_words + 1, PREG_SPLIT_NO_EMPTY );
+		$total_words = preg_split( "/[\n\r\t ]+/", $post_content, - 1, PREG_SPLIT_NO_EMPTY );
 
 		/*
 		 * translators: If your word count is based on single characters (e.g. East Asian characters),
@@ -348,17 +419,17 @@ class WP_oEmbed_Frontend {
 		 */
 		if ( strpos( _x( 'words', 'Word count type. Do not translate!', 'oembed-api' ), 'characters' ) === 0 && preg_match( '/^utf\-?8$/i', get_option( 'blog_charset' ) ) ) {
 			$text = trim( preg_replace( "/[\n\r\t ]+/", ' ', $post_content ), ' ' );
-			preg_match_all( '/./u', $text, $words_array );
-			$words_array = array_slice( $words_array[0], 0, $num_words + 1 );
+			preg_match_all( '/./u', $text, $total_words );
 		}
 
 		$more = sprintf(
-			'(' . _n( '%d word', '%d words', count( $words_array ), 'oembed-api' ) . ')',
-			count( $words_array )
+			_n( '&hellip; (%d word)', '&hellip; (%d words)', count( $total_words ), 'oembed-api' ),
+			count( $total_words )
 		);
 
 		$post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embed-more">' . $more . '</span>' );
 		?>
+		<!DOCTYPE html>
 		<html>
 		<head>
 			<title><?php esc_html_e( $post->post_title, 'oembed-api' ); ?></title>
@@ -369,6 +440,14 @@ class WP_oEmbed_Frontend {
 		</head>
 		<body>
 		<div class="wp-embed">
+			<?php if ( has_post_thumbnail() ) : ?>
+				<div class="wp-embed-featured-image">
+					<a href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>" target="_top">
+						<?php the_post_thumbnail( array( 600, 340 ) ); ?>
+					</a>
+				</div>
+			<?php endif; ?>
+
 			<h1 class="wp-embed-heading">
 				<a href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>" target="_top">
 					<?php echo esc_html( $post->post_title ); ?>
@@ -389,6 +468,11 @@ class WP_oEmbed_Frontend {
 				</div>
 			</div>
 			<div class="wp-embed-social">
+				<div class="wp-embed-share">
+					<button type="button" class="wp-embed-share-dialog-open" aria-label="<?php _e( 'Open sharing dialog', 'oembed-api' ); ?>">
+						<span class="dashicons dashicons-share"></span>
+					</button>
+				</div>
 				<div class="wp-embed-comments">
 					<a href="<?php echo esc_url( get_comments_link( $post->ID ) ); ?>" target="_top">
 						<span class="dashicons dashicons-admin-comments"></span>
@@ -405,19 +489,12 @@ class WP_oEmbed_Frontend {
 						?>
 					</a>
 				</div>
-				<div class="wp-embed-share">
-					<a href="#" class="wp-embed-share-dialog-open">
-						<span class="dashicons dashicons-share"></span>
-						<span class="screen-reader-text"><?php _e( 'Open sharing dialog', 'oembed-api' ); ?></span>
-					</a>
-				</div>
 			</div>
 			<div class="wp-embed-share-dialog hidden">
 				<div class="wp-embed-share-dialog-content">
-					<a href="#" class="wp-embed-share-dialog-close">
+					<button type="button" class="wp-embed-share-dialog-close" aria-label="<?php _e( 'Close sharing dialog', 'oembed-api' ); ?>">
 						<span class="dashicons dashicons-no"></span>
-						<span class="screen-reader-text"><?php _e( 'Close dialog', 'oembed-api' ); ?></span>
-					</a>
+					</button>
 
 					<div class="wp-embed-share-dialog-text">
 						<h2 class="wp-embed-share-title">
@@ -447,7 +524,7 @@ class WP_oEmbed_Frontend {
 	 * @param string $html The unfiltered oEmbed HTML.
 	 * @param string $url  URL of the content to be embedded.
 	 *
-	 * @return string The filtered oEmbed HTML.
+	 * @return string
 	 */
 	public function filter_oembed_result( $html, $url ) {
 		require_once( ABSPATH . WPINC . '/class-oembed.php' );
@@ -456,7 +533,7 @@ class WP_oEmbed_Frontend {
 		$trusted = $current_site = false;
 
 		foreach ( $wp_oembed->providers as $matchmask => $data ) {
-			$regex = $data[1];
+			$regex        = $data[1];
 			$originalmask = $matchmask;
 
 			// Turn the asterisk-type provider URLs into regex.
@@ -484,6 +561,7 @@ class WP_oEmbed_Frontend {
 				'marginwidth'  => true,
 				'marginheight' => true,
 				'scrolling'    => true,
+				'title'        => true,
 			),
 		);
 
