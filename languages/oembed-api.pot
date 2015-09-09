@@ -42,21 +42,21 @@ msgid_plural "&hellip; (%d words)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/template.php:389
+#: includes/template.php:402
 msgid "Open sharing dialog"
 msgstr ""
 
-#: includes/template.php:398
+#: includes/template.php:411
 msgid "%s <span class=\"screen-reader-text\">Comment</span>"
 msgid_plural "%s <span class=\"screen-reader-text\">Comments</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/template.php:412
+#: includes/template.php:425
 msgid "Close sharing dialog"
 msgstr ""
 
-#: includes/template.php:418
+#: includes/template.php:431
 msgid "Copy and paste this URL into your site to embed:"
 msgstr ""
 
