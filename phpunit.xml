@@ -15,10 +15,13 @@
 	<filter>
 		<blacklist>
 			<directory suffix=".php">.</directory>
-			<file>./includes/default-filters.php</file>
 		</blacklist>
 		<whitelist>
 			<directory suffix=".php">./includes</directory>
+			<file>./includes/class-wp-legacy-oembed-controller.php</file>
+			<file>./includes/class-wp-rest-oembed-controller.php</file>
+			<file>./includes/functions.php</file>
+			<file>./includes/template.php</file>
 			<file>./wp-api-oembed.php</file>
 		</whitelist>
 	</filter>
