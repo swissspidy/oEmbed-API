@@ -144,6 +144,40 @@ class WP_oEmbed_Test_Plugin extends WP_UnitTestCase {
 		$this->assertEquals( 113, $data['height'] );
 	}
 
+	function test_get_oembed_response_data_thumbnail() {
+		$post          = $this->factory->post->create_and_get();
+		$file          = DIR_TESTDATA . '/images/canola.jpg';
+		$attachment_id = $this->factory->attachment->create_object( $file, $post->ID, array(
+			'post_mime_type' => 'image/jpeg',
+		) );
+		set_post_thumbnail( $post, $attachment_id );
+
+		$data = get_oembed_response_data( $post, 400 );
+
+		$this->assertArrayHasKey( 'thumbnail_url', $data );
+		$this->assertArrayHasKey( 'thumbnail_width', $data );
+		$this->assertArrayHasKey( 'thumbnail_height', $data );
+		$this->assertTrue( 400 >= $data['thumbnail_width'] );
+	}
+
+	/**
+	 * Test oEmbed response data with attachments
+	 */
+	function test_get_oembed_response_data_attachment() {
+		$parent = $this->factory->post->create();
+		$file   = DIR_TESTDATA . '/images/canola.jpg';
+		$post   = $this->factory->attachment->create_object( $file, $parent, array(
+			'post_mime_type' => 'image/jpeg',
+		) );
+
+		$data = get_oembed_response_data( $post, 400 );
+
+		$this->assertArrayHasKey( 'thumbnail_url', $data );
+		$this->assertArrayHasKey( 'thumbnail_width', $data );
+		$this->assertArrayHasKey( 'thumbnail_height', $data );
+		$this->assertTrue( 400 >= $data['thumbnail_width'] );
+	}
+
 	/**
 	 * Test if our query vars have been successfully registered.
 	 */

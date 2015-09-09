@@ -189,13 +189,7 @@ function get_oembed_response_data( $post = null, $width ) {
 
 	$height = ceil( $width / 16 * 9 );
 
-	/**
-	 * Filters the oEmbed response data.
-	 *
-	 * @param array   $data The response data.
-	 * @param WP_Post $post The post object.
-	 */
-	$data = apply_filters( 'rest_oembed_response_data', array(
+	$data = array(
 		'version'       => '1.0',
 		'provider_name' => get_bloginfo( 'name' ),
 		'provider_url'  => get_home_url(),
@@ -206,9 +200,33 @@ function get_oembed_response_data( $post = null, $width ) {
 		'width'         => $width,
 		'height'        => $height,
 		'html'          => get_post_embed_html( $post, $width, $height ),
-	), $post );
+	);
 
-	return $data;
+	// Add post thumbnail to response if available.
+	$thumbnail_id = false;
+
+	if ( has_post_thumbnail( $post->ID ) ) {
+		$thumbnail_id = get_post_thumbnail_id( $post->ID );
+	}
+
+	if ( 'attachment' === get_post_type( $post ) && wp_attachment_is_image( $post->ID ) ) {
+		$thumbnail_id = $post->ID;
+	}
+
+	if ( $thumbnail_id ) {
+		list( $thumbnail_url, $thumbnail_width, $thumbnail_height ) = wp_get_attachment_image_src( $thumbnail_id, array( $width, 99999 ) );
+		$data['thumbnail_url']    = $thumbnail_url;
+		$data['thumbnail_width']  = $thumbnail_width;
+		$data['thumbnail_height'] = $thumbnail_height;
+	}
+
+	/**
+	 * Filters the oEmbed response data.
+	 *
+	 * @param array   $data The response data.
+	 * @param WP_Post $post The post object.
+	 */
+	return apply_filters( 'rest_oembed_response_data', $data, $post );
 }
 
 /**
