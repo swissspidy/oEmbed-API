@@ -8,7 +8,7 @@
 /**
  * Add oEmbed discovery links in the website <head>.
  */
-function oembed_add_discovery_links() {
+function wp_oembed_add_discovery_links() {
 	$output = '';
 
 	if ( is_singular() ) {
@@ -27,7 +27,7 @@ function oembed_add_discovery_links() {
 /**
  * Add JS to handle the messages from the embedded iframes.
  */
-function oembed_add_host_js() {
+function wp_oembed_add_host_js() {
 	?>
 	<script type="text/javascript">
 		<?php readfile( dirname( dirname( __FILE__ ) ) . '/scripts/frontend.js' ); ?>

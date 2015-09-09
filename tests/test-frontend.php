@@ -14,7 +14,7 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	 */
 	function test_add_oembed_discovery_links_non_singular() {
 		ob_start();
-		oembed_add_discovery_links();
+		wp_oembed_add_discovery_links();
 		$actual = ob_get_clean();
 		$this->assertEquals( '', $actual );
 	}
@@ -29,7 +29,7 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 		$this->assertQueryTrue( 'is_single', 'is_singular' );
 
 		ob_start();
-		oembed_add_discovery_links();
+		wp_oembed_add_discovery_links();
 		$actual = ob_get_clean();
 
 		$expected = '<link rel="alternate" type="application/json+oembed" href="' . esc_url( get_oembed_endpoint_url( get_permalink() ) ) . '" />' . "\n";
@@ -114,7 +114,7 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	 */
 	function test_add_host_js() {
 		ob_start();
-		oembed_add_host_js();
+		wp_oembed_add_host_js();
 		$actual = ob_get_clean();
 
 		$this->assertTrue( false !== strpos( $actual, '<script type="text/javascript">' ) );
