@@ -18,6 +18,8 @@ class WP_Legacy_oEmbed_Controller {
 	 *
 	 * If an oEmbed request is made, trigger the output.
 	 *
+	 * @codeCoverageIgnore
+	 *
 	 * @param WP_Query $wp_query The WP_Query instance (passed by reference).
 	 */
 	public function parse_query( $wp_query ) {
