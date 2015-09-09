@@ -7,10 +7,10 @@
  * give you the priority for which to use to remove the
  * hook.
  *
- * @codeCoverageIgnore
- *
  * @package WP_oEmbed
  */
+
+// @codeCoverageIgnoreStart
 
 // Load the plugin textdomain.
 add_action( 'init', 'wp_oembed_load_textdomain' );
@@ -57,3 +57,5 @@ add_action( 'wp_head', 'wp_oembed_add_host_js' );
 add_filter( 'wp_oembed_result', 'wp_filter_oembed_result', 10, 2 );
 
 add_filter( 'embed_oembed_discover', '__return_true' );
+
+// @codeCoverageIgnoreEnd
