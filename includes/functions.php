@@ -251,7 +251,7 @@ function wp_oembed_add_mce_plugin( $plugins ) {
  * @param array $opts TinyMCE options.
  */
 function wp_oembed_load_mce_script( $opts ) {
-	if ( $opts['tinymce'] ) {
+	if ( array_key_exists( 'tinymce', $opts ) && $opts['tinymce'] ) {
 		wp_enqueue_script( 'autoembed' );
 	}
 }
