@@ -10,6 +10,14 @@
  */
 class WP_Legacy_oEmbed_Test_Controller extends WP_UnitTestCase {
 	/**
+	 * Test our default filters and hooks.
+	 */
+	public function test_filters() {
+		global $wp_filter;
+
+		$this->assertarrayHasKey( 'wp_oembed_add_query_vars', $wp_filter['query_vars'][10] );
+	}
+	/**
 	 * Test a request with a wrong URL.
 	 */
 	function test_request_with_bad_url() {

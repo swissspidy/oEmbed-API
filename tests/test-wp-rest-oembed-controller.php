@@ -10,6 +10,16 @@
  */
 class WP_REST_oEmbed_Test_Controller extends WP_UnitTestCase {
 	/**
+	 * Test our default filters and hooks.
+	 */
+	public function test_filters() {
+		global $wp_filter;
+
+		$this->assertarrayHasKey( '_oembed_rest_pre_serve_request', $wp_filter['rest_pre_serve_request'][10] );
+		$this->assertarrayHasKey( '_oembed_create_xml', $wp_filter['rest_oembed_xml_response'][10] );
+	}
+
+	/**
 	 * Load the REST API.
 	 */
 	public static function setUpBeforeClass() {
