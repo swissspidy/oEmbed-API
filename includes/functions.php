@@ -231,6 +231,8 @@ function get_oembed_response_data( $post = null, $width ) {
 
 /**
  * Load the plugin textdomain.
+ *
+ * @codeCoverageIgnore
  */
 function wp_oembed_load_textdomain() {
 	load_plugin_textdomain( 'oembed-api', false, basename( dirname( plugin_dir_path( __FILE__ ) ) ) . '/languages' );

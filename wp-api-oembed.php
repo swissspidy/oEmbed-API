@@ -33,6 +33,8 @@ defined( 'WPINC' ) or die;
 
 /**
  * Init our plugin.
+ *
+ * @codeCoverageIgnore
  */
 function oembed_api_init() {
 	// Pull in the plugin classes and template tags.
