@@ -217,7 +217,7 @@ class WP_REST_oEmbed_Test_Controller extends WP_UnitTestCase {
 	function test_rest_pre_serve_request_wrong_format() {
 		$post = $this->factory->post->create_and_get();
 
-		$request = new WP_REST_Request( 'HEAD', '/wp/v2/oembed' );
+		$request = new WP_REST_Request( 'GET', '/wp/v2/oembed' );
 		$request->set_param( 'url', get_permalink( $post->ID ) );
 		$request->set_param( 'format', 'json' );
 
