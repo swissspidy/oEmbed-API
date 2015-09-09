@@ -420,13 +420,14 @@ $post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embe
 				?>
 			</a>
 		</div>
+		<div class="wp-embed-share">
+			<button type="button" class="wp-embed-share-dialog-open" aria-label="<?php _e( 'Open sharing dialog', 'oembed-api' ); ?>">
+				<span class="dashicons dashicons-share"></span>
+			</button>
+		</div>
 	</div>
 	<div class="wp-embed-share-dialog hidden">
 		<div class="wp-embed-share-dialog-content">
-			<button type="button" class="wp-embed-share-dialog-close" aria-label="<?php _e( 'Close sharing dialog', 'oembed-api' ); ?>">
-				<span class="dashicons dashicons-no"></span>
-			</button>
-
 			<div class="wp-embed-share-dialog-text">
 				<p class="wp-embed-share-title">
 					<?php _e( 'Copy and paste this URL into your site to embed:', 'oembed-api' ); ?>
@@ -438,6 +439,10 @@ $post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embe
 				);
 				?>
 			</div>
+
+			<button type="button" class="wp-embed-share-dialog-close" aria-label="<?php _e( 'Close sharing dialog', 'oembed-api' ); ?>">
+				<span class="dashicons dashicons-no"></span>
+			</button>
 		</div>
 	</div>
 </div>
