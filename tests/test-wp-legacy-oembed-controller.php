@@ -144,6 +144,32 @@ class WP_Legacy_oEmbed_Test_Controller extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test JSONP request with an invalid callback.
+	 */
+	function test_request_jsonp_invalid_callback() {
+		$user = $this->factory->user->create_and_get( array(
+			'display_name' => 'John Doe',
+		) );
+		$post = $this->factory->post->create_and_get( array(
+			'post_author' => $user->ID,
+			'post_title'  => 'Hello World',
+		) );
+
+		$request = array(
+			'url'	  => get_permalink( $post->ID ),
+			'format'   => 'json',
+			'maxwidth' => 600,
+			'callback' => array( 'foo', 'bar' ),
+		);
+
+		$legacy_controller = new WP_Legacy_oEmbed_Controller();
+
+		$data = $legacy_controller->dispatch( $request );
+
+		$this->assertFalse( strpos( $data, '/**/mycallback(' ) );
+	}
+
+	/**
 	 * Test request for a normal post.
 	 */
 	function test_request_xml() {
