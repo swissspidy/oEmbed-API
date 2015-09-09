@@ -37,3 +37,18 @@ if ( window.addEventListener ) {
 else if ( window.attachEvent ) {
 	window.attachEvent( 'message', receiveEmbedMessage );
 }
+
+window.onload = function () {
+	var ieVersion = new Function( "/*@cc_on return @_jscript_version; @*/" )();
+
+	// Remove security attribute from iframes in IE10 and IE11.
+	if ( 10 === ieVersion || navigator.userAgent.indexOf("Trident/7.0") > 0 ) {
+		var iframes = document.getElementsByTagName( 'iframe' ), iframeClone;
+		for ( var i = 0; i < iframes.length; i++ ) {
+			iframeClone = iframes[ i ].cloneNode( true );
+			iframeClone.removeAttribute( 'security' );
+			iframes[ i ].parentNode.insertBefore( iframeClone, iframes[ i ].nextSibling );
+			iframes[ i ].parentNode.removeChild( iframes[ i ] );
+		}
+	}
+}
