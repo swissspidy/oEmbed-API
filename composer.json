@@ -1,7 +1,7 @@
 {
   "name": "swissspidy/oembed-api",
-  "description": "An oEmbed provider for WordPress using the WP-API plugin.",
-  "version": "0.1.0",
+  "description": "Allow others to easily embed your blog posts on their sites using oEmbed.",
+  "version": "0.6.0",
   "type": "wordpress-plugin",
   "license": "GPL-2.0+",
   "require": {
