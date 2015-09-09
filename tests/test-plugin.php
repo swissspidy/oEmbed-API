@@ -29,6 +29,10 @@ class WP_oEmbed_Test_Plugin extends WP_UnitTestCase {
 	function test_rewrite_endpoint() {
 		global $wp_rewrite;
 
+		unset( $wp_rewrite->endpoints );
+		wp_oembed_rewrite_endpoint();
+
+		$this->assertEquals( EP_PERMALINK | EP_PAGES | EP_ATTACHMENT, $wp_rewrite->endpoints[0][0] );
 		$this->assertEquals( 'embed', $wp_rewrite->endpoints[0][1] );
 		$this->assertEquals( 'embed', $wp_rewrite->endpoints[0][2] );
 	}
