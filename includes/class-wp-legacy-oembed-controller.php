@@ -110,7 +110,6 @@ class WP_Legacy_oEmbed_Controller {
 	 *
 	 * @param array $data     The oEmbed response data.
 	 * @param array $request  The request arguments.
-	 *
 	 * @return string The JSON response data.
 	 */
 	public function json_response( $data, $request ) {
@@ -125,8 +124,6 @@ class WP_Legacy_oEmbed_Controller {
 		 *
 		 * @param string $result The encoded JSON.
 		 * @param array  $data   The original oEmbed response data.
-		 *
-		 * @return string
 		 */
 		$result = apply_filters( 'rest_oembed_json_response', $result, $data );
 
@@ -153,7 +150,6 @@ class WP_Legacy_oEmbed_Controller {
 	 * Print the XML response.
 	 *
 	 * @param array $data The oEmbed response data.
-	 *
 	 * @return string The XML response data.
 	 */
 	public function xml_response( $data ) {
@@ -162,8 +158,6 @@ class WP_Legacy_oEmbed_Controller {
 		 *
 		 * @param string $result The built XML.
 		 * @param array  $data   The original oEmbed response data.
-		 *
-		 * @return string
 		 */
 		$result = apply_filters( 'rest_oembed_xml_response', false, $data );
 
