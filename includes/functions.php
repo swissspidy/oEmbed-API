@@ -259,7 +259,7 @@ function wp_oembed_register_scripts() {
  * @return array
  */
 function wp_oembed_add_mce_plugin( $plugins ) {
-	$plugins['autoembed'] = plugins_url( 'tinymce/plugin.js', dirname( __FILE__ ) );
+	$plugins['autoembed'] = plugins_url( 'scripts/tinymce-plugin.js', dirname( __FILE__ ) );
 
 	return $plugins;
 }

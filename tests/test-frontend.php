@@ -171,7 +171,7 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	function test_add_mce_plugin() {
 		$actual = wp_oembed_add_mce_plugin( array() );
 
-		$this->assertEquals( array( 'autoembed' => plugins_url( 'tinymce/plugin.js', dirname( __FILE__ ) ) ), $actual );
+		$this->assertEquals( array( 'autoembed' => plugins_url( 'scripts/tinymce-plugin.js', dirname( __FILE__ ) ) ), $actual );
 	}
 
 	/**

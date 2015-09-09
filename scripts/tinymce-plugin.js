@@ -6,7 +6,7 @@
 			var scriptElm = editor.dom.create( 'script', {
 				id: scriptId,
 				type: 'text/javascript',
-				src: url + '/../scripts/frontend.js'
+				src: url + '/frontend.js'
 			} );
 
 			editor.getDoc().getElementsByTagName( 'head' )[0].appendChild( scriptElm );
