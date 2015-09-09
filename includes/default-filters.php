@@ -7,6 +7,8 @@
  * give you the priority for which to use to remove the
  * hook.
  *
+ * @codeCoverageIgnore
+ *
  * @package WP_oEmbed
  */
 

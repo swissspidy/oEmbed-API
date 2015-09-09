@@ -46,6 +46,8 @@ function oembed_api_init() {
 
 /**
  * Deactivate the oEmbed feature plugin.
+ *
+ * @codeCoverageIgnore
  */
 function wp_oembed_maybe_deacitvate() {
 	deactivate_plugins( plugin_basename( __FILE__ ) );
@@ -63,6 +65,8 @@ if ( function_exists( 'get_oembed_endpoint_url' ) ) {
 
 /**
  * Add our rewrite endpoint on plugin activation.
+ *
+ * @codeCoverageIgnore
  */
 function oembed_api_activate_plugin() {
 	wp_oembed_rewrite_endpoint();
@@ -71,6 +75,8 @@ function oembed_api_activate_plugin() {
 
 /**
  * Flush rewrite rules on plugin deactivation.
+ *
+ * @codeCoverageIgnore
  */
 function oembed_api_deactivate_plugin() {
 	flush_rewrite_rules( false );
