@@ -357,10 +357,23 @@ $post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embe
 </head>
 <body>
 <div class="wp-embed">
-	<?php if ( has_post_thumbnail() ) : ?>
+	<?php
+	// Add post thumbnail to response if available.
+	$thumbnail_id = false;
+
+	if ( has_post_thumbnail( $post->ID ) ) {
+		$thumbnail_id = get_post_thumbnail_id( $post->ID );
+	}
+
+	if ( 'attachment' === get_post_type( $post ) && wp_attachment_is_image( $post->ID ) ) {
+		$thumbnail_id = $post->ID;
+	}
+
+	if ( $thumbnail_id ) :
+	?>
 		<div class="wp-embed-featured-image">
 			<a href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>" target="_top">
-				<?php the_post_thumbnail( array( 600, 340 ) ); ?>
+				<?php echo wp_get_attachment_image( $thumbnail_id, array( 600, 340 ) ); ?>
 			</a>
 		</div>
 	<?php endif; ?>
