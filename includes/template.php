@@ -263,22 +263,25 @@ $post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embe
 		(function ( window, document ) {
 			'use strict';
 
-			var hash, secret, share_dialog, embed, resize_limiter;
+			var hash, secret, share_dialog, share_input, embed, resize_limiter;
 
 			window.onload = function () {
 				share_dialog = document.getElementsByClassName( 'wp-embed-share-dialog' )[ 0 ];
+				share_input = document.getElementsByClassName( 'wp-embed-share-input' )[ 0 ];
 
-				document.getElementsByClassName( 'wp-embed-share-input' )[ 0 ].onclick = function ( e ) {
+				share_input.onclick = function ( e ) {
 					e.target.select();
 				};
 
 				document.getElementsByClassName( 'wp-embed-share-dialog-open' )[ 0 ].onclick = function ( e ) {
 					share_dialog.className = share_dialog.className.replace( 'hidden', '' );
+					share_input.select();
 					e.preventDefault();
 				};
 
 				document.getElementsByClassName( 'wp-embed-share-dialog-close' )[ 0 ].onclick = function ( e ) {
 					share_dialog.className += ' hidden';
+					document.getElementsByClassName( 'wp-embed-share-dialog-open' )[ 0 ].focus();
 					e.preventDefault();
 				};
 
