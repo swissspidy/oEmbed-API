@@ -10,6 +10,17 @@
  */
 class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	/**
+	 * Test our template_include hook
+	 */
+	function test_template_include() {
+		$this->assertEquals( '', wp_oembed_include_template( '' ) );
+
+		$GLOBALS['wp_query'] = new WP_Query();
+		$GLOBALS['wp_query']->query_vars['embed'] = true;
+
+		$this->assertEquals( dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php', wp_oembed_include_template( '' ) );
+	}
+	/**
 	 * Test output of add_oembed_discovery_links.
 	 */
 	function test_add_oembed_discovery_links_non_singular() {
