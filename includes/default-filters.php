@@ -52,6 +52,6 @@ add_action( 'wp_head', 'wp_oembed_add_discovery_links' );
 
 add_action( 'wp_head', 'wp_oembed_add_host_js' );
 
-add_filter( 'wp_oembed_result', 'wp_filter_oembed_result', 10, 2 );
+add_filter( 'oembed_result', 'wp_filter_oembed_result', 10, 2 );
 
 add_filter( 'embed_oembed_discover', '__return_true' );
