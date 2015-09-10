@@ -64,10 +64,15 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	 * Test filter_oembed_result_trusted method.
 	 */
 	function test_filter_oembed_result_untrusted() {
-		$html   = '<p></p><iframe onload="alert(1)"></iframe>';
-		$actual = wp_filter_oembed_result( $html, '' );
+		$html   = '<p></p><iframe onload="alert(1)" src="http://example.com/sample-page/"></iframe>';
+		$actual = wp_filter_oembed_result( $html, 'http://example.com/sample-page/' );
 
-		$this->assertEquals( '<iframe sandbox="allow-scripts" security="restricted"></iframe>', $actual );
+		$matches = array();
+		preg_match( '|src=".*#\?secret=([\w\d]+)" data-secret="([\w\d]+)"|', $actual, $matches );
+
+		$this->assertTrue( isset( $matches[1] ) );
+		$this->assertTrue( isset( $matches[2] ) );
+		$this->assertEquals( $matches[1], $matches[2] );
 	}
 
 	/**
