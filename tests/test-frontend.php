@@ -163,7 +163,7 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	 * Test if registering our script works.
 	 */
 	function test_register_scripts() {
-		wp_deregister_script( 'autoembed' );
+		wp_scripts()->remove( 'autoembed' );
 		$this->assertFalse( wp_script_is( 'autoembed', 'registered' ) );
 
 		wp_oembed_register_scripts();
