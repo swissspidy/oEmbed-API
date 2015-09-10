@@ -41,7 +41,7 @@ $more = sprintf(
 $post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embed-more">' . $more . '</span>' );
 ?>
 <!DOCTYPE html>
-<html>
+<html <?php language_attributes(); ?>>
 <head>
 	<title><?php esc_html_e( $post->post_title, 'oembed-api' ); ?></title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -160,6 +160,11 @@ $post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embe
 		.wp-embed-comments,
 		.wp-embed-share {
 			float: right;
+			position: relative;
+		}
+
+		.wp-embed-comments {
+			left: -30px;
 		}
 
 		.wp-embed-comments a {
@@ -167,6 +172,7 @@ $post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embe
 		}
 
 		.wp-embed-share {
+			right: -30px;
 			margin-left: 10px;
 		}
 
@@ -258,22 +264,25 @@ $post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embe
 		(function ( window, document ) {
 			'use strict';
 
-			var hash, secret, share_dialog, embed, resize_limiter;
+			var hash, secret, share_dialog, share_input, embed, resize_limiter;
 
 			window.onload = function () {
 				share_dialog = document.getElementsByClassName( 'wp-embed-share-dialog' )[ 0 ];
+				share_input = document.getElementsByClassName( 'wp-embed-share-input' )[ 0 ];
 
-				document.getElementsByClassName( 'wp-embed-share-input' )[ 0 ].onclick = function ( e ) {
+				share_input.onclick = function ( e ) {
 					e.target.select();
 				};
 
 				document.getElementsByClassName( 'wp-embed-share-dialog-open' )[ 0 ].onclick = function ( e ) {
 					share_dialog.className = share_dialog.className.replace( 'hidden', '' );
+					share_input.select();
 					e.preventDefault();
 				};
 
 				document.getElementsByClassName( 'wp-embed-share-dialog-close' )[ 0 ].onclick = function ( e ) {
 					share_dialog.className += ' hidden';
+					document.getElementsByClassName( 'wp-embed-share-dialog-open' )[ 0 ].focus();
 					e.preventDefault();
 				};
 
@@ -399,11 +408,6 @@ $post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embe
 		</div>
 	</div>
 	<div class="wp-embed-social">
-		<div class="wp-embed-share">
-			<button type="button" class="wp-embed-share-dialog-open" aria-label="<?php _e( 'Open sharing dialog', 'oembed-api' ); ?>">
-				<span class="dashicons dashicons-share"></span>
-			</button>
-		</div>
 		<div class="wp-embed-comments">
 			<a href="<?php echo esc_url( get_comments_link( $post->ID ) ); ?>" target="_top">
 				<span class="dashicons dashicons-admin-comments"></span>
@@ -420,13 +424,14 @@ $post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embe
 				?>
 			</a>
 		</div>
+		<div class="wp-embed-share">
+			<button type="button" class="wp-embed-share-dialog-open" aria-label="<?php _e( 'Open sharing dialog', 'oembed-api' ); ?>">
+				<span class="dashicons dashicons-share"></span>
+			</button>
+		</div>
 	</div>
 	<div class="wp-embed-share-dialog hidden">
 		<div class="wp-embed-share-dialog-content">
-			<button type="button" class="wp-embed-share-dialog-close" aria-label="<?php _e( 'Close sharing dialog', 'oembed-api' ); ?>">
-				<span class="dashicons dashicons-no"></span>
-			</button>
-
 			<div class="wp-embed-share-dialog-text">
 				<p class="wp-embed-share-title">
 					<?php _e( 'Copy and paste this URL into your site to embed:', 'oembed-api' ); ?>
@@ -438,6 +443,10 @@ $post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embe
 				);
 				?>
 			</div>
+
+			<button type="button" class="wp-embed-share-dialog-close" aria-label="<?php _e( 'Close sharing dialog', 'oembed-api' ); ?>">
+				<span class="dashicons dashicons-no"></span>
+			</button>
 		</div>
 	</div>
 </div>
