@@ -10,35 +10,7 @@
 
 /* @var WP_Post $post */
 global $post;
-
-$post_content = $post->post_content;
-
-/**
- * Filter the post excerpt lenght in the oEmbed output.
- *
- * @param int     $num_words Number of words. Defaults to 35.
- * @param WP_Post $post      The current post object.
- */
-$num_words = apply_filters( 'rest_oembed_output_excerpt_length', 35, $post );
-
-$total_words = preg_split( "/[\n\r\t ]+/", $post_content, - 1, PREG_SPLIT_NO_EMPTY );
-
-/*
- * translators: If your word count is based on single characters (e.g. East Asian characters),
- * enter 'characters_excluding_spaces' or 'characters_including_spaces'. Otherwise, enter 'words'.
- * Do not translate into your own language.
- */
-if ( strpos( _x( 'words', 'Word count type. Do not translate!' ), 'characters' ) === 0 && preg_match( '/^utf\-?8$/i', get_option( 'blog_charset' ) ) ) {
-	$text = trim( preg_replace( "/[\n\r\t ]+/", ' ', $post_content ), ' ' );
-	preg_match_all( '/./u', $text, $total_words );
-}
-
-$more = sprintf(
-	_n( '&hellip; (%d word)', '&hellip; (%d words)', count( $total_words ), 'oembed-api' ),
-	count( $total_words )
-);
-
-$post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embed-more">' . $more . '</span>' );
+setup_postdata( $post );
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -394,7 +366,7 @@ $post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embe
 		</a>
 	</p>
 
-	<p class="wp-embed-excerpt"><?php echo $post_content; ?></p>
+	<p class="wp-embed-excerpt"><?php the_excerpt(); ?></p>
 
 	<div class="wp-embed-meta">
 		<?php
