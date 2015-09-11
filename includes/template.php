@@ -18,7 +18,6 @@ setup_postdata( $post );
 	<title><?php esc_html_e( $post->post_title, 'oembed-api' ); ?></title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700"/>
-	<link rel="stylesheet" href="https://s.w.org/wp-includes/css/dashicons.css"/>
 	<style type="text/css">
 		html, body {
 			padding: 0;
@@ -36,6 +35,40 @@ setup_postdata( $post );
 			overflow: hidden;
 			position: absolute !important;
 			width: 1px;
+		}
+
+		/* Dashicons */
+		.dashicons {
+			display: inline-block;
+			width: 20px;
+			height: 20px;
+			background-color: transparent;
+			background-repeat: no-repeat;
+			background-size: cover;
+			-webkit-transition: background .1s ease-in;
+			transition: background .1s ease-in;
+			position: relative;
+			top: 5px;
+		}
+
+		.dashicons-no {
+			background-image: url("data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20d%3D%27M15.55%2013.7l-2.19%202.06-3.42-3.65-3.64%203.43-2.06-2.18%203.64-3.43-3.42-3.64%202.18-2.06%203.43%203.64%203.64-3.42%202.05%202.18-3.64%203.43z%27%20fill%3D%27%23fff%27%2F%3E%3C%2Fsvg%3E");
+		}
+
+		.dashicons-admin-comments {
+			background-image: url("data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20d%3D%27M5%202h9q.82%200%201.41.59T16%204v7q0%20.82-.59%201.41T14%2013h-2l-5%205v-5H5q-.82%200-1.41-.59T3%2011V4q0-.82.59-1.41T5%202z%27%20fill%3D%27%2382878c%27%2F%3E%3C%2Fsvg%3E");
+		}
+
+		.dashicons-admin-comments:hover {
+			background-image: url("data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20d%3D%27M5%202h9q.82%200%201.41.59T16%204v7q0%20.82-.59%201.41T14%2013h-2l-5%205v-5H5q-.82%200-1.41-.59T3%2011V4q0-.82.59-1.41T5%202z%27%20fill%3D%27%230073aa%27%2F%3E%3C%2Fsvg%3E");
+		}
+
+		.dashicons-share {
+			background-image: url("data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20d%3D%27M14.5%2012q1.24%200%202.12.88T17.5%2015t-.88%202.12-2.12.88-2.12-.88T11.5%2015q0-.34.09-.69l-4.38-2.3Q6.32%2013%205%2013q-1.24%200-2.12-.88T2%2010t.88-2.12T5%207q1.3%200%202.21.99l4.38-2.3q-.09-.35-.09-.69%200-1.24.88-2.12T14.5%202t2.12.88T17.5%205t-.88%202.12T14.5%208q-1.3%200-2.21-.99l-4.38%202.3Q8%209.66%208%2010t-.09.69l4.38%202.3q.89-.99%202.21-.99z%27%20fill%3D%27%2382878c%27%2F%3E%3C%2Fsvg%3E");
+		}
+
+		.dashicons-share:hover {
+			background-image: url("data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20d%3D%27M14.5%2012q1.24%200%202.12.88T17.5%2015t-.88%202.12-2.12.88-2.12-.88T11.5%2015q0-.34.09-.69l-4.38-2.3Q6.32%2013%205%2013q-1.24%200-2.12-.88T2%2010t.88-2.12T5%207q1.3%200%202.21.99l4.38-2.3q-.09-.35-.09-.69%200-1.24.88-2.12T14.5%202t2.12.88T17.5%205t-.88%202.12T14.5%208q-1.3%200-2.21-.99l-4.38%202.3Q8%209.66%208%2010t-.09.69l4.38%202.3q.89-.99%202.21-.99z%27%20fill%3D%27%230073aa%27%2F%3E%3C%2Fsvg%3E");
 		}
 
 		.wp-embed {
@@ -118,21 +151,14 @@ setup_postdata( $post );
 			text-align: right;
 		}
 
-		.wp-embed-social .dashicons {
-			line-height: 25px;
-			-webkit-transition: color .1s ease-in;
-			transition: color .1s ease-in;
-		}
-
-		.wp-embed-social a:hover {
-			text-decoration: none;
-			color: #0073aa;
-		}
-
 		.wp-embed-comments,
 		.wp-embed-share {
 			float: right;
 			position: relative;
+		}
+
+		.wp-embed-social a:hover {
+			text-decoration: none;
 		}
 
 		.wp-embed-comments {
@@ -177,23 +203,10 @@ setup_postdata( $post );
 			cursor: pointer;
 		}
 
-		.wp-embed-share-dialog-open {
-			color: #82878c;
-		}
-
-		.wp-embed-share-dialog-open:hover {
-			color: #0073aa;
-		}
-
-		.wp-embed-share-dialog-open .dashicons {
-			display: inline;
-		}
-
 		.wp-embed-share-dialog-close {
 			position: absolute;
 			top: 20px;
 			right: 20px;
-			color: #fff;
 			font-size: 22px;
 		}
 
