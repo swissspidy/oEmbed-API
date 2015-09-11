@@ -170,7 +170,7 @@ $post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embe
 			line-height: 25px;
 		}
 
-		.wp-embed-share {
+		.wp-embed-comments + .wp-embed-share {
 			right: -30px;
 			margin-left: 10px;
 		}
@@ -407,6 +407,7 @@ $post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embe
 		</div>
 	</div>
 	<div class="wp-embed-social">
+		<?php if ( get_comments_number( $post->ID ) || comments_open( $post->ID ) ) : ?>
 		<div class="wp-embed-comments">
 			<a href="<?php echo esc_url( get_comments_link( $post->ID ) ); ?>" target="_top">
 				<span class="dashicons dashicons-admin-comments"></span>
@@ -423,6 +424,7 @@ $post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embe
 				?>
 			</a>
 		</div>
+		<?php endif; ?>
 		<div class="wp-embed-share">
 			<button type="button" class="wp-embed-share-dialog-open" aria-label="<?php _e( 'Open sharing dialog', 'oembed-api' ); ?>">
 				<span class="dashicons dashicons-share"></span>
