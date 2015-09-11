@@ -363,7 +363,7 @@ setup_postdata( $post );
 	}
 
 	if ( $thumbnail_id ) :
-	?>
+		?>
 		<div class="wp-embed-featured-image">
 			<a href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>" target="_top">
 				<?php echo wp_get_attachment_image( $thumbnail_id, array( 600, 340 ) ); ?>
@@ -392,22 +392,22 @@ setup_postdata( $post );
 	</div>
 	<div class="wp-embed-social">
 		<?php if ( get_comments_number( $post->ID ) || comments_open( $post->ID ) ) : ?>
-		<div class="wp-embed-comments">
-			<a href="<?php echo esc_url( get_comments_link( $post->ID ) ); ?>" target="_top">
-				<span class="dashicons dashicons-admin-comments"></span>
-				<?php
-				printf(
-					_n(
-						'%s <span class="screen-reader-text">Comment</span>',
-						'%s <span class="screen-reader-text">Comments</span>',
-						get_comments_number( $post->ID ),
-						'oembed-api'
-					),
-					get_comments_number( $post->ID )
-				);
-				?>
-			</a>
-		</div>
+			<div class="wp-embed-comments">
+				<a href="<?php echo esc_url( get_comments_link( $post->ID ) ); ?>" target="_top">
+					<span class="dashicons dashicons-admin-comments"></span>
+					<?php
+					printf(
+						_n(
+							'%s <span class="screen-reader-text">Comment</span>',
+							'%s <span class="screen-reader-text">Comments</span>',
+							get_comments_number( $post->ID ),
+							'oembed-api'
+						),
+						get_comments_number( $post->ID )
+					);
+					?>
+				</a>
+			</div>
 		<?php endif; ?>
 		<div class="wp-embed-share">
 			<button type="button" class="wp-embed-share-dialog-open" aria-label="<?php _e( 'Open sharing dialog', 'oembed-api' ); ?>">
