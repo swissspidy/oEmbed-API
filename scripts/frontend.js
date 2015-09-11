@@ -44,7 +44,7 @@ window.onload = function () {
 
 	// Remove security attribute from iframes in IE10 and IE11.
 	if ( isIE10 || isIE11 ) {
-		var iframes = document.getElementsByTagName( 'iframe' ), iframeClone;
+		var iframes = document.querySelectorAll( 'iframe[security]' ), iframeClone;
 		for ( var i = 0; i < iframes.length; i++ ) {
 			iframeClone = iframes[ i ].cloneNode( true );
 			iframeClone.removeAttribute( 'security' );
