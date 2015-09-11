@@ -156,8 +156,6 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 
 		$doc = new DOMDocument();
 		$this->assertTrue( $doc->loadHTML( $actual ) );
-
-		$this->assertTrue( false !== strpos( $doc->saveHTML(), '<div class="wp-embed-excerpt"><p>Bar Baz</p>' ) );
 	}
 
 	/**
