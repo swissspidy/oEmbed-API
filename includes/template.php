@@ -294,24 +294,22 @@ setup_postdata( $post );
 				 */
 				var links = document.getElementsByTagName( 'a' );
 				for ( var i = 0; i < links.length; i++ ) {
-					if ( '_top' === links[ i ].getAttribute( 'target' ) ) {
-						links[ i ].onclick = function ( e ) {
-							if ( e.target.hasAttribute( 'href' ) ) {
-								var href = e.target.getAttribute( 'href' );
-							} else {
-								var href = e.target.parentElement.getAttribute( 'href' );
-							}
-
-							/**
-							 * Send link target to the parent (embedding) site.
-							 */
-							window.parent.postMessage( {
-								message: 'link',
-								value: href,
-								secret: secret
-							}, '*' );
-							e.preventDefault();
+					links[ i ].onclick = function ( e ) {
+						if ( e.target.hasAttribute( 'href' ) ) {
+							var href = e.target.getAttribute( 'href' );
+						} else {
+							var href = e.target.parentElement.getAttribute( 'href' );
 						}
+
+						/**
+						 * Send link target to the parent (embedding) site.
+						 */
+						window.parent.postMessage( {
+							message: 'link',
+							value: href,
+							secret: secret
+						}, '*' );
+						e.preventDefault();
 					}
 				}
 			};
