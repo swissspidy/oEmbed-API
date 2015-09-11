@@ -211,6 +211,6 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 
 		$actual = wp_oembed_excerpt_more( '' );
 
-		$this->assertEquals( ' <span class="wp-embed-more">&hellip; (2 words)', $actual );
+		$this->assertEquals( ' <span class="wp-embed-more">&hellip; (2 words)</span>', $actual );
 	}
 }
