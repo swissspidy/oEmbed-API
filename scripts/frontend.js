@@ -7,8 +7,8 @@ function receiveEmbedMessage( e ) {
 			// Resize the iframe on request.
 			if ( 'height' == e.data.message ) {
 				var height = e.data.value;
-				if ( height > 600 ) {
-					height = 600;
+				if ( height > 1000 ) {
+					height = 1000;
 				} else if ( height < 100 ) {
 					height = 100;
 				}
