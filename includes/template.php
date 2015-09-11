@@ -28,7 +28,7 @@ $total_words = preg_split( "/[\n\r\t ]+/", $post_content, - 1, PREG_SPLIT_NO_EMP
  * enter 'characters_excluding_spaces' or 'characters_including_spaces'. Otherwise, enter 'words'.
  * Do not translate into your own language.
  */
-if ( strpos( _x( 'words', 'Word count type. Do not translate!', 'oembed-api' ), 'characters' ) === 0 && preg_match( '/^utf\-?8$/i', get_option( 'blog_charset' ) ) ) {
+if ( strpos( _x( 'words', 'Word count type. Do not translate!' ), 'characters' ) === 0 && preg_match( '/^utf\-?8$/i', get_option( 'blog_charset' ) ) ) {
 	$text = trim( preg_replace( "/[\n\r\t ]+/", ' ', $post_content ), ' ' );
 	preg_match_all( '/./u', $text, $total_words );
 }
