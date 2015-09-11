@@ -147,6 +147,7 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 			'post_author'  => $user->ID,
 			'post_title'   => 'Hello World',
 			'post_content' => 'Foo Bar',
+			'post_excerpt' => 'Bar Baz'
 		) );
 
 		ob_start();
@@ -156,7 +157,7 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 		$doc = new DOMDocument();
 		$this->assertTrue( $doc->loadHTML( $actual ) );
 
-		$this->assertTrue( false !== strpos( $doc->saveHTML(), '<p class="wp-embed-excerpt">Foo Bar</p>' ) );
+		$this->assertTrue( false !== strpos( $doc->saveHTML(), '<div class="wp-embed-excerpt"><p>Bar Baz</p>' ) );
 	}
 
 	/**

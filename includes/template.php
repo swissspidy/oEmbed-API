@@ -366,7 +366,7 @@ setup_postdata( $post );
 		</a>
 	</p>
 
-	<p class="wp-embed-excerpt"><?php the_excerpt(); ?></p>
+	<div class="wp-embed-excerpt"><?php the_excerpt(); ?></div>
 
 	<div class="wp-embed-meta">
 		<?php
