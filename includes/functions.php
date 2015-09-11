@@ -480,7 +480,7 @@ function wp_oembed_excerpt_more( $more_string ) {
 	 * enter 'characters_excluding_spaces' or 'characters_including_spaces'. Otherwise, enter 'words'.
 	 * Do not translate into your own language.
 	 */
-	if ( strpos( _x( 'words', 'Word count type. Do not translate!' ), 'characters' ) === 0 && preg_match( '/^utf\-?8$/i', get_option( 'blog_charset' ) ) ) {
+	if ( strpos( _x( 'words', 'Word count type. Do not translate!', 'oembed-api' ), 'characters' ) === 0 && preg_match( '/^utf\-?8$/i', get_option( 'blog_charset' ) ) ) {
 		$text = trim( preg_replace( "/[\n\r\t ]+/", ' ', $text ), ' ' );
 		preg_match_all( '/./u', $text, $words_array );
 	}
