@@ -252,22 +252,22 @@ setup_postdata( $post );
 			var hash, secret, share_dialog, share_input, embed, resize_limiter;
 
 			window.onload = function () {
-				share_dialog = document.getElementsByClassName( 'wp-embed-share-dialog' )[ 0 ];
-				share_input = document.getElementsByClassName( 'wp-embed-share-input' )[ 0 ];
+				share_dialog = document.querySelector( '.wp-embed-share-dialog' );
+				share_input = document.querySelector( '.wp-embed-share-input' );
 
 				share_input.onclick = function ( e ) {
 					e.target.select();
 				};
 
-				document.getElementsByClassName( 'wp-embed-share-dialog-open' )[ 0 ].onclick = function ( e ) {
+				document.querySelector( '.wp-embed-share-dialog-open' ).onclick = function ( e ) {
 					share_dialog.className = share_dialog.className.replace( 'hidden', '' );
 					share_input.select();
 					e.preventDefault();
 				};
 
-				document.getElementsByClassName( 'wp-embed-share-dialog-close' )[ 0 ].onclick = function ( e ) {
+				document.querySelector( '.wp-embed-share-dialog-close' ).onclick = function ( e ) {
 					share_dialog.className += ' hidden';
-					document.getElementsByClassName( 'wp-embed-share-dialog-open' )[ 0 ].focus();
+					document.querySelector( '.wp-embed-share-dialog-open' ).focus();
 					e.preventDefault();
 				};
 
@@ -278,7 +278,7 @@ setup_postdata( $post );
 				hash = window.location.hash;
 				secret = hash.replace( /.*secret=([\d\w]{10}).*/, '$1' );
 
-				embed = document.getElementsByClassName( 'wp-embed' )[ 0 ];
+				embed = document.querySelector( '.wp-embed' );
 
 				/**
 				 * Send this document's height to the parent (embedding) site.
