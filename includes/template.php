@@ -44,6 +44,7 @@ $post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embe
 <html <?php language_attributes(); ?>>
 <head>
 	<title><?php esc_html_e( $post->post_title, 'oembed-api' ); ?></title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700"/>
 	<link rel="stylesheet" href="https://s.w.org/wp-includes/css/dashicons.css"/>
 	<style type="text/css">
