@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2+.
 msgid ""
 msgstr ""
-"Project-Id-Version: oEmbed API 0.5.0\n"
+"Project-Id-Version: oEmbed API 0.6.0\n"
 "Report-Msgid-Bugs-To: https://pascalbirchler.com\n"
 "POT-Creation-Date: 2015-07-27 13:00:02+00:00\n"
 "MIME-Version: 1.0\n"
@@ -42,22 +42,22 @@ msgid_plural "&hellip; (%d words)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/template.php:402
-msgid "Open sharing dialog"
-msgstr ""
-
-#: includes/template.php:411
+#: includes/template.php:423
 msgid "%s <span class=\"screen-reader-text\">Comment</span>"
 msgid_plural "%s <span class=\"screen-reader-text\">Comments</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/template.php:425
-msgid "Close sharing dialog"
+#: includes/template.php:436
+msgid "Open sharing dialog"
 msgstr ""
 
-#: includes/template.php:431
+#: includes/template.php:445
 msgid "Copy and paste this URL into your site to embed:"
+msgstr ""
+
+#: includes/template.php:455
+msgid "Close sharing dialog"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
