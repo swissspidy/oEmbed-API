@@ -64,10 +64,15 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	 * Test filter_oembed_result_trusted method.
 	 */
 	function test_filter_oembed_result_untrusted() {
-		$html   = '<p></p><iframe onload="alert(1)"></iframe>';
-		$actual = wp_filter_oembed_result( $html, '' );
+		$html   = '<p></p><iframe onload="alert(1)" src="http://example.com/sample-page/"></iframe>';
+		$actual = wp_filter_oembed_result( $html, 'http://example.com/sample-page/' );
 
-		$this->assertEquals( '<iframe sandbox="allow-scripts" security="restricted"></iframe>', $actual );
+		$matches = array();
+		preg_match( '|src=".*#\?secret=([\w\d]+)" data-secret="([\w\d]+)"|', $actual, $matches );
+
+		$this->assertTrue( isset( $matches[1] ) );
+		$this->assertTrue( isset( $matches[2] ) );
+		$this->assertEquals( $matches[1], $matches[2] );
 	}
 
 	/**
@@ -142,6 +147,7 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 			'post_author'  => $user->ID,
 			'post_title'   => 'Hello World',
 			'post_content' => 'Foo Bar',
+			'post_excerpt' => 'Bar Baz'
 		) );
 
 		ob_start();
@@ -150,15 +156,13 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 
 		$doc = new DOMDocument();
 		$this->assertTrue( $doc->loadHTML( $actual ) );
-
-		$this->assertTrue( false !== strpos( $doc->saveHTML(), '<p class="wp-embed-excerpt">Foo Bar</p>' ) );
 	}
 
 	/**
 	 * Test if registering our script works.
 	 */
 	function test_register_scripts() {
-		wp_deregister_script( 'autoembed' );
+		wp_scripts()->remove( 'autoembed' );
 		$this->assertFalse( wp_script_is( 'autoembed', 'registered' ) );
 
 		wp_oembed_register_scripts();
@@ -183,5 +187,30 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 
 		wp_oembed_load_mce_script( array( 'tinymce' => true ) );
 		$this->assertTrue( wp_script_is( 'autoembed' ) );
+	}
+
+	/**
+	 * Test the wp_oembed_excerpt_more function.
+	 */
+	function test_wp_oembed_excerpt_more_no_embed() {
+		$GLOBALS['wp_query'] = new WP_Query();
+
+		$this->assertEquals( 'foo bar', wp_oembed_excerpt_more( 'foo bar' ) );
+	}
+
+	/**
+	 * Test the wp_oembed_excerpt_more function.
+	 */
+	function test_wp_oembed_excerpt_more() {
+		$GLOBALS['wp_query']                      = new WP_Query();
+		$GLOBALS['wp_query']->query_vars['embed'] = true;
+
+		$GLOBALS['post'] = $this->factory->post->create_and_get( array(
+			'post_content' => 'Foo Bar',
+		) );
+
+		$actual = wp_oembed_excerpt_more( '' );
+
+		$this->assertEquals( ' <span class="wp-embed-more">&hellip; (2 words)</span>', $actual );
 	}
 }

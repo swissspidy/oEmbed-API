@@ -457,3 +457,38 @@ function wp_filter_oembed_result( $html, $url ) {
 
 	return $html;
 }
+
+/**
+ * Filter the string in the "more" link displayed after a trimmed excerpt.
+ *
+ * @param string $more_string The string shown within the more link.
+ * @return string The modified excerpt.
+ */
+function wp_oembed_excerpt_more( $more_string ) {
+	global $wp_query, $post;
+
+	if ( ! isset( $wp_query->query_vars['embed'] ) ) {
+		return $more_string;
+	}
+
+	$text = wp_strip_all_tags( $post->post_content );
+
+	$words_array = preg_split( "/[\n\r\t ]+/", $text, -1, PREG_SPLIT_NO_EMPTY );
+
+	/*
+	 * translators: If your word count is based on single characters (e.g. East Asian characters),
+	 * enter 'characters_excluding_spaces' or 'characters_including_spaces'. Otherwise, enter 'words'.
+	 * Do not translate into your own language.
+	 */
+	if ( strpos( _x( 'words', 'Word count type. Do not translate!', 'oembed-api' ), 'characters' ) === 0 && preg_match( '/^utf\-?8$/i', get_option( 'blog_charset' ) ) ) {
+		$text = trim( preg_replace( "/[\n\r\t ]+/", ' ', $text ), ' ' );
+		preg_match_all( '/./u', $text, $words_array );
+	}
+
+	$more = sprintf(
+		'<span class="wp-embed-more">' . _n( '&hellip; (%d word)', '&hellip; (%d words)', count( $words_array ), 'oembed-api' ) . '</span>',
+		count( $words_array )
+	);
+
+	return ' ' . $more;
+}

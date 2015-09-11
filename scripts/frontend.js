@@ -7,8 +7,8 @@ function receiveEmbedMessage( e ) {
 			// Resize the iframe on request.
 			if ( 'height' == e.data.message ) {
 				var height = e.data.value;
-				if ( height > 600 ) {
-					height = 600;
+				if ( height > 1000 ) {
+					height = 1000;
 				} else if ( height < 100 ) {
 					height = 100;
 				}
@@ -36,4 +36,20 @@ if ( window.addEventListener ) {
 }
 else if ( window.attachEvent ) {
 	window.attachEvent( 'message', receiveEmbedMessage );
+}
+
+window.onload = function () {
+	var isIE10 = 10 === new Function( "/*@cc_on return @_jscript_version; @*/" )(),
+		isIE11 = !! navigator.userAgent.match( /Trident.*rv\:11\./ );
+
+	// Remove security attribute from iframes in IE10 and IE11.
+	if ( isIE10 || isIE11 ) {
+		var iframes = document.getElementsByTagName( 'iframe' ), iframeClone;
+		for ( var i = 0; i < iframes.length; i++ ) {
+			iframeClone = iframes[ i ].cloneNode( true );
+			iframeClone.removeAttribute( 'security' );
+			iframes[ i ].parentNode.insertBefore( iframeClone, iframes[ i ].nextSibling );
+			iframes[ i ].parentNode.removeChild( iframes[ i ] );
+		}
+	}
 }

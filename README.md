@@ -60,6 +60,14 @@ Yes.
 
 The WordPress logo is displayed when there’s no site icon available. Site icons represent your site in browser tabs, bookmark menus, and on the home screen of mobile devices. Add your unique site icon in the Customizer and it will be used in the embed too.
 
+### Why can’t I embed site XY? ###
+
+The oEmbed API plugin needs to run on both sites so the embedded site serves the right HTML and that your site knows how to embed it.
+
+### Why is my embedded site not showing? ###
+
+When you get an empty preview, it’s possible that the embedded site has the `X-Frame-Options` header set. This prevents loading the site in an iframe for security reasons.
+
 ## Screenshots ##
 
 1. Example of how embedding a WordPress post looks like.
@@ -69,6 +77,14 @@ The WordPress logo is displayed when there’s no site icon available. Site icon
 Here is how you can contribute:
 
 Join the discussion on [Trac](https://core.trac.wordpress.org/ticket/32522) and submit pull requests on [GitHub](https://github.com/swissspidy/oEmbed-API).
+
+## Developer Reference ##
+
+There are some handy functions developer can use with this plugin.
+
+For example, `get_post_embed_url` returns the URL to a post’s embed template used for the iframe, while `get_post_embed_html` returns the `<iframe>` tag to do this.
+
+To complement these two functions, `get_oembed_endpoint_url` returns the URL to the oEmbed API endpoint itself.
 
 ## Changelog ##
 

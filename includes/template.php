@@ -10,40 +10,13 @@
 
 /* @var WP_Post $post */
 global $post;
-
-$post_content = $post->post_content;
-
-/**
- * Filter the post excerpt lenght in the oEmbed output.
- *
- * @param int     $num_words Number of words. Defaults to 35.
- * @param WP_Post $post      The current post object.
- */
-$num_words = apply_filters( 'rest_oembed_output_excerpt_length', 35, $post );
-
-$total_words = preg_split( "/[\n\r\t ]+/", $post_content, - 1, PREG_SPLIT_NO_EMPTY );
-
-/*
- * translators: If your word count is based on single characters (e.g. East Asian characters),
- * enter 'characters_excluding_spaces' or 'characters_including_spaces'. Otherwise, enter 'words'.
- * Do not translate into your own language.
- */
-if ( strpos( _x( 'words', 'Word count type. Do not translate!', 'oembed-api' ), 'characters' ) === 0 && preg_match( '/^utf\-?8$/i', get_option( 'blog_charset' ) ) ) {
-	$text = trim( preg_replace( "/[\n\r\t ]+/", ' ', $post_content ), ' ' );
-	preg_match_all( '/./u', $text, $total_words );
-}
-
-$more = sprintf(
-	_n( '&hellip; (%d word)', '&hellip; (%d words)', count( $total_words ), 'oembed-api' ),
-	count( $total_words )
-);
-
-$post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embed-more">' . $more . '</span>' );
+setup_postdata( $post );
 ?>
 <!DOCTYPE html>
-<html>
+<html <?php language_attributes(); ?>>
 <head>
 	<title><?php esc_html_e( $post->post_title, 'oembed-api' ); ?></title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700"/>
 	<link rel="stylesheet" href="https://s.w.org/wp-includes/css/dashicons.css"/>
 	<style type="text/css">
@@ -170,7 +143,7 @@ $post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embe
 			line-height: 25px;
 		}
 
-		.wp-embed-share {
+		.wp-embed-comments + .wp-embed-share {
 			right: -30px;
 			margin-left: 10px;
 		}
@@ -393,7 +366,7 @@ $post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embe
 		</a>
 	</p>
 
-	<p class="wp-embed-excerpt"><?php echo $post_content; ?></p>
+	<div class="wp-embed-excerpt"><?php the_excerpt(); ?></div>
 
 	<div class="wp-embed-meta">
 		<?php
@@ -407,6 +380,7 @@ $post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embe
 		</div>
 	</div>
 	<div class="wp-embed-social">
+		<?php if ( get_comments_number( $post->ID ) || comments_open( $post->ID ) ) : ?>
 		<div class="wp-embed-comments">
 			<a href="<?php echo esc_url( get_comments_link( $post->ID ) ); ?>" target="_top">
 				<span class="dashicons dashicons-admin-comments"></span>
@@ -423,6 +397,7 @@ $post_content = wp_trim_words( $post_content, $num_words, ' <span class="wp-embe
 				?>
 			</a>
 		</div>
+		<?php endif; ?>
 		<div class="wp-embed-share">
 			<button type="button" class="wp-embed-share-dialog-open" aria-label="<?php _e( 'Open sharing dialog', 'oembed-api' ); ?>">
 				<span class="dashicons dashicons-share"></span>
