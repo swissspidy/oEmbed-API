@@ -190,4 +190,29 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 		wp_oembed_load_mce_script( array( 'tinymce' => true ) );
 		$this->assertTrue( wp_script_is( 'autoembed' ) );
 	}
+
+	/**
+	 * Test the wp_oembed_excerpt_more function.
+	 */
+	function test_wp_oembed_excerpt_more_no_embed() {
+		$GLOBALS['wp_query'] = new WP_Query();
+
+		$this->assertEquals( 'foo bar', wp_oembed_excerpt_more( 'foo bar' ) );
+	}
+
+	/**
+	 * Test the wp_oembed_excerpt_more function.
+	 */
+	function test_wp_oembed_excerpt_more() {
+		$GLOBALS['wp_query']                      = new WP_Query();
+		$GLOBALS['wp_query']->query_vars['embed'] = true;
+
+		$GLOBALS['post'] = $this->factory->post->create_and_get( array(
+			'post_content' => 'Foo Bar',
+		) );
+
+		$actual = wp_oembed_excerpt_more( '' );
+
+		$this->assertEquals( ' <span class="wp-embed-more">&hellip; (2 words)', $actual );
+	}
 }
