@@ -1,0 +1,86 @@
+# Copyright (C) 2015 Pascal Birchler
+# This file is distributed under the GPLv2+.
+msgid ""
+msgstr ""
+"Project-Id-Version: oEmbed API 0.6.0\n"
+"Report-Msgid-Bugs-To: https://pascalbirchler.com\n"
+"POT-Creation-Date: 2015-09-11 14:56+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2015-09-11 15:10+0200\n"
+"Language-Team: Pascal Birchler <pascal@required.ch>\n"
+"X-Generator: Poedit 1.8.4\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: ..\n"
+"X-Textdomain-Support: yes\n"
+"Last-Translator: \n"
+"Language: da_DK\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: includes/class-wp-rest-oembed-controller.php:62
+msgid "Invalid URL."
+msgstr "Ugyldig URL."
+
+#: includes/class-wp-rest-oembed-controller.php:67
+msgid "Invalid format."
+msgstr "Ugyldig format."
+
+#: includes/functions.php:121
+msgid "Embedded WordPress Post"
+msgstr "Indlejret WordPress indlæg"
+
+#: includes/template.php:37
+msgid "&hellip; (%d word)"
+msgid_plural "&hellip; (%d words)"
+msgstr[0] "&hellip; (%d ord)"
+msgstr[1] "&hellip; (%d ord)"
+
+#: includes/template.php:423
+msgid "%s <span class=\"screen-reader-text\">Comment</span>"
+msgid_plural "%s <span class=\"screen-reader-text\">Comments</span>"
+msgstr[0] "%s <span class=\"screen-reader-text\">Kommentar</span>"
+msgstr[1] "%s <span class=\"screen-reader-text\">Kommentarer</span>"
+
+#: includes/template.php:436
+msgid "Open sharing dialog"
+msgstr "Åben delingsdialogen"
+
+#: includes/template.php:445
+msgid "Copy and paste this URL into your site to embed:"
+msgstr "Kopier og indsæt denne URL i din side for at indlejre:"
+
+#: includes/template.php:455
+msgid "Close sharing dialog"
+msgstr "Luk delingsdialog"
+
+#. Plugin Name of the plugin/theme
+msgid "oEmbed API"
+msgstr "oEmbed API"
+
+#. Plugin URI of the plugin/theme
+msgid "https://github.com/swissspidy/oEmbed-API"
+msgstr "https://github.com/swissspidy/oEmbed-API"
+
+#. Description of the plugin/theme
+msgid "Allow others to easily embed your blog posts on their sites using oEmbed."
+msgstr "Tillad andre let at indlejre dine blog indlæg i deres sider med oEmbed."
+
+#. Author of the plugin/theme
+msgid "Pascal Birchler"
+msgstr "Pascal Birchler"
+
+#. Author URI of the plugin/theme
+msgid "https://pascalbirchler.com"
+msgstr "https://pascalbirchler.com"
+
+#. translators: If your word count is based on single characters (e.g. East
+#. Asian characters), enter 'characters_excluding_spaces' or
+#. 'characters_including_spaces'. Otherwise, enter 'words'. Do not translate
+#. into your own language.
+#: includes/template.php:31
+msgctxt "Word count type. Do not translate!"
+msgid "words"
+msgstr "words"
