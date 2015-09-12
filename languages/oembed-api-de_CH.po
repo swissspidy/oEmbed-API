@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: oEmbed API 0.6.0\n"
 "Report-Msgid-Bugs-To: https://pascalbirchler.com\n"
 "POT-Creation-Date: 2015-09-12 12:40+0200\n"
-"PO-Revision-Date: 2015-09-12 12:44+0200\n"
+"PO-Revision-Date: 2015-09-12 23:51+0200\n"
 "Last-Translator: Pascal Birchler <pascal@required.ch>\n"
 "Language-Team: Pascal Birchler <pascal@required.ch>\n"
 "Language: de_CH\n"
@@ -34,7 +34,7 @@ msgstr "Ungültiges Format."
 
 #: includes/functions.php:121
 msgid "Embedded WordPress Post"
-msgstr "Eingebetteter WordPress Blogbeitrag"
+msgstr "Eingebetteter WordPress-Blogbeitrag"
 
 #. translators: If your word count is based on single characters (e.g. East Asian characters),
 #. enter 'characters_excluding_spaces' or 'characters_including_spaces'. Otherwise, enter 'words'.
