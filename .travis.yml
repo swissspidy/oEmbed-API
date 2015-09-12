@@ -29,8 +29,9 @@ script:
   - if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.2" ]]; then vendor/bin/phpmd includes text cleancode,codesize,naming,unusedcode; fi
   - if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.2" ]]; then vendor/bin/phpcpd -n includes; fi
   - vendor/bin/phpcs -n --report=emacs --standard=phpcs.ruleset.xml includes
-  - phpunit --coverage-clover clover.xml
+  - phpunit --coverage-clover build/logs/clover.xml
 
 after_script:
   # Push coverage off to Codecov
   - bash <(curl -s https://codecov.io/bash)
+  - vendor/bin/test-reporter

@@ -30,6 +30,7 @@ We hold weekly chats about this plugin in the \#feature-oembed WordPress Slack c
 
 [![Build Status](https://travis-ci.org/swissspidy/oEmbed-API.svg?branch=master)](https://travis-ci.org/swissspidy/oEmbed-API)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/swissspidy/oEmbed-API/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/swissspidy/oEmbed-API/?branch=master)
+[![Code Climate](https://codeclimate.com/github/swissspidy/oEmbed-API/badges/gpa.svg)](https://codeclimate.com/github/swissspidy/oEmbed-API)
 [![Codecov Code Coverage](https://codecov.io/github/swissspidy/oEmbed-API/coverage.svg?branch=master)](https://codecov.io/github/swissspidy/oEmbed-API/?branch=master)
 
 ## Installation ##
