@@ -245,6 +245,41 @@ setup_postdata( $post );
 			text-align: center;
 			font: 400 14px/1.5 'Open Sans', sans-serif;
 		}
+
+		html[dir="rtl"] .wp-embed-site-title {
+			left: auto;
+			right: 35px;
+		}
+
+		html[dir="rtl"] .wp-embed-social {
+			float: left;
+			text-align:left;
+		}
+
+		html[dir="rtl"] .wp-embed-meta {
+			float: right;
+		}
+
+		html[dir="rtl"] .wp-embed-comments, html[dir="rtl"] .wp-embed-share {
+			float: left;
+		}
+
+		html[dir="rtl"] .wp-embed-comments {
+			left: auto;
+			right: -30px;
+		}
+
+		html[dir="rtl"] .wp-embed-share {
+			right: auto;
+			left: -30px;
+			margin-left: 0;
+			margin-right: 10px;
+		}
+
+		html[dir="rtl"] .wp-embed-share-dialog-close {
+			right: auto;
+			left: 20px;
+		}
 	</style>
 	<script type="text/javascript">
 		(function ( window, document ) {
