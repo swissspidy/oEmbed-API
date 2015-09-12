@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: oEmbed API 0.6.0\n"
 "Report-Msgid-Bugs-To: https://pascalbirchler.com\n"
 "POT-Creation-Date: 2015-09-11 12:38+0200\n"
-"PO-Revision-Date: 2015-09-12 11:57+0200\n"
+"PO-Revision-Date: 2015-09-12 12:13+0200\n"
 "Last-Translator: Pascal Birchler <pascal@required.ch>\n"
 "Language-Team: Pascal Birchler <pascal@required.ch>\n"
 "Language: de_DE\n"
@@ -54,7 +54,7 @@ msgstr "Sharing-Dialog öffnen"
 
 #: includes/template.php:445
 msgid "Copy and paste this URL into your site to embed:"
-msgstr "Füge diese URL zum Einbinden auf deiner Website ein:"
+msgstr "Füge diese URL zum Einbetten auf deiner Website ein:"
 
 #: includes/template.php:455
 msgid "Close sharing dialog"
