@@ -461,6 +461,8 @@ function wp_filter_oembed_result( $html, $url ) {
 /**
  * Filter the string in the "more" link displayed after a trimmed excerpt.
  *
+ * @SuppressWarnings(PHPMD.ElseExpression)
+ *
  * @param string $more_string The string shown within the more link.
  * @return string The modified excerpt.
  */
