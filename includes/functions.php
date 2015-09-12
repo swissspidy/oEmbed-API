@@ -486,9 +486,12 @@ function wp_oembed_excerpt_more( $more_string ) {
 	}
 
 	$more = sprintf(
-		'<span class="wp-embed-more">' . _n( '&hellip; (%d word)', '&hellip; (%d words)', count( $words_array ), 'oembed-api' ) . '</span>',
+		_n( '&hellip; (%d word)', '&hellip; (%d words)', count( $words_array ), 'oembed-api' ),
 		count( $words_array )
 	);
+
+	// The `&lrm;` fixes bi-directional text display defect in RTL languages.
+	$more = '<span class="wp-embed-more">' . $more . '&lrm;</span>';
 
 	return ' ' . $more;
 }
