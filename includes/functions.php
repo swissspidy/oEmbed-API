@@ -473,8 +473,6 @@ function wp_oembed_excerpt_more( $more_string ) {
 
 	$text = wp_strip_all_tags( $post->post_content );
 
-	$words_array = preg_split( "/[\n\r\t ]+/", $text, -1, PREG_SPLIT_NO_EMPTY );
-
 	/*
 	 * translators: If your word count is based on single characters (e.g. East Asian characters),
 	 * enter 'characters_excluding_spaces' or 'characters_including_spaces'. Otherwise, enter 'words'.
@@ -483,6 +481,9 @@ function wp_oembed_excerpt_more( $more_string ) {
 	if ( strpos( _x( 'words', 'Word count type. Do not translate!', 'oembed-api' ), 'characters' ) === 0 && preg_match( '/^utf\-?8$/i', get_option( 'blog_charset' ) ) ) {
 		$text = trim( preg_replace( "/[\n\r\t ]+/", ' ', $text ), ' ' );
 		preg_match_all( '/./u', $text, $words_array );
+		$words_array = $words_array[0];
+	} else {
+		$words_array = preg_split( "/[\n\r\t ]+/", $text, -1, PREG_SPLIT_NO_EMPTY );
 	}
 
 	$more = sprintf(
