@@ -153,8 +153,7 @@ setup_postdata( $post );
 
 		.wp-embed-comments,
 		.wp-embed-share {
-			float: right;
-			position: relative;
+			display: inline;
 		}
 
 		.wp-embed-social a:hover {
@@ -162,16 +161,11 @@ setup_postdata( $post );
 			color: #0073aa;
 		}
 
-		.wp-embed-comments {
-			left: -30px;
-		}
-
 		.wp-embed-comments a {
 			line-height: 25px;
 		}
 
 		.wp-embed-comments + .wp-embed-share {
-			right: -30px;
 			margin-left: 10px;
 		}
 
@@ -253,25 +247,14 @@ setup_postdata( $post );
 
 		html[dir="rtl"] .wp-embed-social {
 			float: left;
-			text-align:left;
+			text-align: left;
 		}
 
 		html[dir="rtl"] .wp-embed-meta {
 			float: right;
 		}
 
-		html[dir="rtl"] .wp-embed-comments, html[dir="rtl"] .wp-embed-share {
-			float: left;
-		}
-
-		html[dir="rtl"] .wp-embed-comments {
-			left: auto;
-			right: -30px;
-		}
-
 		html[dir="rtl"] .wp-embed-share {
-			right: auto;
-			left: -30px;
 			margin-left: 0;
 			margin-right: 10px;
 		}
