@@ -21,7 +21,7 @@ function wp_oembed_add_discovery_links() {
 	 *
 	 * @param string $output HTML of the discovery links.
 	 */
-	echo apply_filters( 'rest_oembed_discovery_links', $output );
+	echo apply_filters( 'oembed_discovery_links', $output );
 }
 
 /**
@@ -93,7 +93,7 @@ function get_oembed_endpoint_url( $permalink = '', $format = 'json' ) {
 	 * @param string $permalink The permalink used for the `url` query arg.
 	 * @param string $format    The requested response format.
 	 */
-	return apply_filters( 'rest_oembed_endpoint_url', $url, $permalink, $format );
+	return apply_filters( 'oembed_endpoint_url', $url, $permalink, $format );
 }
 
 /**
@@ -129,7 +129,7 @@ function get_post_embed_html( $post = null, $width, $height ) {
 	 * @param int     $width  Width of the response.
 	 * @param int     $height Height of the response.
 	 */
-	return apply_filters( 'rest_oembed_html', $output, $post, $width, $height );
+	return apply_filters( 'oembed_html', $output, $post, $width, $height );
 }
 
 /**
@@ -172,14 +172,14 @@ function get_oembed_response_data( $post = null, $width ) {
 	 *
 	 * @param int $width The minimum width. Defaults to 200.
 	 */
-	$minwidth = apply_filters( 'rest_oembed_minwidth', 200 );
+	$minwidth = apply_filters( 'oembed_minwidth', 200 );
 
 	/**
 	 * Filter the allowed maximum width for the oEmbed response.
 	 *
 	 * @param int $width The maximum width. Defaults to 600.
 	 */
-	$maxwidth = apply_filters( 'rest_oembed_maxwidth', 600 );
+	$maxwidth = apply_filters( 'oembed_maxwidth', 600 );
 
 	if ( $width < $minwidth ) {
 		$width = $minwidth;
@@ -226,7 +226,7 @@ function get_oembed_response_data( $post = null, $width ) {
 	 * @param array   $data The response data.
 	 * @param WP_Post $post The post object.
 	 */
-	return apply_filters( 'rest_oembed_response_data', $data, $post );
+	return apply_filters( 'oembed_response_data', $data, $post );
 }
 
 /**
@@ -311,7 +311,7 @@ function _oembed_rest_pre_serve_request( $served, $result, $request, $server ) {
 	 * @param string $result The built XML.
 	 * @param array  $data   The original oEmbed response data.
 	 */
-	$result = apply_filters( 'rest_oembed_xml_response', false, $data );
+	$result = apply_filters( 'oembed_xml_response', false, $data );
 
 	// Bail if there's no XML.
 	if ( ! $result ) {

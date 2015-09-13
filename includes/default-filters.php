@@ -35,7 +35,7 @@ add_action( 'rest_api_init', array( new WP_REST_oEmbed_Controller(), 'register_r
 add_filter( 'rest_pre_serve_request', '_oembed_rest_pre_serve_request', 10, 4 );
 
 // Filter the oEmbed XML response to create an XML string.
-add_filter( 'rest_oembed_xml_response', '_oembed_create_xml', 10, 2 );
+add_filter( 'oembed_xml_response', '_oembed_create_xml', 10, 2 );
 
 // Add a rewrite endpoint for the iframe.
 add_action( 'init', 'wp_oembed_rewrite_endpoint' );

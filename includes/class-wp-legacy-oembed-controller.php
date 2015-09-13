@@ -51,7 +51,7 @@ class WP_Legacy_oEmbed_Controller {
 		 *
 		 * @return int
 		 */
-		$maxwidth = apply_filters( 'rest_oembed_default_width', 600 );
+		$maxwidth = apply_filters( 'oembed_default_width', 600 );
 		if ( isset( $wp_query->query_vars['maxwidth'] ) ) {
 			$maxwidth = absint( $wp_query->query_vars['maxwidth'] );
 		}
@@ -89,7 +89,7 @@ class WP_Legacy_oEmbed_Controller {
 		 * @param int    $post_id The post ID.
 		 * @param string $url     The requestd URL.
 		 */
-		$post_id = apply_filters( 'rest_oembed_request_post_id', $post_id, $request['url'] );
+		$post_id = apply_filters( 'oembed_request_post_id', $post_id, $request['url'] );
 
 		if ( 0 === $post_id ) {
 			status_header( 404 );
@@ -125,7 +125,7 @@ class WP_Legacy_oEmbed_Controller {
 		 * @param string $result The encoded JSON.
 		 * @param array  $data   The original oEmbed response data.
 		 */
-		$result = apply_filters( 'rest_oembed_json_response', $result, $data );
+		$result = apply_filters( 'oembed_json_response', $result, $data );
 
 		// Bail if the result couldn't be JSON encoded.
 		if ( ! $result ) {
@@ -159,7 +159,7 @@ class WP_Legacy_oEmbed_Controller {
 		 * @param string $result The built XML.
 		 * @param array  $data   The original oEmbed response data.
 		 */
-		$result = apply_filters( 'rest_oembed_xml_response', false, $data );
+		$result = apply_filters( 'oembed_xml_response', false, $data );
 
 		// Bail if there's no XML.
 		if ( ! $result ) {
