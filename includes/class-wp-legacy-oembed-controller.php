@@ -24,8 +24,14 @@ class WP_Legacy_oEmbed_Controller {
 	 */
 	public function parse_query( $wp_query ) {
 		// Check for required params.
-		if ( ! $wp_query->get( 'oembed' ) || ! $wp_query->get( 'url' ) ) {
+		if ( ! $wp_query->get( 'oembed' ) ) {
 			return;
+		}
+
+		if ( ! $wp_query->get( 'url' ) ) {
+			status_header( 400 );
+			echo 'URL parameter missing';
+			exit;
 		}
 
 		/**
