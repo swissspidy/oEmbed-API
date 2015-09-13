@@ -72,6 +72,8 @@ When you get an empty preview, it’s possible that the embedded site has the `X
 ## Screenshots ##
 
 1. Example of how embedding a WordPress post looks like.
+2. Example of a post with a featured image
+3. You can easily copy the sharing URL for any post.
 
 ## Contribute ##
 
