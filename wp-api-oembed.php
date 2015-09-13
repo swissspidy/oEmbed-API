@@ -3,7 +3,7 @@
  * Plugin Name: oEmbed API
  * Plugin URI:  https://github.com/swissspidy/oEmbed-API
  * Description: Allow others to easily embed your blog posts on their sites using oEmbed.
- * Version:     0.6.0
+ * Version:     0.7.0
  * Author:      Pascal Birchler
  * Author URI:  https://pascalbirchler.com
  * License:     GPLv2+

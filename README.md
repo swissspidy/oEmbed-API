@@ -91,6 +91,16 @@ To complement these two functions, `get_oembed_endpoint_url` returns the URL to 
 
 ## Changelog ##
 
+### 0.7.0 ###
+* New: Code Climate configuration
+* New: Added translations for Danish (Denmark), German (Germany), German (Switzerland), Japanese, Greek, and English (Australia).
+* Enhancement: Full Right-to-Left language support.
+* Enhancement: Various performance improvements.
+* Fixed: Previously the word count was not always correct.
+* Fixed: Dashicons are now correctly shown in Internet Explorer.
+* Fixed: Increased the iframe height limit from 600 to 1000px.
+* Fixed: Removed the `rest_` prefix from filter names
+
 ### 0.6.0 ###
 * Further accessibility improvements.
 * Better embeds for attachments.
@@ -118,6 +128,9 @@ To complement these two functions, `get_oembed_endpoint_url` returns the URL to 
 * First release
 
 ## Upgrade Notice ##
+
+### 0.7.0 ###
+This version includes many new translations, full RTL language support and also has better Internet Explorer compatibility.
 
 ### 0.6.0 ###
 Major refactoring under the hood, improved accessibility and much more.
