@@ -18,7 +18,6 @@ setup_postdata( $post );
 	<title><?php esc_html_e( $post->post_title, 'oembed-api' ); ?></title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700"/>
-	<link rel="stylesheet" href="https://s.w.org/wp-includes/css/dashicons.css"/>
 	<style type="text/css">
 		html, body {
 			padding: 0;
@@ -36,6 +35,40 @@ setup_postdata( $post );
 			overflow: hidden;
 			position: absolute !important;
 			width: 1px;
+		}
+
+		/* Dashicons */
+		.dashicons {
+			display: inline-block;
+			width: 20px;
+			height: 20px;
+			background-color: transparent;
+			background-repeat: no-repeat;
+			background-size: cover;
+			-webkit-transition: background .1s ease-in;
+			transition: background .1s ease-in;
+			position: relative;
+			top: 5px;
+		}
+
+		.dashicons-no {
+			background-image: url("data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20d%3D%27M15.55%2013.7l-2.19%202.06-3.42-3.65-3.64%203.43-2.06-2.18%203.64-3.43-3.42-3.64%202.18-2.06%203.43%203.64%203.64-3.42%202.05%202.18-3.64%203.43z%27%20fill%3D%27%23fff%27%2F%3E%3C%2Fsvg%3E");
+		}
+
+		.dashicons-admin-comments {
+			background-image: url("data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20d%3D%27M5%202h9q.82%200%201.41.59T16%204v7q0%20.82-.59%201.41T14%2013h-2l-5%205v-5H5q-.82%200-1.41-.59T3%2011V4q0-.82.59-1.41T5%202z%27%20fill%3D%27%2382878c%27%2F%3E%3C%2Fsvg%3E");
+		}
+
+		.wp-embed-comments a:hover .dashicons-admin-comments {
+			background-image: url("data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20d%3D%27M5%202h9q.82%200%201.41.59T16%204v7q0%20.82-.59%201.41T14%2013h-2l-5%205v-5H5q-.82%200-1.41-.59T3%2011V4q0-.82.59-1.41T5%202z%27%20fill%3D%27%230073aa%27%2F%3E%3C%2Fsvg%3E");
+		}
+
+		.dashicons-share {
+			background-image: url("data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20d%3D%27M14.5%2012q1.24%200%202.12.88T17.5%2015t-.88%202.12-2.12.88-2.12-.88T11.5%2015q0-.34.09-.69l-4.38-2.3Q6.32%2013%205%2013q-1.24%200-2.12-.88T2%2010t.88-2.12T5%207q1.3%200%202.21.99l4.38-2.3q-.09-.35-.09-.69%200-1.24.88-2.12T14.5%202t2.12.88T17.5%205t-.88%202.12T14.5%208q-1.3%200-2.21-.99l-4.38%202.3Q8%209.66%208%2010t-.09.69l4.38%202.3q.89-.99%202.21-.99z%27%20fill%3D%27%2382878c%27%2F%3E%3C%2Fsvg%3E");
+		}
+
+		.wp-embed-share-dialog-open:hover .dashicons-share {
+			background-image: url("data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20d%3D%27M14.5%2012q1.24%200%202.12.88T17.5%2015t-.88%202.12-2.12.88-2.12-.88T11.5%2015q0-.34.09-.69l-4.38-2.3Q6.32%2013%205%2013q-1.24%200-2.12-.88T2%2010t.88-2.12T5%207q1.3%200%202.21.99l4.38-2.3q-.09-.35-.09-.69%200-1.24.88-2.12T14.5%202t2.12.88T17.5%205t-.88%202.12T14.5%208q-1.3%200-2.21-.99l-4.38%202.3Q8%209.66%208%2010t-.09.69l4.38%202.3q.89-.99%202.21-.99z%27%20fill%3D%27%230073aa%27%2F%3E%3C%2Fsvg%3E");
 		}
 
 		.wp-embed {
@@ -118,10 +151,9 @@ setup_postdata( $post );
 			text-align: right;
 		}
 
-		.wp-embed-social .dashicons {
-			line-height: 25px;
-			-webkit-transition: color .1s ease-in;
-			transition: color .1s ease-in;
+		.wp-embed-comments,
+		.wp-embed-share {
+			display: inline;
 		}
 
 		.wp-embed-social a:hover {
@@ -129,22 +161,11 @@ setup_postdata( $post );
 			color: #0073aa;
 		}
 
-		.wp-embed-comments,
-		.wp-embed-share {
-			float: right;
-			position: relative;
-		}
-
-		.wp-embed-comments {
-			left: -30px;
-		}
-
 		.wp-embed-comments a {
 			line-height: 25px;
 		}
 
 		.wp-embed-comments + .wp-embed-share {
-			right: -30px;
 			margin-left: 10px;
 		}
 
@@ -177,23 +198,10 @@ setup_postdata( $post );
 			cursor: pointer;
 		}
 
-		.wp-embed-share-dialog-open {
-			color: #82878c;
-		}
-
-		.wp-embed-share-dialog-open:hover {
-			color: #0073aa;
-		}
-
-		.wp-embed-share-dialog-open .dashicons {
-			display: inline;
-		}
-
 		.wp-embed-share-dialog-close {
 			position: absolute;
 			top: 20px;
 			right: 20px;
-			color: #fff;
 			font-size: 22px;
 		}
 
@@ -231,6 +239,30 @@ setup_postdata( $post );
 			text-align: center;
 			font: 400 14px/1.5 'Open Sans', sans-serif;
 		}
+
+		html[dir="rtl"] .wp-embed-site-title {
+			left: auto;
+			right: 35px;
+		}
+
+		html[dir="rtl"] .wp-embed-social {
+			float: left;
+			text-align: left;
+		}
+
+		html[dir="rtl"] .wp-embed-meta {
+			float: right;
+		}
+
+		html[dir="rtl"] .wp-embed-share {
+			margin-left: 0;
+			margin-right: 10px;
+		}
+
+		html[dir="rtl"] .wp-embed-share-dialog-close {
+			right: auto;
+			left: 20px;
+		}
 	</style>
 	<script type="text/javascript">
 		(function ( window, document ) {
@@ -239,22 +271,22 @@ setup_postdata( $post );
 			var hash, secret, share_dialog, share_input, embed, resize_limiter;
 
 			window.onload = function () {
-				share_dialog = document.getElementsByClassName( 'wp-embed-share-dialog' )[ 0 ];
-				share_input = document.getElementsByClassName( 'wp-embed-share-input' )[ 0 ];
+				share_dialog = document.querySelector( '.wp-embed-share-dialog' );
+				share_input = document.querySelector( '.wp-embed-share-input' );
 
 				share_input.onclick = function ( e ) {
 					e.target.select();
 				};
 
-				document.getElementsByClassName( 'wp-embed-share-dialog-open' )[ 0 ].onclick = function ( e ) {
+				document.querySelector( '.wp-embed-share-dialog-open' ).onclick = function ( e ) {
 					share_dialog.className = share_dialog.className.replace( 'hidden', '' );
 					share_input.select();
 					e.preventDefault();
 				};
 
-				document.getElementsByClassName( 'wp-embed-share-dialog-close' )[ 0 ].onclick = function ( e ) {
+				document.querySelector( '.wp-embed-share-dialog-close' ).onclick = function ( e ) {
 					share_dialog.className += ' hidden';
-					document.getElementsByClassName( 'wp-embed-share-dialog-open' )[ 0 ].focus();
+					document.querySelector( '.wp-embed-share-dialog-open' ).focus();
 					e.preventDefault();
 				};
 
@@ -265,7 +297,7 @@ setup_postdata( $post );
 				hash = window.location.hash;
 				secret = hash.replace( /.*secret=([\d\w]{10}).*/, '$1' );
 
-				embed = document.getElementsByClassName( 'wp-embed' )[ 0 ];
+				embed = document.querySelector( '.wp-embed' );
 
 				/**
 				 * Send this document's height to the parent (embedding) site.
@@ -281,24 +313,22 @@ setup_postdata( $post );
 				 */
 				var links = document.getElementsByTagName( 'a' );
 				for ( var i = 0; i < links.length; i++ ) {
-					if ( '_top' === links[ i ].getAttribute( 'target' ) ) {
-						links[ i ].onclick = function ( e ) {
-							if ( e.target.hasAttribute( 'href' ) ) {
-								var href = e.target.getAttribute( 'href' );
-							} else {
-								var href = e.target.parentElement.getAttribute( 'href' );
-							}
-
-							/**
-							 * Send link target to the parent (embedding) site.
-							 */
-							window.parent.postMessage( {
-								message: 'link',
-								value: href,
-								secret: secret
-							}, '*' );
-							e.preventDefault();
+					links[ i ].onclick = function ( e ) {
+						if ( e.target.hasAttribute( 'href' ) ) {
+							var href = e.target.getAttribute( 'href' );
+						} else {
+							var href = e.target.parentElement.getAttribute( 'href' );
 						}
+
+						/**
+						 * Send link target to the parent (embedding) site.
+						 */
+						window.parent.postMessage( {
+							message: 'link',
+							value: href,
+							secret: secret
+						}, '*' );
+						e.preventDefault();
 					}
 				}
 			};
@@ -352,7 +382,7 @@ setup_postdata( $post );
 	}
 
 	if ( $thumbnail_id ) :
-	?>
+		?>
 		<div class="wp-embed-featured-image">
 			<a href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>" target="_top">
 				<?php echo wp_get_attachment_image( $thumbnail_id, array( 600, 340 ) ); ?>
@@ -381,22 +411,22 @@ setup_postdata( $post );
 	</div>
 	<div class="wp-embed-social">
 		<?php if ( get_comments_number( $post->ID ) || comments_open( $post->ID ) ) : ?>
-		<div class="wp-embed-comments">
-			<a href="<?php echo esc_url( get_comments_link( $post->ID ) ); ?>" target="_top">
-				<span class="dashicons dashicons-admin-comments"></span>
-				<?php
-				printf(
-					_n(
-						'%s <span class="screen-reader-text">Comment</span>',
-						'%s <span class="screen-reader-text">Comments</span>',
-						get_comments_number( $post->ID ),
-						'oembed-api'
-					),
-					get_comments_number( $post->ID )
-				);
-				?>
-			</a>
-		</div>
+			<div class="wp-embed-comments">
+				<a href="<?php echo esc_url( get_comments_link( $post->ID ) ); ?>" target="_top">
+					<span class="dashicons dashicons-admin-comments"></span>
+					<?php
+					printf(
+						_n(
+							'%s <span class="screen-reader-text">Comment</span>',
+							'%s <span class="screen-reader-text">Comments</span>',
+							get_comments_number( $post->ID ),
+							'oembed-api'
+						),
+						get_comments_number( $post->ID )
+					);
+					?>
+				</a>
+			</div>
 		<?php endif; ?>
 		<div class="wp-embed-share">
 			<button type="button" class="wp-embed-share-dialog-open" aria-label="<?php _e( 'Open sharing dialog', 'oembed-api' ); ?>">

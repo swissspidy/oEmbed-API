@@ -1,11 +1,11 @@
 function receiveEmbedMessage( e ) {
 	var iframes = document.getElementsByTagName( 'iframe' );
 	for ( var ii = 0; ii < iframes.length; ii++ ) {
-		if ( iframes[ ii ].getAttribute( 'data-secret' ) == e.data.secret ) {
+		if ( iframes[ ii ].getAttribute( 'data-secret' ) === e.data.secret ) {
 			var source = iframes[ ii ];
 
 			// Resize the iframe on request.
-			if ( 'height' == e.data.message ) {
+			if ( 'height' === e.data.message ) {
 				var height = e.data.value;
 				if ( height > 1000 ) {
 					height = 1000;
@@ -17,7 +17,7 @@ function receiveEmbedMessage( e ) {
 			}
 
 			// Link to a specific URL on request.
-			if ( 'link' == e.data.message ) {
+			if ( 'link' === e.data.message ) {
 				var sourceURL = document.createElement( 'a' ), targetURL = document.createElement( 'a' );
 				sourceURL.href = source.getAttribute( 'src' );
 				targetURL.href = e.data.value;
@@ -44,7 +44,7 @@ window.onload = function () {
 
 	// Remove security attribute from iframes in IE10 and IE11.
 	if ( isIE10 || isIE11 ) {
-		var iframes = document.getElementsByTagName( 'iframe' ), iframeClone;
+		var iframes = document.querySelectorAll( 'iframe[security]' ), iframeClone;
 		for ( var i = 0; i < iframes.length; i++ ) {
 			iframeClone = iframes[ i ].cloneNode( true );
 			iframeClone.removeAttribute( 'security' );
@@ -52,4 +52,4 @@ window.onload = function () {
 			iframes[ i ].parentNode.removeChild( iframes[ i ] );
 		}
 	}
-}
+};
