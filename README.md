@@ -37,9 +37,9 @@ We hold weekly chats about this plugin in the \#feature-oembed WordPress Slack c
 
 ### Manual Installation ###
 
-1. 2. Upload the entire `/oembed-api` directory to the `/wp-content/plugins/` directory.
-3. Activate oEmbed API through the 'Plugins' menu in WordPress.
-4. Copy the permalink of one of your blog posts and paste it into a new post. It should automatically be embedded.
+1. Upload the entire `/oembed-api` directory to the `/wp-content/plugins/` directory.
+2. Activate oEmbed API through the 'Plugins' menu in WordPress.
+3. Copy the permalink of one of your blog posts and paste it into a new post. It should automatically be embedded.
 
 ## Frequently Asked Questions ##
 
