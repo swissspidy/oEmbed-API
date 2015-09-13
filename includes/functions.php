@@ -377,7 +377,7 @@ function wp_oembed_add_query_vars( $query_vars ) {
  * @return string The filtered template.
  */
 function wp_oembed_include_template( $template ) {
-	if ( get_query_var( 'embed' ) ) {
+	if ( false !== get_query_var( 'embed', false ) ) {
 		return dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php';
 	}
 
@@ -467,7 +467,7 @@ function wp_filter_oembed_result( $html, $url ) {
 function wp_oembed_excerpt_more( $more_string ) {
 	global $post;
 
-	if ( ! get_query_var( 'embed' ) ) {
+	if ( false === get_query_var( 'embed', false ) ) {
 		return $more_string;
 	}
 
