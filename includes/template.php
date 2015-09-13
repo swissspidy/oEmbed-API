@@ -391,7 +391,7 @@ setup_postdata( $post );
 	<?php endif; ?>
 
 	<p class="wp-embed-heading">
-		<a href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>" target="_top">
+		<a href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>" target="_top" title="<?php echo esc_html( $post->post_title ); ?>">
 			<?php echo esc_html( $post->post_title ); ?>
 		</a>
 	</p>
@@ -406,7 +406,7 @@ setup_postdata( $post );
 		);
 		?>
 		<div class="wp-embed-site-title">
-			<?php printf( '<a href="%s" target="_top">%s</a>', esc_url( home_url() ), get_bloginfo( 'name' ) ); ?>
+			<?php printf( '<a href="%s" target="_top" title="%s">%s</a>', esc_url( home_url() ), esc_attr( get_bloginfo( 'name' ) ), get_bloginfo( 'name' ) ); ?>
 		</div>
 	</div>
 	<div class="wp-embed-social">
