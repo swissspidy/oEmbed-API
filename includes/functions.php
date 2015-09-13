@@ -377,9 +377,7 @@ function wp_oembed_add_query_vars( $query_vars ) {
  * @return string The filtered template.
  */
 function wp_oembed_include_template( $template ) {
-	global $wp_query;
-
-	if ( isset( $wp_query->query_vars['embed'] ) ) {
+	if ( get_query_var( 'embed' ) ) {
 		return dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php';
 	}
 
@@ -467,9 +465,9 @@ function wp_filter_oembed_result( $html, $url ) {
  * @return string The modified excerpt.
  */
 function wp_oembed_excerpt_more( $more_string ) {
-	global $wp_query, $post;
+	global $post;
 
-	if ( ! isset( $wp_query->query_vars['embed'] ) ) {
+	if ( ! get_query_var( 'embed' ) ) {
 		return $more_string;
 	}
 

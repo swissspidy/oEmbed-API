@@ -24,9 +24,7 @@ class WP_Legacy_oEmbed_Controller {
 	 */
 	public function parse_query( $wp_query ) {
 		// Check for required params.
-		if ( ! array_key_exists( 'oembed', $wp_query->query_vars ) ||
-			 ! array_key_exists( 'url', $wp_query->query_vars )
-		) {
+		if ( ! $wp_query->get( 'oembed' ) || ! $wp_query->get( 'url' ) ) {
 			return;
 		}
 
@@ -36,13 +34,9 @@ class WP_Legacy_oEmbed_Controller {
 		 * @see WP_REST_oEmbed_Controller::register_routes()
 		 */
 
-		$url = esc_url_raw( $wp_query->query_vars['url'] );
+		$url = esc_url_raw( get_query_var( 'url' ) );
 
-		$format = 'json';
-
-		if ( isset( $wp_query->query_vars['format'] ) ) {
-			$format = sanitize_text_field( $wp_query->query_vars['format'] );
-		}
+		$format = sanitize_text_field( get_query_var( 'format', 'json' ) );
 
 		/**
 		 * Filter the maxwidth oEmbed parameter.
@@ -52,11 +46,9 @@ class WP_Legacy_oEmbed_Controller {
 		 * @return int
 		 */
 		$maxwidth = apply_filters( 'oembed_default_width', 600 );
-		if ( isset( $wp_query->query_vars['maxwidth'] ) ) {
-			$maxwidth = absint( $wp_query->query_vars['maxwidth'] );
-		}
+		$maxwidth = get_query_var( 'maxwidth', $maxwidth );
 
-		$callback = isset( $wp_query->query_vars['_jsonp'] ) ? $wp_query->query_vars['_jsonp'] : false;
+		$callback = get_query_var( '_jsonp', false );
 
 		$request = array(
 			'url'      => $url,
