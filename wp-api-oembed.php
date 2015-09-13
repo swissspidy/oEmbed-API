@@ -51,13 +51,13 @@ function oembed_api_init() {
  *
  * @codeCoverageIgnore
  */
-function wp_oembed_maybe_deacitvate() {
+function wp_oembed_maybe_deactivate() {
 	deactivate_plugins( plugin_basename( __FILE__ ) );
 }
 
 // Bail early if functionality is already built into core.
 if ( function_exists( 'get_oembed_endpoint_url' ) ) {
-	add_action( 'admin_notices', 'wp_oembed_maybe_deacitvate' );
+	add_action( 'admin_notices', 'wp_oembed_maybe_deactivate' );
 } else {
 	register_activation_hook( __FILE__, 'oembed_api_activate_plugin' );
 	register_deactivation_hook( __FILE__, 'oembed_api_deactivate_plugin' );
