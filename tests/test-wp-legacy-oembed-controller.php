@@ -112,7 +112,7 @@ class WP_Legacy_oEmbed_Test_Controller extends WP_UnitTestCase {
 
 		$legacy_controller = new WP_Legacy_oEmbed_Controller();
 
-		add_filter( 'rest_oembed_json_response', '__return_false' );
+		add_filter( 'oembed_json_response', '__return_false' );
 
 		$this->assertEquals( 'Not implemented', $legacy_controller->dispatch( $request ) );
 	}
@@ -211,7 +211,7 @@ class WP_Legacy_oEmbed_Test_Controller extends WP_UnitTestCase {
 			'callback' => '',
 		);
 
-		add_filter( 'rest_oembed_xml_response', '__return_false' );
+		add_filter( 'oembed_xml_response', '__return_false' );
 
 		$legacy_controller = new WP_Legacy_oEmbed_Controller();
 

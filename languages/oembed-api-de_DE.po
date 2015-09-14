@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: oEmbed API 0.6.0\n"
 "Report-Msgid-Bugs-To: https://pascalbirchler.com\n"
 "POT-Creation-Date: 2015-09-11 12:38+0200\n"
-"PO-Revision-Date: 2015-09-12 12:13+0200\n"
+"PO-Revision-Date: 2015-09-12 23:51+0200\n"
 "Last-Translator: Pascal Birchler <pascal@required.ch>\n"
 "Language-Team: Pascal Birchler <pascal@required.ch>\n"
 "Language: de_DE\n"
@@ -34,7 +34,7 @@ msgstr "Ungültiges Format."
 
 #: includes/functions.php:121
 msgid "Embedded WordPress Post"
-msgstr "Eingebetteter WordPress Blogbeitrag"
+msgstr "Eingebetteter WordPress-Blogbeitrag"
 
 #: includes/template.php:37
 msgid "&hellip; (%d word)"

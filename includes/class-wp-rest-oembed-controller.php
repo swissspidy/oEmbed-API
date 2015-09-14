@@ -29,7 +29,7 @@ class WP_REST_oEmbed_Controller {
 						'sanitize_callback' => 'sanitize_text_field',
 					),
 					'maxwidth' => array(
-						'default'           => apply_filters( 'rest_oembed_default_width', 600 ),
+						'default'           => apply_filters( 'oembed_default_width', 600 ),
 						'sanitize_callback' => 'absint',
 					),
 				),
@@ -56,15 +56,15 @@ class WP_REST_oEmbed_Controller {
 		 * @param int    $post_id The post ID.
 		 * @param string $url     The requestd URL.
 		 */
-		$post_id = apply_filters( 'rest_oembed_request_post_id', $post_id, $request['url'] );
+		$post_id = apply_filters( 'oembed_request_post_id', $post_id, $request['url'] );
 
 		if ( 0 === $post_id ) {
-			return new WP_Error( 'rest_oembed_invalid_url', __( 'Invalid URL.', 'oembed-api' ), array( 'status' => 404 ) );
+			return new WP_Error( 'oembed_invalid_url', __( 'Invalid URL.', 'oembed-api' ), array( 'status' => 404 ) );
 		}
 
 		// Todo: Perhaps just default to json if something invalid is provided.
 		if ( ! in_array( $request['format'], array( 'json', 'xml' ) ) ) {
-			return new WP_Error( 'rest_oembed_invalid_format', __( 'Invalid format.', 'oembed-api' ), array( 'status' => 501 ) );
+			return new WP_Error( 'oembed_invalid_format', __( 'Invalid format.', 'oembed-api' ), array( 'status' => 501 ) );
 		}
 
 		return get_oembed_response_data( $post_id, $request['maxwidth'] );

@@ -21,7 +21,7 @@ function wp_oembed_add_discovery_links() {
 	 *
 	 * @param string $output HTML of the discovery links.
 	 */
-	echo apply_filters( 'rest_oembed_discovery_links', $output );
+	echo apply_filters( 'oembed_discovery_links', $output );
 }
 
 /**
@@ -93,7 +93,7 @@ function get_oembed_endpoint_url( $permalink = '', $format = 'json' ) {
 	 * @param string $permalink The permalink used for the `url` query arg.
 	 * @param string $format    The requested response format.
 	 */
-	return apply_filters( 'rest_oembed_endpoint_url', $url, $permalink, $format );
+	return apply_filters( 'oembed_endpoint_url', $url, $permalink, $format );
 }
 
 /**
@@ -129,7 +129,7 @@ function get_post_embed_html( $post = null, $width, $height ) {
 	 * @param int     $width  Width of the response.
 	 * @param int     $height Height of the response.
 	 */
-	return apply_filters( 'rest_oembed_html', $output, $post, $width, $height );
+	return apply_filters( 'oembed_html', $output, $post, $width, $height );
 }
 
 /**
@@ -172,14 +172,14 @@ function get_oembed_response_data( $post = null, $width ) {
 	 *
 	 * @param int $width The minimum width. Defaults to 200.
 	 */
-	$minwidth = apply_filters( 'rest_oembed_minwidth', 200 );
+	$minwidth = apply_filters( 'oembed_minwidth', 200 );
 
 	/**
 	 * Filter the allowed maximum width for the oEmbed response.
 	 *
 	 * @param int $width The maximum width. Defaults to 600.
 	 */
-	$maxwidth = apply_filters( 'rest_oembed_maxwidth', 600 );
+	$maxwidth = apply_filters( 'oembed_maxwidth', 600 );
 
 	if ( $width < $minwidth ) {
 		$width = $minwidth;
@@ -226,7 +226,7 @@ function get_oembed_response_data( $post = null, $width ) {
 	 * @param array   $data The response data.
 	 * @param WP_Post $post The post object.
 	 */
-	return apply_filters( 'rest_oembed_response_data', $data, $post );
+	return apply_filters( 'oembed_response_data', $data, $post );
 }
 
 /**
@@ -311,7 +311,7 @@ function _oembed_rest_pre_serve_request( $served, $result, $request, $server ) {
 	 * @param string $result The built XML.
 	 * @param array  $data   The original oEmbed response data.
 	 */
-	$result = apply_filters( 'rest_oembed_xml_response', false, $data );
+	$result = apply_filters( 'oembed_xml_response', false, $data );
 
 	// Bail if there's no XML.
 	if ( ! $result ) {
@@ -377,9 +377,7 @@ function wp_oembed_add_query_vars( $query_vars ) {
  * @return string The filtered template.
  */
 function wp_oembed_include_template( $template ) {
-	global $wp_query;
-
-	if ( isset( $wp_query->query_vars['embed'] ) ) {
+	if ( false !== get_query_var( 'embed', false ) ) {
 		return dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php';
 	}
 
@@ -461,19 +459,19 @@ function wp_filter_oembed_result( $html, $url ) {
 /**
  * Filter the string in the "more" link displayed after a trimmed excerpt.
  *
+ * @SuppressWarnings(PHPMD.ElseExpression)
+ *
  * @param string $more_string The string shown within the more link.
  * @return string The modified excerpt.
  */
 function wp_oembed_excerpt_more( $more_string ) {
-	global $wp_query, $post;
+	global $post;
 
-	if ( ! isset( $wp_query->query_vars['embed'] ) ) {
+	if ( false === get_query_var( 'embed', false ) ) {
 		return $more_string;
 	}
 
 	$text = wp_strip_all_tags( $post->post_content );
-
-	$words_array = preg_split( "/[\n\r\t ]+/", $text, -1, PREG_SPLIT_NO_EMPTY );
 
 	/*
 	 * translators: If your word count is based on single characters (e.g. East Asian characters),
@@ -483,12 +481,18 @@ function wp_oembed_excerpt_more( $more_string ) {
 	if ( strpos( _x( 'words', 'Word count type. Do not translate!', 'oembed-api' ), 'characters' ) === 0 && preg_match( '/^utf\-?8$/i', get_option( 'blog_charset' ) ) ) {
 		$text = trim( preg_replace( "/[\n\r\t ]+/", ' ', $text ), ' ' );
 		preg_match_all( '/./u', $text, $words_array );
+		$words_array = $words_array[0];
+	} else {
+		$words_array = preg_split( "/[\n\r\t ]+/", $text, -1, PREG_SPLIT_NO_EMPTY );
 	}
 
 	$more = sprintf(
-		'<span class="wp-embed-more">' . _n( '&hellip; (%d word)', '&hellip; (%d words)', count( $words_array ), 'oembed-api' ) . '</span>',
+		_n( '&hellip; (%d word)', '&hellip; (%d words)', count( $words_array ), 'oembed-api' ),
 		count( $words_array )
 	);
+
+	// The `&lrm;` fixes bi-directional text display defect in RTL languages.
+	$more = '<span class="wp-embed-more">' . $more . '&lrm;</span>';
 
 	return ' ' . $more;
 }

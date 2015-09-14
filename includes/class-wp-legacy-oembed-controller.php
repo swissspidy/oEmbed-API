@@ -24,10 +24,14 @@ class WP_Legacy_oEmbed_Controller {
 	 */
 	public function parse_query( $wp_query ) {
 		// Check for required params.
-		if ( ! array_key_exists( 'oembed', $wp_query->query_vars ) ||
-			 ! array_key_exists( 'url', $wp_query->query_vars )
-		) {
+		if ( false === $wp_query->get( 'oembed', false ) ) {
 			return;
+		}
+
+		if ( false === $wp_query->get( 'url', false ) ) {
+			status_header( 400 );
+			echo 'URL parameter missing';
+			exit;
 		}
 
 		/**
@@ -36,13 +40,9 @@ class WP_Legacy_oEmbed_Controller {
 		 * @see WP_REST_oEmbed_Controller::register_routes()
 		 */
 
-		$url = esc_url_raw( $wp_query->query_vars['url'] );
+		$url = esc_url_raw( get_query_var( 'url' ) );
 
-		$format = 'json';
-
-		if ( isset( $wp_query->query_vars['format'] ) ) {
-			$format = sanitize_text_field( $wp_query->query_vars['format'] );
-		}
+		$format = sanitize_text_field( get_query_var( 'format', 'json' ) );
 
 		/**
 		 * Filter the maxwidth oEmbed parameter.
@@ -51,12 +51,10 @@ class WP_Legacy_oEmbed_Controller {
 		 *
 		 * @return int
 		 */
-		$maxwidth = apply_filters( 'rest_oembed_default_width', 600 );
-		if ( isset( $wp_query->query_vars['maxwidth'] ) ) {
-			$maxwidth = absint( $wp_query->query_vars['maxwidth'] );
-		}
+		$maxwidth = apply_filters( 'oembed_default_width', 600 );
+		$maxwidth = get_query_var( 'maxwidth', $maxwidth );
 
-		$callback = isset( $wp_query->query_vars['_jsonp'] ) ? $wp_query->query_vars['_jsonp'] : false;
+		$callback = get_query_var( '_jsonp', false );
 
 		$request = array(
 			'url'      => $url,
@@ -89,7 +87,7 @@ class WP_Legacy_oEmbed_Controller {
 		 * @param int    $post_id The post ID.
 		 * @param string $url     The requestd URL.
 		 */
-		$post_id = apply_filters( 'rest_oembed_request_post_id', $post_id, $request['url'] );
+		$post_id = apply_filters( 'oembed_request_post_id', $post_id, $request['url'] );
 
 		if ( 0 === $post_id ) {
 			status_header( 404 );
@@ -108,6 +106,8 @@ class WP_Legacy_oEmbed_Controller {
 	/**
 	 * Print the JSON response.
 	 *
+	 * @SuppressWarnings(PHPMD.ElseExpression)
+	 *
 	 * @param array $data     The oEmbed response data.
 	 * @param array $request  The request arguments.
 	 * @return string The JSON response data.
@@ -117,7 +117,11 @@ class WP_Legacy_oEmbed_Controller {
 			$request['callback'] = false;
 		}
 
-		$result = wp_json_encode( $data );
+		if ( function_exists( 'wp_json_encode' ) ) {
+			$result = wp_json_encode( $data );
+		} else {
+			$result = json_encode( $data );
+		}
 
 		/**
 		 * Filter the JSON response.
@@ -125,7 +129,7 @@ class WP_Legacy_oEmbed_Controller {
 		 * @param string $result The encoded JSON.
 		 * @param array  $data   The original oEmbed response data.
 		 */
-		$result = apply_filters( 'rest_oembed_json_response', $result, $data );
+		$result = apply_filters( 'oembed_json_response', $result, $data );
 
 		// Bail if the result couldn't be JSON encoded.
 		if ( ! $result ) {
@@ -159,7 +163,7 @@ class WP_Legacy_oEmbed_Controller {
 		 * @param string $result The built XML.
 		 * @param array  $data   The original oEmbed response data.
 		 */
-		$result = apply_filters( 'rest_oembed_xml_response', false, $data );
+		$result = apply_filters( 'oembed_xml_response', false, $data );
 
 		// Bail if there's no XML.
 		if ( ! $result ) {

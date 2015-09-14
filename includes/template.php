@@ -153,8 +153,7 @@ setup_postdata( $post );
 
 		.wp-embed-comments,
 		.wp-embed-share {
-			float: right;
-			position: relative;
+			display: inline;
 		}
 
 		.wp-embed-social a:hover {
@@ -162,16 +161,11 @@ setup_postdata( $post );
 			color: #0073aa;
 		}
 
-		.wp-embed-comments {
-			left: -30px;
-		}
-
 		.wp-embed-comments a {
 			line-height: 25px;
 		}
 
 		.wp-embed-comments + .wp-embed-share {
-			right: -30px;
 			margin-left: 10px;
 		}
 
@@ -244,6 +238,30 @@ setup_postdata( $post );
 			padding: 0 5px;
 			text-align: center;
 			font: 400 14px/1.5 'Open Sans', sans-serif;
+		}
+
+		html[dir="rtl"] .wp-embed-site-title {
+			left: auto;
+			right: 35px;
+		}
+
+		html[dir="rtl"] .wp-embed-social {
+			float: left;
+			text-align: left;
+		}
+
+		html[dir="rtl"] .wp-embed-meta {
+			float: right;
+		}
+
+		html[dir="rtl"] .wp-embed-share {
+			margin-left: 0;
+			margin-right: 10px;
+		}
+
+		html[dir="rtl"] .wp-embed-share-dialog-close {
+			right: auto;
+			left: 20px;
 		}
 	</style>
 	<script type="text/javascript">
@@ -382,9 +400,22 @@ setup_postdata( $post );
 
 	<div class="wp-embed-meta">
 		<?php
+		$site_icon_url = admin_url( 'images/w-logo-blue.png' );
+
+		if ( function_exists( 'get_site_icon_url' ) ) {
+			$site_icon_url = get_site_icon_url( 32, $site_icon_url );
+		}
+
+		/**
+		 * Filters the site icon URL for use in the oEmbed template.
+		 *
+		 * @param string $site_icon_url The site icon URL.
+		 */
+		$site_icon_url = apply_filters( 'oembed_site_icon_url', $site_icon_url );
+
 		printf(
 			'<img src="%s" width="32" height="32" alt="" class="wp-embed-site-icon"/>',
-			esc_url( get_site_icon_url( 32, admin_url( 'images/w-logo-blue.png' ) ) )
+			esc_url( $site_icon_url )
 		);
 		?>
 		<div class="wp-embed-site-title">

@@ -2,7 +2,7 @@
 Contributors:      swissspidy, pento, netweb  
 Donate link:         
 Tags:              oembed, api  
-Requires at least: 4.3  
+Requires at least: 3.9  
 Tested up to:      4.3  
 Stable tag:        0.6.0  
 License:           GPLv2 or later  
@@ -37,9 +37,9 @@ We hold weekly chats about this plugin in the \#feature-oembed WordPress Slack c
 
 ### Manual Installation ###
 
-1. 2. Upload the entire `/oembed-api` directory to the `/wp-content/plugins/` directory.
-3. Activate oEmbed API through the 'Plugins' menu in WordPress.
-4. Copy the permalink of one of your blog posts and paste it into a new post. It should automatically be embedded.
+1. Upload the entire `/oembed-api` directory to the `/wp-content/plugins/` directory.
+2. Activate oEmbed API through the 'Plugins' menu in WordPress.
+3. Copy the permalink of one of your blog posts and paste it into a new post. It should automatically be embedded.
 
 ## Frequently Asked Questions ##
 
@@ -72,6 +72,8 @@ When you get an empty preview, it’s possible that the embedded site has the `X
 ## Screenshots ##
 
 1. Example of how embedding a WordPress post looks like.
+2. Example of a post with a featured image
+3. You can easily copy the sharing URL for any post.
 
 ## Contribute ##
 
@@ -88,6 +90,16 @@ For example, `get_post_embed_url` returns the URL to a post’s embed template u
 To complement these two functions, `get_oembed_endpoint_url` returns the URL to the oEmbed API endpoint itself.
 
 ## Changelog ##
+
+### 0.7.0 ###
+* New: Code Climate configuration
+* New: Added translations for Danish (Denmark), German (Germany), German (Switzerland), Japanese, Greek, and English (Australia).
+* Enhancement: Full Right-to-Left language support.
+* Enhancement: Various performance improvements.
+* Fixed: Previously the word count was not always correct.
+* Fixed: Dashicons are now correctly shown in Internet Explorer.
+* Fixed: Increased the iframe height limit from 600 to 1000px.
+* Fixed: Removed the `rest_` prefix from filter names
 
 ### 0.6.0 ###
 * Further accessibility improvements.
@@ -116,6 +128,9 @@ To complement these two functions, `get_oembed_endpoint_url` returns the URL to 
 * First release
 
 ## Upgrade Notice ##
+
+### 0.7.0 ###
+This version includes many new translations, full RTL language support and also has better Internet Explorer compatibility.
 
 ### 0.6.0 ###
 Major refactoring under the hood, improved accessibility and much more.
