@@ -106,6 +106,8 @@ class WP_Legacy_oEmbed_Controller {
 	/**
 	 * Print the JSON response.
 	 *
+	 * @SuppressWarnings(PHPMD.ElseExpression)
+	 *
 	 * @param array $data     The oEmbed response data.
 	 * @param array $request  The request arguments.
 	 * @return string The JSON response data.
