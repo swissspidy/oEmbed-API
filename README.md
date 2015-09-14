@@ -2,7 +2,7 @@
 Contributors:      swissspidy, pento, netweb  
 Donate link:         
 Tags:              oembed, api  
-Requires at least: 4.3  
+Requires at least: 3.9  
 Tested up to:      4.3  
 Stable tag:        0.6.0  
 License:           GPLv2 or later  

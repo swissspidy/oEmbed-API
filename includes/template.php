@@ -400,9 +400,22 @@ setup_postdata( $post );
 
 	<div class="wp-embed-meta">
 		<?php
+		$site_icon_url = admin_url( 'images/w-logo-blue.png' );
+
+		if ( function_exists( 'get_site_icon_url' ) ) {
+			$site_icon_url = get_site_icon_url( 32, $site_icon_url );
+		}
+
+		/**
+		 * Filters the site icon URL for use in the oEmbed template.
+		 *
+		 * @param string $site_icon_url The site icon URL.
+		 */
+		$site_icon_url = apply_filters( 'oembed_site_icon_url', $site_icon_url );
+
 		printf(
 			'<img src="%s" width="32" height="32" alt="" class="wp-embed-site-icon"/>',
-			esc_url( get_site_icon_url( 32, admin_url( 'images/w-logo-blue.png' ) ) )
+			esc_url( $site_icon_url )
 		);
 		?>
 		<div class="wp-embed-site-title">

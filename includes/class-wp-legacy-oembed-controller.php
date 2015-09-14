@@ -106,6 +106,8 @@ class WP_Legacy_oEmbed_Controller {
 	/**
 	 * Print the JSON response.
 	 *
+	 * @SuppressWarnings(PHPMD.ElseExpression)
+	 *
 	 * @param array $data     The oEmbed response data.
 	 * @param array $request  The request arguments.
 	 * @return string The JSON response data.
@@ -115,7 +117,11 @@ class WP_Legacy_oEmbed_Controller {
 			$request['callback'] = false;
 		}
 
-		$result = wp_json_encode( $data );
+		if ( function_exists( 'wp_json_encode' ) ) {
+			$result = wp_json_encode( $data );
+		} else {
+			$result = json_encode( $data );
+		}
 
 		/**
 		 * Filter the JSON response.
