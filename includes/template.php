@@ -390,10 +390,17 @@ setup_postdata( $post );
 	}
 
 	if ( $thumbnail_id ) :
+		/**
+		 * Filters the oEmbed thumbnail image size.
+		 *
+		 * @param string|array $image_size   Thumbnail size to use in the embed.
+		 * @param int          $thumbnail_id The current thumbnail ID.
+		 */
+		$image_size = apply_filters( 'oembed_image_size', array( 600, 340 ), $thumbnail_id );
 		?>
 		<div class="wp-embed-featured-image">
 			<a href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>" target="_top">
-				<?php echo wp_get_attachment_image( $thumbnail_id, array( 600, 340 ) ); ?>
+				<?php echo wp_get_attachment_image( $thumbnail_id, $image_size ); ?>
 			</a>
 		</div>
 	<?php endif; ?>
