@@ -87,12 +87,12 @@ class WP_Legacy_oEmbed_Controller {
 		 */
 		$post_id = apply_filters( 'oembed_request_post_id', $post_id, $request['url'] );
 
-		if ( 0 === $post_id ) {
+		$data = get_oembed_response_data( $post_id, $request['maxwidth'] );
+
+		if ( false === $data ) {
 			status_header( 404 );
 			return 'Not Found';
 		}
-
-		$data = get_oembed_response_data( $post_id, $request['maxwidth'] );
 
 		if ( 'json' === $request['format'] ) {
 			return $this->json_response( $data, $request );
