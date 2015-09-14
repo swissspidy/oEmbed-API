@@ -304,7 +304,7 @@ setup_postdata( $post );
 				 */
 				window.parent.postMessage( {
 					message: 'height',
-					value: embed.clientHeight + 2,
+					value: Math.ceil( embed.getBoundingClientRect().height ),
 					secret: secret
 				}, '*' );
 
@@ -360,7 +360,7 @@ setup_postdata( $post );
 
 				window.parent.postMessage( {
 					message: 'height',
-					value: embed.clientHeight + 2,
+					value: Math.ceil( embed.getBoundingClientRect().height ),
 					secret: secret
 				}, '*' );
 			};
