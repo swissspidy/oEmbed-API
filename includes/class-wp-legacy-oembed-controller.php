@@ -7,8 +7,6 @@
  * @package WP_oEmbed_Plugin
  */
 
-defined( 'WPINC' ) or die;
-
 /**
  * Class WP_Legacy_oEmbed_Controller
  */

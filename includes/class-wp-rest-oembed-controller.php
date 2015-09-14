@@ -5,8 +5,6 @@
  * @package WP_API_oEmbed
  */
 
-defined( 'WPINC' ) or die;
-
 /**
  * Class WP_REST_oEmbed_Controller
  */
