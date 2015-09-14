@@ -366,6 +366,14 @@ setup_postdata( $post );
 			};
 		})( window, document );
 	</script>
+	<?php
+	/**
+	 * Print scripts or data in the head tag.
+	 *
+	 * @param WP_Post $post The current post object.
+	 */
+	do_action( 'oembed_head', $post );
+	?>
 </head>
 <body>
 <div class="wp-embed">
@@ -467,5 +475,13 @@ setup_postdata( $post );
 		</div>
 	</div>
 </div>
+<?php
+/**
+ * Print scripts or data before the closing body tag.
+ *
+ * @param WP_Post $post The current post object.
+ */
+do_action( 'oembed_footer', $post );
+?>
 </body>
 </html>
