@@ -57,3 +57,8 @@ add_filter( 'oembed_result', 'wp_filter_oembed_result', 10, 2 );
 add_filter( 'embed_oembed_discover', '__return_true' );
 
 add_filter( 'excerpt_more', 'wp_oembed_excerpt_more', 20 );
+
+add_filter( 'the_excerpt_embed', 'wptexturize' );
+add_filter( 'the_excerpt_embed', 'convert_chars' );
+add_filter( 'the_excerpt_embed', 'wpautop' );
+add_filter( 'the_excerpt_embed', 'shortcode_unautop' );
