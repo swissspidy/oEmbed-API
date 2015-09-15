@@ -25,6 +25,7 @@ class WP_Legacy_oEmbed_Test_Controller extends WP_UnitTestCase {
 		$request = array(
 			'url'      => '',
 			'format'   => 'json',
+			'maxwidth' => 600,
 		);
 
 		$legacy_controller = new WP_Legacy_oEmbed_Controller();

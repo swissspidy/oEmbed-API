@@ -5,8 +5,6 @@
  * @package WP_API_oEmbed
  */
 
-defined( 'WPINC' ) or die;
-
 /**
  * Class WP_REST_oEmbed_Controller
  */
@@ -67,7 +65,7 @@ class WP_REST_oEmbed_Controller {
 			return new WP_Error( 'oembed_invalid_format', __( 'Invalid format.', 'oembed-api' ), array( 'status' => 501 ) );
 		}
 
-		return get_oembed_response_data( $post_id, $request['maxwidth'] );
+		return rest_ensure_response( get_oembed_response_data( $post_id, $request['maxwidth'] ) );
 	}
 
 	/**
