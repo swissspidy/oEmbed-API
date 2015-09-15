@@ -302,7 +302,7 @@ setup_postdata( $post );
 				 */
 				window.parent.postMessage( {
 					message: 'height',
-					value: Math.ceil( document.body.getBoundingClientRect().height ) ,
+					value: Math.ceil( document.body.getBoundingClientRect().height ),
 					secret: secret
 				}, '*' );
 
@@ -358,7 +358,7 @@ setup_postdata( $post );
 
 				window.parent.postMessage( {
 					message: 'height',
-					value: Math.ceil( document.body.getBoundingClientRect().height ) ,
+					value: Math.ceil( document.body.getBoundingClientRect().height ),
 					secret: secret
 				}, '*' );
 			};
