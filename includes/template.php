@@ -15,7 +15,7 @@ setup_postdata( $post );
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
-	<title><?php esc_html_e( $post->post_title, 'oembed-api' ); ?></title>
+	<title><?php the_title(); ?></title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700"/>
 	<style type="text/css">
@@ -381,12 +381,12 @@ setup_postdata( $post );
 	// Add post thumbnail to response if available.
 	$thumbnail_id = false;
 
-	if ( has_post_thumbnail( $post->ID ) ) {
-		$thumbnail_id = get_post_thumbnail_id( $post->ID );
+	if ( has_post_thumbnail() ) {
+		$thumbnail_id = get_post_thumbnail_id();
 	}
 
-	if ( 'attachment' === get_post_type( $post ) && wp_attachment_is_image( $post->ID ) ) {
-		$thumbnail_id = $post->ID;
+	if ( 'attachment' === get_post_type() && wp_attachment_is_image() ) {
+		$thumbnail_id = get_the_ID();
 	}
 
 	if ( $thumbnail_id ) :
@@ -399,15 +399,15 @@ setup_postdata( $post );
 		$image_size = apply_filters( 'oembed_image_size', array( 600, 340 ), $thumbnail_id );
 		?>
 		<div class="wp-embed-featured-image">
-			<a href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>" target="_top">
+			<a href="<?php the_permalink(); ?>" target="_top">
 				<?php echo wp_get_attachment_image( $thumbnail_id, $image_size ); ?>
 			</a>
 		</div>
 	<?php endif; ?>
 
 	<p class="wp-embed-heading">
-		<a href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>" target="_top">
-			<?php echo esc_html( $post->post_title ); ?>
+		<a href="<?php the_permalink(); ?>" target="_top">
+			<?php the_title(); ?>
 		</a>
 	</p>
 
@@ -438,19 +438,19 @@ setup_postdata( $post );
 		</div>
 	</div>
 	<div class="wp-embed-social">
-		<?php if ( get_comments_number( $post->ID ) || comments_open( $post->ID ) ) : ?>
+		<?php if ( get_comments_number() || comments_open() ) : ?>
 			<div class="wp-embed-comments">
-				<a href="<?php echo esc_url( get_comments_link( $post->ID ) ); ?>" target="_top">
+				<a href="<?php comments_link(); ?>" target="_top">
 					<span class="dashicons dashicons-admin-comments"></span>
 					<?php
 					printf(
 						_n(
 							'%s <span class="screen-reader-text">Comment</span>',
 							'%s <span class="screen-reader-text">Comments</span>',
-							get_comments_number( $post->ID ),
+							get_comments_number(),
 							'oembed-api'
 						),
-						get_comments_number( $post->ID )
+						get_comments_number()
 					);
 					?>
 				</a>
@@ -468,12 +468,7 @@ setup_postdata( $post );
 				<p class="wp-embed-share-title">
 					<?php _e( 'Copy and paste this URL into your site to embed:', 'oembed-api' ); ?>
 				</p>
-				<?php
-				printf(
-					'<input type="text" value="%s" class="wp-embed-share-input" />',
-					esc_url( get_permalink( $post->ID ) )
-				);
-				?>
+				<input type="text" value="<?php the_permalink(); ?>" class="wp-embed-share-input" />
 			</div>
 
 			<button type="button" class="wp-embed-share-dialog-close" aria-label="<?php _e( 'Close sharing dialog', 'oembed-api' ); ?>">
