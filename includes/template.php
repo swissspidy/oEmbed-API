@@ -268,7 +268,7 @@ setup_postdata( $post );
 		(function ( window, document ) {
 			'use strict';
 
-			var hash, secret, share_dialog, share_input, embed, resize_limiter;
+			var hash, secret, share_dialog, share_input, resize_limiter;
 
 			window.onload = function () {
 				share_dialog = document.querySelector( '.wp-embed-share-dialog' );
@@ -297,14 +297,12 @@ setup_postdata( $post );
 				hash = window.location.hash;
 				secret = hash.replace( /.*secret=([\d\w]{10}).*/, '$1' );
 
-				embed = document.querySelector( '.wp-embed' );
-
 				/**
 				 * Send this document's height to the parent (embedding) site.
 				 */
 				window.parent.postMessage( {
 					message: 'height',
-					value: embed.clientHeight + 2,
+					value: Math.ceil( document.body.getBoundingClientRect().height )` ,
 					secret: secret
 				}, '*' );
 
@@ -360,7 +358,7 @@ setup_postdata( $post );
 
 				window.parent.postMessage( {
 					message: 'height',
-					value: embed.clientHeight + 2,
+					value: Math.ceil( document.body.getBoundingClientRect().height )` ,
 					secret: secret
 				}, '*' );
 			};
