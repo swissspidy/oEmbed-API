@@ -496,3 +496,16 @@ function wp_oembed_excerpt_more( $more_string ) {
 
 	return ' ' . $more;
 }
+
+/**
+ * Display the post excerpt for the embed template.
+ */
+function the_excerpt_embed() {
+	$output = get_the_excerpt();
+	/**
+	 * Filter the post excerpt for the embed template.
+	 *
+	 * @param string $output The current post excerpt.
+	 */
+	echo apply_filters( 'the_excerpt_embed', $output );
+}
