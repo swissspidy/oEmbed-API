@@ -8,9 +8,7 @@
  * @package WP_oEmbed
  */
 
-/* @var WP_Post $post */
-global $post;
-setup_postdata( $post );
+setup_postdata( get_queried_object() );
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -370,7 +368,7 @@ setup_postdata( $post );
 	 *
 	 * @param WP_Post $post The current post object.
 	 */
-	do_action( 'oembed_head', $post );
+	do_action( 'oembed_head' );
 	?>
 </head>
 <body>
@@ -481,7 +479,7 @@ setup_postdata( $post );
  *
  * @param WP_Post $post The current post object.
  */
-do_action( 'oembed_footer', $post );
+do_action( 'oembed_footer', get_post() );
 ?>
 </body>
 </html>
