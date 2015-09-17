@@ -547,13 +547,13 @@ function wp_oembed_old_slug_redirect() {
 		$query = $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta, $wpdb->posts WHERE ID = post_id AND post_type = %s AND meta_key = '_wp_old_slug' AND meta_value = %s", $post_type, $wp_query->query_vars['name'] );
 
 		if ( '' != $wp_query->query_vars['year'] ) {
-			$query .= $wpdb->prepare( " AND YEAR(post_date) = %d", $wp_query->query_vars['year'] );
+			$query .= $wpdb->prepare( ' AND YEAR(post_date) = %d', $wp_query->query_vars['year'] );
 		}
 		if ( '' != $wp_query->query_vars['monthnum'] ) {
-			$query .= $wpdb->prepare( " AND MONTH(post_date) = %d", $wp_query->query_vars['monthnum'] );
+			$query .= $wpdb->prepare( ' AND MONTH(post_date) = %d', $wp_query->query_vars['monthnum'] );
 		}
 		if ( '' != $wp_query->query_vars['day'] ) {
-			$query .= $wpdb->prepare( " AND DAYOFMONTH(post_date) = %d", $wp_query->query_vars['day'] );
+			$query .= $wpdb->prepare( ' AND DAYOFMONTH(post_date) = %d', $wp_query->query_vars['day'] );
 		}
 
 		$id = (int) $wpdb->get_var( $query );
