@@ -42,7 +42,8 @@ the_post();
 			height: 20px;
 			background-color: transparent;
 			background-repeat: no-repeat;
-			background-size: cover;
+			background-size: 20px;
+			background-position: center;
 			-webkit-transition: background .1s ease-in;
 			transition: background .1s ease-in;
 			position: relative;
@@ -67,6 +68,25 @@ the_post();
 
 		.wp-embed-share-dialog-open:hover .dashicons-share {
 			background-image: url("data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20d%3D%27M14.5%2012q1.24%200%202.12.88T17.5%2015t-.88%202.12-2.12.88-2.12-.88T11.5%2015q0-.34.09-.69l-4.38-2.3Q6.32%2013%205%2013q-1.24%200-2.12-.88T2%2010t.88-2.12T5%207q1.3%200%202.21.99l4.38-2.3q-.09-.35-.09-.69%200-1.24.88-2.12T14.5%202t2.12.88T17.5%205t-.88%202.12T14.5%208q-1.3%200-2.21-.99l-4.38%202.3Q8%209.66%208%2010t-.09.69l4.38%202.3q.89-.99%202.21-.99z%27%20fill%3D%27%230073aa%27%2F%3E%3C%2Fsvg%3E");
+		}
+
+		.wp-embed-share-dialog-open:focus,
+		.wp-embed-share-dialog-close:focus {
+			outline: none;
+		}
+
+		.wp-embed-share-dialog-open .dashicons,
+		.wp-embed-share-dialog-close .dashicons {
+			padding: 4px;
+			top: 8px;
+		}
+
+		.wp-embed-share-dialog-open:focus .dashicons,
+		.wp-embed-share-dialog-close:focus .dashicons {
+			-webkit-box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, .8);
+			box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, .8);
+			-webkit-border-radius: 100%;
+			border-radius: 100%;
 		}
 
 		.wp-embed {
