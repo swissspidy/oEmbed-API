@@ -15,13 +15,11 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	function test_template_include() {
 		$this->assertEquals( '', wp_oembed_include_template( '' ) );
 
-		$GLOBALS['wp_query'] = new WP_Query();
+		$post_id = $this->factory->post->create();
+		$this->go_to( get_permalink( $post_id ) );
 		$GLOBALS['wp_query']->query_vars['embed'] = true;
 
-		$this->assertEquals( '', wp_oembed_include_template( '' ) );
-
-		$GLOBALS['wp_query']->post_count = 10;
-
+		$this->assertQueryTrue( 'is_single', 'is_singular' );
 		$this->assertEquals( dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php', wp_oembed_include_template( '' ) );
 	}
 	/**
@@ -147,13 +145,17 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 		$user = $this->factory->user->create_and_get( array(
 			'display_name' => 'John Doe',
 		) );
-		$GLOBALS['wp_query'] = new WP_Query();
-		$GLOBALS['wp_query']->queried_object = $this->factory->post->create_and_get( array(
+
+		$post_id = $this->factory->post->create( array(
 			'post_author'  => $user->ID,
 			'post_title'   => 'Hello World',
 			'post_content' => 'Foo Bar',
 			'post_excerpt' => 'Bar Baz',
 		) );
+		$this->go_to( get_permalink( $post_id ) );
+		$GLOBALS['wp_query']->query_vars['embed'] = true;
+
+		$this->assertQueryTrue( 'is_single', 'is_singular' );
 
 		ob_start();
 		include( dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php' );

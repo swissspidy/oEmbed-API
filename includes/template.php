@@ -8,8 +8,7 @@
  * @package WP_oEmbed
  */
 
-setup_postdata( get_queried_object() );
-$GLOBALS['post'] = get_queried_object();
+the_post();
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>

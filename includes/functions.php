@@ -377,7 +377,7 @@ function wp_oembed_add_query_vars( $query_vars ) {
  * @return string The filtered template.
  */
 function wp_oembed_include_template( $template ) {
-	if ( false !== get_query_var( 'embed', false ) && have_posts() ) {
+	if ( false !== get_query_var( 'embed', false ) && have_posts() && is_singular() ) {
 		return dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php';
 	}
 
