@@ -515,6 +515,7 @@ function the_excerpt_embed() {
  *
  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  * @SuppressWarnings(PHPMD.NPathComplexity)
+ * @codeCoverageIgnore
  */
 function wp_oembed_old_slug_redirect() {
 	global $wp_query, $wpdb;
