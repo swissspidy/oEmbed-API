@@ -18,6 +18,10 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 		$GLOBALS['wp_query'] = new WP_Query();
 		$GLOBALS['wp_query']->query_vars['embed'] = true;
 
+		$this->assertEquals( '', wp_oembed_include_template( '' ) );
+
+		$GLOBALS['wp_query']->post_count = 10;
+
 		$this->assertEquals( dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php', wp_oembed_include_template( '' ) );
 	}
 	/**
@@ -143,11 +147,12 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 		$user = $this->factory->user->create_and_get( array(
 			'display_name' => 'John Doe',
 		) );
-		$GLOBALS['post'] = $this->factory->post->create_and_get( array(
+		$GLOBALS['wp_query'] = new WP_Query();
+		$GLOBALS['wp_query']->queried_object = $this->factory->post->create_and_get( array(
 			'post_author'  => $user->ID,
 			'post_title'   => 'Hello World',
 			'post_content' => 'Foo Bar',
-			'post_excerpt' => 'Bar Baz'
+			'post_excerpt' => 'Bar Baz',
 		) );
 
 		ob_start();
