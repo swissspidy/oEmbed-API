@@ -276,16 +276,30 @@ the_post();
 					e.target.select();
 				};
 
-				document.querySelector( '.wp-embed-share-dialog-open' ).onclick = function ( e ) {
+				function openSharingDialog() {
 					share_dialog.className = share_dialog.className.replace( 'hidden', '' );
 					share_input.select();
+				}
+
+				function closeSharingDialog() {
+					share_dialog.className += ' hidden';
+					document.querySelector( '.wp-embed-share-dialog-open' ).focus();
+				}
+
+				document.querySelector( '.wp-embed-share-dialog-open' ).onclick = function ( e ) {
+					openSharingDialog();
 					e.preventDefault();
 				};
 
 				document.querySelector( '.wp-embed-share-dialog-close' ).onclick = function ( e ) {
-					share_dialog.className += ' hidden';
-					document.querySelector( '.wp-embed-share-dialog-open' ).focus();
+					closeSharingDialog();
 					e.preventDefault();
+				};
+
+				document.onkeydown = function ( e ) {
+					if ( e.keyCode === 27 && -1 === share_dialog.className.indexOf( 'hidden' ) ) {
+						closeSharingDialog();
+					}
 				};
 
 				if ( window.self === window.top ) {
