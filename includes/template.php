@@ -168,6 +168,7 @@ the_post();
 
 		.wp-embed-comments a {
 			line-height: 25px;
+			display: inline-block;
 		}
 
 		.wp-embed-comments + .wp-embed-share {
