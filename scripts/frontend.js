@@ -31,12 +31,7 @@ function receiveEmbedMessage( e ) {
 	}
 }
 
-if ( window.addEventListener ) {
-	window.addEventListener( 'message', receiveEmbedMessage, false );
-}
-else if ( window.attachEvent ) {
-	window.attachEvent( 'message', receiveEmbedMessage );
-}
+window.addEventListener( 'message', receiveEmbedMessage, false );
 
 window.onload = function () {
 	var isIE10 = 10 === new Function( "/*@cc_on return @_jscript_version; @*/" )(),
