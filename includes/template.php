@@ -42,7 +42,8 @@ the_post();
 			height: 20px;
 			background-color: transparent;
 			background-repeat: no-repeat;
-			background-size: cover;
+			background-size: 20px;
+			background-position: center;
 			-webkit-transition: background .1s ease-in;
 			transition: background .1s ease-in;
 			position: relative;
@@ -149,6 +150,12 @@ the_post();
 			text-align: right;
 		}
 
+		.wp-embed-social::after {
+			content: "";
+			display: table;
+			clear: both;
+		}
+
 		.wp-embed-comments,
 		.wp-embed-share {
 			display: inline;
@@ -161,6 +168,7 @@ the_post();
 
 		.wp-embed-comments a {
 			line-height: 25px;
+			display: inline-block;
 		}
 
 		.wp-embed-comments + .wp-embed-share {
@@ -189,11 +197,26 @@ the_post();
 
 		.wp-embed-share-dialog-open,
 		.wp-embed-share-dialog-close {
-			margin: 0;
+			margin: -8px 0 0;
 			padding: 0;
 			background: transparent;
 			border: none;
 			cursor: pointer;
+			outline: none;
+		}
+
+		.wp-embed-share-dialog-open .dashicons,
+		.wp-embed-share-dialog-close .dashicons {
+			padding: 4px;
+			top: 8px;
+		}
+
+		.wp-embed-share-dialog-open:focus .dashicons,
+		.wp-embed-share-dialog-close:focus .dashicons {
+			-webkit-box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, .8);
+			box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, .8);
+			-webkit-border-radius: 100%;
+			border-radius: 100%;
 		}
 
 		.wp-embed-share-dialog-close {
