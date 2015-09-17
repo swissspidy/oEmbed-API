@@ -509,3 +509,60 @@ function the_excerpt_embed() {
 	 */
 	echo apply_filters( 'the_excerpt_embed', $output );
 }
+
+/**
+ * Custom old slug redirection function.
+ */
+function wp_oembed_old_slug_redirect() {
+	global $wp_query;
+
+	if ( false === get_query_var( 'embed', false ) ) {
+		return;
+	}
+
+	if ( is_404() && '' != $wp_query->query_vars['name'] ) :
+		global $wpdb;
+
+		// Guess the current post_type based on the query vars.
+		$post_type = 'post';
+
+		if ( get_query_var( 'post_type' ) ) {
+			$post_type = get_query_var( 'post_type' );
+		} elseif ( ! empty( $wp_query->query_vars['pagename'] ) ) {
+			$post_type = 'page';
+		}
+
+		if ( is_array( $post_type ) ) {
+			if ( count( $post_type ) > 1 ) {
+				return;
+			}
+			$post_type = reset( $post_type );
+		}
+
+		// Do not attempt redirect for hierarchical post types.
+		if ( is_post_type_hierarchical( $post_type ) ) {
+			return;
+		}
+
+		$query = $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta, $wpdb->posts WHERE ID = post_id AND post_type = %s AND meta_key = '_wp_old_slug' AND meta_value = %s", $post_type, $wp_query->query_vars['name'] );
+
+		if ( '' != $wp_query->query_vars['year'] ) {
+			$query .= $wpdb->prepare( " AND YEAR(post_date) = %d", $wp_query->query_vars['year'] );
+		}
+		if ( '' != $wp_query->query_vars['monthnum'] ) {
+			$query .= $wpdb->prepare( " AND MONTH(post_date) = %d", $wp_query->query_vars['monthnum'] );
+		}
+		if ( '' != $wp_query->query_vars['day'] ) {
+			$query .= $wpdb->prepare( " AND DAYOFMONTH(post_date) = %d", $wp_query->query_vars['day'] );
+		}
+
+		$id = (int) $wpdb->get_var( $query );
+
+		if ( ! $id ) {
+			return;
+		}
+
+		wp_redirect( get_post_embed_url( $id ), 301 );
+		exit;
+	endif;
+}

@@ -47,6 +47,7 @@ add_action( 'mce_external_plugins', 'wp_oembed_add_mce_plugin' );
 add_action( 'wp_enqueue_editor', 'wp_oembed_load_mce_script' );
 
 add_filter( 'template_include', 'wp_oembed_include_template' );
+add_filter( 'template_redirect', 'wp_oembed_old_slug_redirect', 1 );
 
 add_action( 'wp_head', 'wp_oembed_add_discovery_links' );
 
