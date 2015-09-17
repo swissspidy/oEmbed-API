@@ -23,7 +23,7 @@ function receiveEmbedMessage( e ) {
 				targetURL.href = e.data.value;
 
 				// Only continue if link hostname matches iframe's hostname.
-				if ( targetURL.host === sourceURL.host ) {
+				if ( targetURL.host === sourceURL.host && document.activeElement === source ) {
 					location.href = e.data.value;
 				}
 			}
