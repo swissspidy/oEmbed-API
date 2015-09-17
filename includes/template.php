@@ -9,6 +9,7 @@
  */
 
 setup_postdata( get_queried_object() );
+$GLOBALS['post'] = get_queried_object();
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -365,8 +366,6 @@ setup_postdata( get_queried_object() );
 	<?php
 	/**
 	 * Print scripts or data in the head tag.
-	 *
-	 * @param WP_Post $post The current post object.
 	 */
 	do_action( 'oembed_head' );
 	?>
@@ -476,10 +475,8 @@ setup_postdata( get_queried_object() );
 <?php
 /**
  * Print scripts or data before the closing body tag.
- *
- * @param WP_Post $post The current post object.
  */
-do_action( 'oembed_footer', get_post() );
+do_action( 'oembed_footer' );
 ?>
 </body>
 </html>
