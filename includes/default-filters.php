@@ -49,8 +49,10 @@ add_action( 'wp_enqueue_editor', 'wp_oembed_load_mce_script' );
 add_filter( 'template_include', 'wp_oembed_include_template' );
 
 add_action( 'wp_head', 'wp_oembed_add_discovery_links' );
-
 add_action( 'wp_head', 'wp_oembed_add_host_js' );
+
+add_action( 'oembed_head', 'print_emoji_detection_script' );
+add_action( 'oembed_head', 'print_emoji_styles' );
 
 add_filter( 'oembed_result', 'wp_filter_oembed_result', 10, 2 );
 
