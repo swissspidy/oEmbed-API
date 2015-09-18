@@ -163,6 +163,35 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 
 		$doc = new DOMDocument();
 		$this->assertTrue( $doc->loadHTML( $actual ) );
+		$this->assertTrue( false === strpos( $actual, 'Page not found' ) );
+		$this->assertTrue( false !== strpos( $actual, 'Hello World' ) );
+	}
+
+	/**
+	 * Test rest_oembed_output method.
+	 */
+	function test_rest_oembed_output_404() {
+		global $wp_rewrite;
+
+		$wp_rewrite->init();
+		$wp_rewrite->set_permalink_structure( '/%postname%/' );
+		$wp_rewrite->flush_rules();
+
+		$this->go_to( home_url( '/non-existent-post/embed/' ) );
+		$GLOBALS['wp_query']->query_vars['embed'] = true;
+
+		$this->assertQueryTrue( 'is_404' );
+
+		ob_start();
+		include( dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php' );
+		$actual = ob_get_clean();
+
+		$doc = new DOMDocument();
+		$this->assertTrue( $doc->loadHTML( $actual ) );
+		$this->assertTrue( false !== strpos( $actual, 'Page not found' ) );
+
+		$wp_rewrite->set_permalink_structure( '' );
+		$wp_rewrite->init();
 	}
 
 	/**
