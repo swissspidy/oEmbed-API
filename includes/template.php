@@ -8,12 +8,11 @@
  * @package WP_oEmbed
  */
 
-the_post();
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
-	<title><?php the_title(); ?></title>
+	<title><?php wp_title( '-', true, 'right' ); ?></title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700"/>
 	<style type="text/css">
@@ -289,15 +288,19 @@ the_post();
 		(function ( window, document ) {
 			'use strict';
 
-			var hash, secret, share_dialog, share_input, resize_limiter;
+			var hash, secret, share_dialog, share_dialog_open, share_dialog_close, share_input, resize_limiter;
 
 			window.onload = function () {
 				share_dialog = document.querySelector( '.wp-embed-share-dialog' );
+				share_dialog_open = document.querySelector( '.wp-embed-share-dialog-open' );
+				share_dialog_close = document.querySelector( '.wp-embed-share-dialog-close' );
 				share_input = document.querySelector( '.wp-embed-share-input' );
 
-				share_input.onclick = function ( e ) {
-					e.target.select();
-				};
+				if ( share_input ) {
+					share_input.onclick = function ( e ) {
+						e.target.select();
+					};
+				}
 
 				function openSharingDialog() {
 					share_dialog.className = share_dialog.className.replace( 'hidden', '' );
@@ -309,15 +312,20 @@ the_post();
 					document.querySelector( '.wp-embed-share-dialog-open' ).focus();
 				}
 
-				document.querySelector( '.wp-embed-share-dialog-open' ).onclick = function ( e ) {
-					openSharingDialog();
-					e.preventDefault();
-				};
+				if ( share_dialog_open ) {
+					share_dialog_open.onclick = function ( e ) {
+						openSharingDialog();
+						share_input.select();
+						e.preventDefault();
+					};
+				}
 
-				document.querySelector( '.wp-embed-share-dialog-close' ).onclick = function ( e ) {
-					closeSharingDialog();
-					e.preventDefault();
-				};
+				if ( share_dialog_close ) {
+					share_dialog_close.onclick = function ( e ) {
+						closeSharingDialog();
+						e.preventDefault();
+					};
+				}
 
 				document.onkeydown = function ( e ) {
 					if ( e.keyCode === 27 && -1 === share_dialog.className.indexOf( 'hidden' ) ) {
@@ -409,104 +417,143 @@ the_post();
 <body>
 <div class="wp-embed">
 	<?php
-	// Add post thumbnail to response if available.
-	$thumbnail_id = false;
+	if ( have_posts() ) :
+		while ( have_posts() ) : the_post();
+			// Add post thumbnail to response if available.
+			$thumbnail_id = false;
 
-	if ( has_post_thumbnail() ) {
-		$thumbnail_id = get_post_thumbnail_id();
-	}
+			if ( has_post_thumbnail() ) {
+				$thumbnail_id = get_post_thumbnail_id();
+			}
 
-	if ( 'attachment' === get_post_type() && wp_attachment_is_image() ) {
-		$thumbnail_id = get_the_ID();
-	}
+			if ( 'attachment' === get_post_type() && wp_attachment_is_image() ) {
+				$thumbnail_id = get_the_ID();
+			}
 
-	if ( $thumbnail_id ) :
-		/**
-		 * Filters the oEmbed thumbnail image size.
-		 *
-		 * @param string|array $image_size   Thumbnail size to use in the embed.
-		 * @param int          $thumbnail_id The current thumbnail ID.
-		 */
-		$image_size = apply_filters( 'oembed_image_size', array( 600, 340 ), $thumbnail_id );
+			if ( $thumbnail_id ) :
+				/**
+				 * Filters the oEmbed thumbnail image size.
+				 *
+				 * @param string|array $image_size   Thumbnail size to use in the embed.
+				 * @param int          $thumbnail_id The current thumbnail ID.
+				 */
+				$image_size = apply_filters( 'oembed_image_size', array( 600, 340 ), $thumbnail_id );
+				?>
+				<div class="wp-embed-featured-image">
+					<a href="<?php the_permalink(); ?>" target="_top">
+						<?php echo wp_get_attachment_image( $thumbnail_id, $image_size ); ?>
+					</a>
+				</div>
+			<?php endif; ?>
+
+			<p class="wp-embed-heading">
+				<a href="<?php the_permalink(); ?>" target="_top">
+					<?php the_title(); ?>
+				</a>
+			</p>
+
+			<div class="wp-embed-excerpt"><?php the_excerpt_embed(); ?></div>
+
+			<div class="wp-embed-meta">
+				<?php
+				$site_icon_url = admin_url( 'images/w-logo-blue.png' );
+
+				if ( function_exists( 'get_site_icon_url' ) ) {
+					$site_icon_url = get_site_icon_url( 32, $site_icon_url );
+				}
+
+				/**
+				 * Filters the site icon URL for use in the oEmbed template.
+				 *
+				 * @param string $site_icon_url The site icon URL.
+				 */
+				$site_icon_url = apply_filters( 'oembed_site_icon_url', $site_icon_url );
+
+				printf(
+					'<img src="%s" width="32" height="32" alt="" class="wp-embed-site-icon"/>',
+					esc_url( $site_icon_url )
+				);
+				?>
+				<div class="wp-embed-site-title">
+					<?php printf( '<a href="%s" target="_top">%s</a>', esc_url( home_url() ), get_bloginfo( 'name' ) ); ?>
+				</div>
+			</div>
+			<div class="wp-embed-social">
+				<?php if ( get_comments_number() || comments_open() ) : ?>
+					<div class="wp-embed-comments">
+						<a href="<?php comments_link(); ?>" target="_top">
+							<span class="dashicons dashicons-admin-comments"></span>
+							<?php
+							printf(
+								_n(
+									'%s <span class="screen-reader-text">Comment</span>',
+									'%s <span class="screen-reader-text">Comments</span>',
+									get_comments_number(),
+									'oembed-api'
+								),
+								get_comments_number()
+							);
+							?>
+						</a>
+					</div>
+				<?php endif; ?>
+				<div class="wp-embed-share">
+					<button type="button" class="wp-embed-share-dialog-open"
+					        aria-label="<?php _e( 'Open sharing dialog', 'oembed-api' ); ?>">
+						<span class="dashicons dashicons-share"></span>
+					</button>
+				</div>
+			</div>
+			<div class="wp-embed-share-dialog hidden">
+				<div class="wp-embed-share-dialog-content">
+					<div class="wp-embed-share-dialog-text">
+						<p class="wp-embed-share-title">
+							<?php _e( 'Copy and paste this URL into your site to embed:', 'oembed-api' ); ?>
+						</p>
+						<input type="text" value="<?php the_permalink(); ?>" class="wp-embed-share-input"/>
+					</div>
+
+					<button type="button" class="wp-embed-share-dialog-close"
+					        aria-label="<?php _e( 'Close sharing dialog', 'oembed-api' ); ?>">
+						<span class="dashicons dashicons-no"></span>
+					</button>
+				</div>
+			</div>
+			<?php
+		endwhile;
+	else :
 		?>
-		<div class="wp-embed-featured-image">
-			<a href="<?php the_permalink(); ?>" target="_top">
-				<?php echo wp_get_attachment_image( $thumbnail_id, $image_size ); ?>
-			</a>
+		<p class="wp-embed-heading"><?php _e( 'Page not found', 'oembed-api' ); ?></p>
+
+		<div class="wp-embed-excerpt">
+			<p><?php _e( 'Error 404! The requested content was not found.', 'oembed-api' ) ?></p>
+		</div>
+
+		<div class="wp-embed-meta">
+			<?php
+			$site_icon_url = admin_url( 'images/w-logo-blue.png' );
+
+			if ( function_exists( 'get_site_icon_url' ) ) {
+				$site_icon_url = get_site_icon_url( 32, $site_icon_url );
+			}
+
+			/**
+			 * Filters the site icon URL for use in the oEmbed template.
+			 *
+			 * @param string $site_icon_url The site icon URL.
+			 */
+			$site_icon_url = apply_filters( 'oembed_site_icon_url', $site_icon_url );
+
+			printf(
+				'<img src="%s" width="32" height="32" alt="" class="wp-embed-site-icon"/>',
+				esc_url( $site_icon_url )
+			);
+			?>
+			<div class="wp-embed-site-title">
+				<?php printf( '<a href="%s" target="_top">%s</a>', esc_url( home_url() ), get_bloginfo( 'name' ) ); ?>
+			</div>
 		</div>
 	<?php endif; ?>
-
-	<p class="wp-embed-heading">
-		<a href="<?php the_permalink(); ?>" target="_top">
-			<?php the_title(); ?>
-		</a>
-	</p>
-
-	<div class="wp-embed-excerpt"><?php the_excerpt_embed(); ?></div>
-
-	<div class="wp-embed-meta">
-		<?php
-		$site_icon_url = admin_url( 'images/w-logo-blue.png' );
-
-		if ( function_exists( 'get_site_icon_url' ) ) {
-			$site_icon_url = get_site_icon_url( 32, $site_icon_url );
-		}
-
-		/**
-		 * Filters the site icon URL for use in the oEmbed template.
-		 *
-		 * @param string $site_icon_url The site icon URL.
-		 */
-		$site_icon_url = apply_filters( 'oembed_site_icon_url', $site_icon_url );
-
-		printf(
-			'<img src="%s" width="32" height="32" alt="" class="wp-embed-site-icon"/>',
-			esc_url( $site_icon_url )
-		);
-		?>
-		<div class="wp-embed-site-title">
-			<?php printf( '<a href="%s" target="_top">%s</a>', esc_url( home_url() ), get_bloginfo( 'name' ) ); ?>
-		</div>
-	</div>
-	<div class="wp-embed-social">
-		<?php if ( get_comments_number() || comments_open() ) : ?>
-			<div class="wp-embed-comments">
-				<a href="<?php comments_link(); ?>" target="_top">
-					<span class="dashicons dashicons-admin-comments"></span>
-					<?php
-					printf(
-						_n(
-							'%s <span class="screen-reader-text">Comment</span>',
-							'%s <span class="screen-reader-text">Comments</span>',
-							get_comments_number(),
-							'oembed-api'
-						),
-						get_comments_number()
-					);
-					?>
-				</a>
-			</div>
-		<?php endif; ?>
-		<div class="wp-embed-share">
-			<button type="button" class="wp-embed-share-dialog-open" aria-label="<?php _e( 'Open sharing dialog', 'oembed-api' ); ?>">
-				<span class="dashicons dashicons-share"></span>
-			</button>
-		</div>
-	</div>
-	<div class="wp-embed-share-dialog hidden">
-		<div class="wp-embed-share-dialog-content">
-			<div class="wp-embed-share-dialog-text">
-				<p class="wp-embed-share-title">
-					<?php _e( 'Copy and paste this URL into your site to embed:', 'oembed-api' ); ?>
-				</p>
-				<input type="text" value="<?php the_permalink(); ?>" class="wp-embed-share-input" />
-			</div>
-
-			<button type="button" class="wp-embed-share-dialog-close" aria-label="<?php _e( 'Close sharing dialog', 'oembed-api' ); ?>">
-				<span class="dashicons dashicons-no"></span>
-			</button>
-		</div>
-	</div>
 </div>
 <?php
 /**
