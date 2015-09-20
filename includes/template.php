@@ -470,8 +470,8 @@
 				$site_icon_url = apply_filters( 'oembed_site_icon_url', $site_icon_url );
 
 				printf(
-					'<img src="%s" width="32" height="32" alt="" class="wp-embed-site-icon"/>',
-					esc_url( $site_icon_url )
+					'<a href="%s" target="_top"><img src="%s" width="32" height="32" alt="" class="wp-embed-site-icon"/></a>',
+					esc_url( home_url() ), esc_url( $site_icon_url )
 				);
 				?>
 				<div class="wp-embed-site-title">
