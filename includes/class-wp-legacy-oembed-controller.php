@@ -77,6 +77,21 @@ class WP_Legacy_oEmbed_Controller {
 			return 'Invalid format';
 		}
 
+		$need_restore_current_blog = false;
+
+		// We need to switch to blog in case of a sub directory Multisite config
+		if ( is_multisite() && ! is_subdomain_install() ) {
+			$network_url = trailingslashit( network_site_url() );
+			$url_parts   = explode( '/', str_replace( $network_url, '', $request['url'] ) );
+			$blog_slug   = reset( $url_parts );
+			$blog_id     = get_id_from_blogname( $blog_slug );
+
+			if ( ! empty( $blog_id ) && (int) $blog_id !== get_current_blog_id() ) {
+				$need_restore_current_blog = true;
+				switch_to_blog( $blog_id );
+			}
+		}
+
 		$post_id = url_to_postid( $request['url'] );
 
 		/**
@@ -88,6 +103,11 @@ class WP_Legacy_oEmbed_Controller {
 		$post_id = apply_filters( 'oembed_request_post_id', $post_id, $request['url'] );
 
 		$data = get_oembed_response_data( $post_id, $request['maxwidth'] );
+
+		// Restore current blog if needed
+		if ( $need_restore_current_blog ) {
+			restore_current_blog();
+		}
 
 		if ( false === $data ) {
 			status_header( 404 );
