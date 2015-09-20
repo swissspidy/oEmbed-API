@@ -89,7 +89,8 @@
 		}
 
 		.wp-embed a:hover {
-			text-decoration: underline;
+			text-decoration: none;
+			color: #0073aa;
 		}
 
 		.wp-embed-featured-image {
@@ -456,6 +457,9 @@
 
 			<div class="wp-embed-meta">
 				<?php
+
+				printf( '<a href="%s" target="_top">', esc_url( home_url() ) );
+
 				$site_icon_url = admin_url( 'images/w-logo-blue.png' );
 
 				if ( function_exists( 'get_site_icon_url' ) ) {
@@ -470,13 +474,15 @@
 				$site_icon_url = apply_filters( 'oembed_site_icon_url', $site_icon_url );
 
 				printf(
-					'<a href="%s" target="_top"><img src="%s" width="32" height="32" alt="" class="wp-embed-site-icon"/></a>',
-					esc_url( home_url() ), esc_url( $site_icon_url )
+					'<img src="%s" width="32" height="32" alt="" class="wp-embed-site-icon"/>',
+					esc_url( $site_icon_url )
 				);
+
 				?>
-				<div class="wp-embed-site-title">
-					<?php printf( '<a href="%s" target="_top">%s</a>', esc_url( home_url() ), get_bloginfo( 'name' ) ); ?>
-				</div>
+					<div class="wp-embed-site-title">
+						<?php echo get_bloginfo( 'name' ); ?>
+					</div>
+				</a>
 			</div>
 			<div class="wp-embed-social">
 				<?php if ( get_comments_number() || comments_open() ) : ?>
@@ -531,6 +537,9 @@
 
 		<div class="wp-embed-meta">
 			<?php
+
+			printf( '<a href="%s" target="_top">', esc_url( home_url() ) );
+
 			$site_icon_url = admin_url( 'images/w-logo-blue.png' );
 
 			if ( function_exists( 'get_site_icon_url' ) ) {
@@ -549,9 +558,10 @@
 				esc_url( $site_icon_url )
 			);
 			?>
-			<div class="wp-embed-site-title">
-				<?php printf( '<a href="%s" target="_top">%s</a>', esc_url( home_url() ), get_bloginfo( 'name' ) ); ?>
-			</div>
+				<div class="wp-embed-site-title">
+					<?php echo get_bloginfo( 'name' ); ?>
+				</div>
+			</a>
 		</div>
 	<?php endif; ?>
 </div>
