@@ -239,13 +239,6 @@ function wp_oembed_load_textdomain() {
 }
 
 /**
- * Add this site to the whitelist of oEmbed providers.
- */
-function wp_oembed_add_site_as_provider() {
-	wp_oembed_add_provider( home_url( '/*' ), get_oembed_endpoint_url() );
-}
-
-/**
  * Register our scripts.
  */
 function wp_oembed_register_scripts() {
@@ -398,11 +391,10 @@ function wp_filter_oembed_result( $html, $url ) {
 	require_once( ABSPATH . WPINC . '/class-oembed.php' );
 	$wp_oembed = _wp_oembed_get_object();
 
-	$trusted = $current_site = false;
+	$trusted = false;
 
 	foreach ( $wp_oembed->providers as $matchmask => $data ) {
-		$regex        = $data[1];
-		$originalmask = $matchmask;
+		$regex = $data[1];
 
 		// Turn the asterisk-type provider URLs into regex.
 		if ( ! $regex ) {
@@ -411,10 +403,6 @@ function wp_filter_oembed_result( $html, $url ) {
 		}
 
 		if ( preg_match( $matchmask, $url ) ) {
-			if ( home_url( '/*' ) === $originalmask ) {
-				$current_site = true;
-			}
-
 			$trusted = true;
 			break;
 		}
@@ -433,7 +421,7 @@ function wp_filter_oembed_result( $html, $url ) {
 		),
 	);
 
-	if ( ! $trusted || $current_site ) {
+	if ( ! $trusted ) {
 		$html = wp_kses( $html, $allowed_html );
 		$html = preg_replace( '|^(<iframe.*?></iframe>).*$|', '$1', $html );
 		$html = str_replace( '<iframe', '<iframe sandbox="allow-scripts" security="restricted"', $html );

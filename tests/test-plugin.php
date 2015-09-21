@@ -38,21 +38,6 @@ class WP_oEmbed_Test_Plugin extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test if the site was added as an oEmbed provider.
-	 */
-	function test_add_oembed_provider() {
-		$oembed = _wp_oembed_get_object();
-
-		wp_oembed_remove_provider( home_url( '/*' ) );
-		$this->assertArrayNotHasKey( home_url( '/*' ), $oembed->providers );
-
-		wp_oembed_add_site_as_provider();
-
-		$this->assertArrayHasKey( home_url( '/*' ), $oembed->providers );
-		$this->assertEquals( array( get_oembed_endpoint_url(), false ), $oembed->providers[ home_url( '/*' ) ] );
-	}
-
-	/**
 	 * Test the get_post_embed_url function.
 	 */
 	function test_get_post_embed_url_non_existent_post() {
@@ -217,7 +202,6 @@ class WP_oEmbed_Test_Plugin extends WP_UnitTestCase {
 
 		// Init.
 		$this->assertarrayHasKey( 'wp_oembed_load_textdomain', $wp_filter['init'][10] );
-		$this->assertarrayHasKey( 'wp_oembed_add_site_as_provider', $wp_filter['init'][10] );
 		$this->assertarrayHasKey( 'wp_oembed_register_scripts', $wp_filter['init'][10] );
 		$this->assertarrayHasKey( 'wp_oembed_rewrite_endpoint', $wp_filter['init'][10] );
 
