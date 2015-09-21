@@ -8,7 +8,7 @@
 /**
  * Class WP_REST_oEmbed_Controller
  */
-class WP_REST_oEmbed_Controller {
+class WP_REST_oEmbed_Controller extends WP_REST_Controller {
 	/**
 	 * Register the API routes.
 	 */
@@ -32,7 +32,7 @@ class WP_REST_oEmbed_Controller {
 					),
 				),
 			),
-			'schema' => array( $this, 'get_item_schema' ),
+			'schema' => array( $this, 'get_public_item_schema' ),
 		) );
 	}
 
@@ -41,11 +41,10 @@ class WP_REST_oEmbed_Controller {
 	 *
 	 * Returns the JSON object for the post.
 	 *
-	 * @param WP_REST_Request $request Full details about the request.
-	 *
+	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_Error|WP_REST_Response
 	 */
-	public function get_item( WP_REST_Request $request ) {
+	public function get_item( $request ) {
 		$post_id = url_to_postid( $request['url'] );
 
 		/**
@@ -73,10 +72,10 @@ class WP_REST_oEmbed_Controller {
 	 *
 	 * @return array
 	 */
-	public function get_item_schema() {
+	public function get_public_item_schema() {
 		$schema = array(
 			'$schema'    => 'http://json-schema.org/draft-04/schema#',
-			'title'      => 'oEmbed response',
+			'title'      => 'oembed',
 			'type'       => 'object',
 			'properties' => array(
 				'type'          => array(
@@ -84,7 +83,7 @@ class WP_REST_oEmbed_Controller {
 					'type'        => 'string',
 				),
 				'version'       => array(
-					'description' => 'The oEmbed version number. Always 1.0.',
+					'description' => 'The oEmbed version number.',
 					'type'        => 'number',
 				),
 				'width'         => array(
