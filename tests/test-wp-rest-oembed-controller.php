@@ -294,4 +294,49 @@ class WP_REST_oEmbed_Test_Controller extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'provider_name', $properties );
 		$this->assertArrayHasKey( 'provider_url', $properties );
 	}
+
+	/**
+	 * Test request for a child blog post embed in root blog.
+	 *
+	 * @group multisite
+	 */
+	function test_request_ms_child_in_root_blog() {
+		if ( ! is_multisite() ) {
+			$this->markTestSkipped( __METHOD__ . ' is a multisite-only test.' );
+		}
+
+		$child = $this->factory->blog->create();
+
+		switch_to_blog( $child );
+
+		$post = $this->factory->post->create_and_get( array(
+			'post_title'  => 'Hello Child Blog',
+		) );
+
+		$user = $this->factory->user->create_and_get( array(
+			'display_name' => 'John Doe',
+		) );
+		$post = $this->factory->post->create_and_get( array(
+			'post_author' => $user->ID,
+			'post_title'  => 'Hello World',
+		) );
+
+		$request = new WP_REST_Request( 'GET', '/wp/v2/oembed' );
+		$request->set_param( 'url', get_permalink( $post->ID ) );
+
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertTrue( is_array( $data ) );
+
+		$this->assertArrayHasKey( 'version', $data );
+		$this->assertArrayHasKey( 'provider_name', $data );
+		$this->assertArrayHasKey( 'provider_url', $data );
+		$this->assertArrayHasKey( 'author_name', $data );
+		$this->assertArrayHasKey( 'author_url', $data );
+		$this->assertArrayHasKey( 'title', $data );
+		$this->assertArrayHasKey( 'type', $data );
+
+		restore_current_blog();
+	}
 }

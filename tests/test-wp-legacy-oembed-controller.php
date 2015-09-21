@@ -218,4 +218,38 @@ class WP_Legacy_oEmbed_Test_Controller extends WP_UnitTestCase {
 
 		$this->assertEquals( 'Not implemented',  $legacy_controller->dispatch( $request ) );
 	}
+
+	/**
+	 * Test request for a child blog post embed in root blog.
+	 *
+	 * @group multisite
+	 */
+	function test_request_ms_child_in_root_blog() {
+		if ( ! is_multisite() ) {
+			$this->markTestSkipped( __METHOD__ . ' is a multisite-only test.' );
+		}
+
+		$child = $this->factory->blog->create();
+
+		switch_to_blog( $child );
+
+		$post = $this->factory->post->create_and_get( array(
+			'post_title'  => 'Hello Child Blog',
+		) );
+
+		$request = array(
+			'url'	   => get_permalink( $post->ID ),
+			'format'   => 'json',
+			'maxwidth' => 600,
+			'callback' => '',
+		);
+
+		$legacy_controller = new WP_Legacy_oEmbed_Controller();
+
+		$data = json_decode( $legacy_controller->dispatch( $request ), true );
+
+		$this->assertTrue( is_array( $data ) );
+
+		restore_current_blog();
+	}
 }
