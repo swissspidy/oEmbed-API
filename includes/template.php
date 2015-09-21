@@ -120,39 +120,41 @@
 			color: #b4b9be;
 		}
 
-		.wp-embed-meta,
-		.wp-embed-social {
-			margin-top: 30px;
-			width: 50%;
-		}
-
 		.wp-embed-meta {
-			float: left;
-			position: relative;
+			display: table;
+			width: 100%;
+			margin-top: 30px;
 		}
 
 		.wp-embed-site-icon {
+			position: absolute;
+			top: 50%;
+			left: 0;
+			transform: translateY(-50%);
 			height: 25px;
 			width: 25px;
 		}
 
 		.wp-embed-site-title {
-			display: inline;
-			margin-top: 2px;
-			position: absolute;
-			left: 35px;
 			font-weight: bold;
+			line-height: 25px;
+		}
+
+		.wp-embed-site-title a {
+			position: relative;
+			display: inline-block;
+			padding-left: 35px;
+		}
+
+		.wp-embed-site-title,
+		.wp-embed-social {
+			display: table-cell;
 		}
 
 		.wp-embed-social {
-			float: right;
 			text-align: right;
-		}
-
-		.wp-embed-social::after {
-			content: "";
-			display: table;
-			clear: both;
+			white-space: nowrap;
+			vertical-align: middle;
 		}
 
 		.wp-embed-comments,
@@ -260,18 +262,23 @@
 			font: 400 14px/1.5 'Open Sans', sans-serif;
 		}
 
-		html[dir="rtl"] .wp-embed-site-title {
+		html[dir="rtl"] .wp-embed-site-title a {
+			padding-left: 0;
+			padding-right: 35px;
+		}
+
+		html[dir="rtl"] .wp-embed-site-icon {
+			margin-right: 0;
+			margin-left: 10px;
 			left: auto;
-			right: 35px;
+			right: 0;
 		}
 
 		html[dir="rtl"] .wp-embed-social {
-			float: left;
 			text-align: left;
 		}
 
 		html[dir="rtl"] .wp-embed-meta {
-			float: right;
 		}
 
 		html[dir="rtl"] .wp-embed-share {
@@ -455,53 +462,55 @@
 			<div class="wp-embed-excerpt"><?php the_excerpt_embed(); ?></div>
 
 			<div class="wp-embed-meta">
-				<?php
-				$site_icon_url = admin_url( 'images/w-logo-blue.png' );
-
-				if ( function_exists( 'get_site_icon_url' ) ) {
-					$site_icon_url = get_site_icon_url( 32, $site_icon_url );
-				}
-
-				/**
-				 * Filters the site icon URL for use in the oEmbed template.
-				 *
-				 * @param string $site_icon_url The site icon URL.
-				 */
-				$site_icon_url = apply_filters( 'oembed_site_icon_url', $site_icon_url );
-
-				printf(
-					'<img src="%s" width="32" height="32" alt="" class="wp-embed-site-icon"/>',
-					esc_url( $site_icon_url )
-				);
-				?>
 				<div class="wp-embed-site-title">
-					<?php printf( '<a href="%s" target="_top">%s</a>', esc_url( home_url() ), get_bloginfo( 'name' ) ); ?>
+					<?php
+					$site_icon_url = admin_url( 'images/w-logo-blue.png' );
+
+					if ( function_exists( 'get_site_icon_url' ) ) {
+						$site_icon_url = get_site_icon_url( 32, $site_icon_url );
+					}
+
+					/**
+					 * Filters the site icon URL for use in the oEmbed template.
+					 *
+					 * @param string $site_icon_url The site icon URL.
+					 */
+					$site_icon_url = apply_filters( 'oembed_site_icon_url', $site_icon_url );
+
+					printf(
+						'<a href="%s" target="_top"><img src="%s" width="32" height="32" alt="" class="wp-embed-site-icon"/><span>%s</span></a>',
+						esc_url( home_url() ),
+						esc_url( $site_icon_url ),
+						esc_attr( get_bloginfo( 'name' ) )
+					);
+					?>
 				</div>
-			</div>
-			<div class="wp-embed-social">
-				<?php if ( get_comments_number() || comments_open() ) : ?>
-					<div class="wp-embed-comments">
-						<a href="<?php comments_link(); ?>" target="_top">
-							<span class="dashicons dashicons-admin-comments"></span>
-							<?php
-							printf(
-								_n(
-									'%s <span class="screen-reader-text">Comment</span>',
-									'%s <span class="screen-reader-text">Comments</span>',
-									get_comments_number(),
-									'oembed-api'
-								),
-								get_comments_number()
-							);
-							?>
-						</a>
+
+				<div class="wp-embed-social">
+					<?php if ( get_comments_number() || comments_open() ) : ?>
+						<div class="wp-embed-comments">
+							<a href="<?php comments_link(); ?>" target="_top">
+								<span class="dashicons dashicons-admin-comments"></span>
+								<?php
+								printf(
+									_n(
+										'%s <span class="screen-reader-text">Comment</span>',
+										'%s <span class="screen-reader-text">Comments</span>',
+										get_comments_number(),
+										'oembed-api'
+									),
+									get_comments_number()
+								);
+								?>
+							</a>
+						</div>
+					<?php endif; ?>
+					<div class="wp-embed-share">
+						<button type="button" class="wp-embed-share-dialog-open"
+						        aria-label="<?php _e( 'Open sharing dialog', 'oembed-api' ); ?>">
+							<span class="dashicons dashicons-share"></span>
+						</button>
 					</div>
-				<?php endif; ?>
-				<div class="wp-embed-share">
-					<button type="button" class="wp-embed-share-dialog-open"
-					        aria-label="<?php _e( 'Open sharing dialog', 'oembed-api' ); ?>">
-						<span class="dashicons dashicons-share"></span>
-					</button>
 				</div>
 			</div>
 			<div class="wp-embed-share-dialog hidden">
