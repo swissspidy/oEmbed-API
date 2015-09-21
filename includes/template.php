@@ -120,23 +120,19 @@
 			color: #b4b9be;
 		}
 
-		.wp-embed-meta,
-		.wp-embed-social {
-			margin-top: 30px;
-			width: 50%;
-		}
-
 		.wp-embed-meta {
-			float: left;
-			position: relative;
+			display: table;
+			width: 100%;
+			margin-top: 30px;
 		}
 
 		.wp-embed-site-icon {
+			position: absolute;
+			top: 50%;
+			left: 0;
+			transform: translateY(-50%);
 			height: 25px;
 			width: 25px;
-			margin-right: 10px;
-			display: inline-block;
-			vertical-align: middle;
 		}
 
 		.wp-embed-site-title {
@@ -145,18 +141,20 @@
 		}
 
 		.wp-embed-site-title a {
+			position: relative;
 			display: inline-block;
+			padding-left: 35px;
+		}
+
+		.wp-embed-site-title,
+		.wp-embed-social {
+			display: table-cell;
 		}
 
 		.wp-embed-social {
-			float: right;
 			text-align: right;
-		}
-
-		.wp-embed-social::after {
-			content: "";
-			display: table;
-			clear: both;
+			white-space: nowrap;
+			vertical-align: middle;
 		}
 
 		.wp-embed-comments,
@@ -264,18 +262,23 @@
 			font: 400 14px/1.5 'Open Sans', sans-serif;
 		}
 
+		html[dir="rtl"] .wp-embed-site-title a {
+			padding-left: 0;
+			padding-right: 35px;
+		}
+
 		html[dir="rtl"] .wp-embed-site-icon {
 			margin-right: 0;
 			margin-left: 10px;
+			left: auto;
+			right: 0;
 		}
 
 		html[dir="rtl"] .wp-embed-social {
-			float: left;
 			text-align: left;
 		}
 
 		html[dir="rtl"] .wp-embed-meta {
-			float: right;
 		}
 
 		html[dir="rtl"] .wp-embed-share {
@@ -482,31 +485,32 @@
 					);
 					?>
 				</div>
-			</div>
-			<div class="wp-embed-social">
-				<?php if ( get_comments_number() || comments_open() ) : ?>
-					<div class="wp-embed-comments">
-						<a href="<?php comments_link(); ?>" target="_top">
-							<span class="dashicons dashicons-admin-comments"></span>
-							<?php
-							printf(
-								_n(
-									'%s <span class="screen-reader-text">Comment</span>',
-									'%s <span class="screen-reader-text">Comments</span>',
-									get_comments_number(),
-									'oembed-api'
-								),
-								get_comments_number()
-							);
-							?>
-						</a>
+
+				<div class="wp-embed-social">
+					<?php if ( get_comments_number() || comments_open() ) : ?>
+						<div class="wp-embed-comments">
+							<a href="<?php comments_link(); ?>" target="_top">
+								<span class="dashicons dashicons-admin-comments"></span>
+								<?php
+								printf(
+									_n(
+										'%s <span class="screen-reader-text">Comment</span>',
+										'%s <span class="screen-reader-text">Comments</span>',
+										get_comments_number(),
+										'oembed-api'
+									),
+									get_comments_number()
+								);
+								?>
+							</a>
+						</div>
+					<?php endif; ?>
+					<div class="wp-embed-share">
+						<button type="button" class="wp-embed-share-dialog-open"
+						        aria-label="<?php _e( 'Open sharing dialog', 'oembed-api' ); ?>">
+							<span class="dashicons dashicons-share"></span>
+						</button>
 					</div>
-				<?php endif; ?>
-				<div class="wp-embed-share">
-					<button type="button" class="wp-embed-share-dialog-open"
-					        aria-label="<?php _e( 'Open sharing dialog', 'oembed-api' ); ?>">
-						<span class="dashicons dashicons-share"></span>
-					</button>
 				</div>
 			</div>
 			<div class="wp-embed-share-dialog hidden">
