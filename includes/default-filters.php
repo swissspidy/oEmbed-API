@@ -13,9 +13,6 @@
 // Load the plugin textdomain.
 add_action( 'init', 'wp_oembed_load_textdomain' );
 
-// Whitelist this site as an oEmbed provider.
-add_action( 'init', 'wp_oembed_add_site_as_provider' );
-
 // Register scripts.
 add_action( 'init', 'wp_oembed_register_scripts' );
 
