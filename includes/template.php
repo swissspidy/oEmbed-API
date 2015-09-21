@@ -134,14 +134,18 @@
 		.wp-embed-site-icon {
 			height: 25px;
 			width: 25px;
+			margin-right: 10px;
+			display: inline-block;
+			vertical-align: middle;
 		}
 
 		.wp-embed-site-title {
-			display: inline;
-			margin-top: 2px;
-			position: absolute;
-			left: 35px;
 			font-weight: bold;
+			line-height: 25px;
+		}
+
+		.wp-embed-site-title a {
+			display: inline-block;
 		}
 
 		.wp-embed-social {
@@ -260,9 +264,9 @@
 			font: 400 14px/1.5 'Open Sans', sans-serif;
 		}
 
-		html[dir="rtl"] .wp-embed-site-title {
-			left: auto;
-			right: 35px;
+		html[dir="rtl"] .wp-embed-site-icon {
+			margin-right: 0;
+			margin-left: 10px;
 		}
 
 		html[dir="rtl"] .wp-embed-social {
@@ -455,27 +459,28 @@
 			<div class="wp-embed-excerpt"><?php the_excerpt_embed(); ?></div>
 
 			<div class="wp-embed-meta">
-				<?php
-				$site_icon_url = admin_url( 'images/w-logo-blue.png' );
-
-				if ( function_exists( 'get_site_icon_url' ) ) {
-					$site_icon_url = get_site_icon_url( 32, $site_icon_url );
-				}
-
-				/**
-				 * Filters the site icon URL for use in the oEmbed template.
-				 *
-				 * @param string $site_icon_url The site icon URL.
-				 */
-				$site_icon_url = apply_filters( 'oembed_site_icon_url', $site_icon_url );
-
-				printf(
-					'<img src="%s" width="32" height="32" alt="" class="wp-embed-site-icon"/>',
-					esc_url( $site_icon_url )
-				);
-				?>
 				<div class="wp-embed-site-title">
-					<?php printf( '<a href="%s" target="_top">%s</a>', esc_url( home_url() ), get_bloginfo( 'name' ) ); ?>
+					<?php
+					$site_icon_url = admin_url( 'images/w-logo-blue.png' );
+
+					if ( function_exists( 'get_site_icon_url' ) ) {
+						$site_icon_url = get_site_icon_url( 32, $site_icon_url );
+					}
+
+					/**
+					 * Filters the site icon URL for use in the oEmbed template.
+					 *
+					 * @param string $site_icon_url The site icon URL.
+					 */
+					$site_icon_url = apply_filters( 'oembed_site_icon_url', $site_icon_url );
+
+					printf(
+						'<a href="%s" target="_top"><img src="%s" width="32" height="32" alt="" class="wp-embed-site-icon"/><span>%s</span></a>',
+						esc_url( home_url() ),
+						esc_url( $site_icon_url ),
+						esc_attr( get_bloginfo( 'name' ) )
+					);
+					?>
 				</div>
 			</div>
 			<div class="wp-embed-social">
