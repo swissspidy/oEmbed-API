@@ -11,5 +11,6 @@
 		<exclude name="WordPress.CSRF.NonceVerification" />
 		<exclude name="WordPress.XSS.EscapeOutput" />
 		<exclude name="WordPress.VIP.DirectDatabaseQuery" />
+		<exclude name="WordPress.WP.PreparedSQL" />
 	</rule>
 </ruleset>
