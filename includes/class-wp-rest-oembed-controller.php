@@ -64,7 +64,7 @@ final class WP_REST_oEmbed_Controller {
 			return new WP_Error( 'oembed_invalid_format', __( 'Invalid format.', 'oembed-api' ), array( 'status' => 501 ) );
 		}
 
-		return rest_ensure_response( get_oembed_response_data( $post_id, $request['maxwidth'] ) );
+		return get_oembed_response_data( $post_id, $request['maxwidth'] );
 	}
 
 	/**
