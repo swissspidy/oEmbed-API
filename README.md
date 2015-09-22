@@ -28,6 +28,8 @@ Everything is easily extensible. You can completely change the look and feel of 
 
 We hold weekly chats about this plugin in the \#feature-oembed WordPress Slack channel. Read the [announcement post](http://make.wordpress.org/core/2015/07/17/oembed-feature-plugin/) for more information.
 
+You can also join the discussion on [Trac](https://core.trac.wordpress.org/ticket/32522) and submit pull requests on [GitHub](https://github.com/swissspidy/oEmbed-API).
+
 [![Build Status](https://travis-ci.org/swissspidy/oEmbed-API.svg?branch=master)](https://travis-ci.org/swissspidy/oEmbed-API)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/swissspidy/oEmbed-API/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/swissspidy/oEmbed-API/?branch=master)
 [![Code Climate](https://codeclimate.com/github/swissspidy/oEmbed-API/badges/gpa.svg)](https://codeclimate.com/github/swissspidy/oEmbed-API)
@@ -69,17 +71,15 @@ The oEmbed API plugin needs to run on both sites so the embedded site serves the
 
 When you get an empty preview, it’s possible that the embedded site has the `X-Frame-Options` header set. This prevents loading the site in an iframe for security reasons.
 
+### How can I disable the oEmbed API? ###
+
+See the 'Other Notes' section for that.
+
 ## Screenshots ##
 
 1. Example of how embedding a WordPress post looks like.
 2. Example of a post with a featured image
 3. You can easily copy the sharing URL for any post.
-
-## Contribute ##
-
-Here is how you can contribute:
-
-Join the discussion on [Trac](https://core.trac.wordpress.org/ticket/32522) and submit pull requests on [GitHub](https://github.com/swissspidy/oEmbed-API).
 
 ## Developer Reference ##
 
@@ -88,6 +88,46 @@ There are some handy functions developer can use with this plugin.
 For example, `get_post_embed_url` returns the URL to a post’s embed template used for the iframe, while `get_post_embed_html` returns the `<iframe>` tag to do this.
 
 To complement these two functions, `get_oembed_endpoint_url` returns the URL to the oEmbed API endpoint itself.
+
+**Disabling the feature:**
+
+Disabling the rewrite endpoint:
+
+```
+remove_action( 'init', 'wp_oembed_rewrite_endpoint' );
+```
+
+Disabling the legacy controller:
+
+```
+function my_remove_oembed_query_vars( $query_vars ) {
+	unset $query_vars['oembed'];
+	return $query_vars;
+}
+add_filter( 'query_vars', 'my_remove_oembed_query_vars' );
+```
+
+Disabling the REST API route:
+
+```
+function my_disable_oembed_route( $endpoints ) {
+	unset $endpoints['/wp/v2/oembed'];
+	return $endpoints;
+}
+add_action( 'rest_endpoints', 'my_disable_oembed_route' );
+```
+
+Disabling auto discovery of other sites:
+
+```
+add_filter( 'embed_oembed_discover', '__return_false' );
+```
+
+Disabling output of the discovery links on your site:
+
+```
+remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
+```
 
 ## Changelog ##
 
