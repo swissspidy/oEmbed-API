@@ -23,7 +23,8 @@ class WP_REST_oEmbed_Test_Controller extends WP_UnitTestCase {
 	 * Load the REST API.
 	 */
 	public static function setUpBeforeClass() {
-		require( dirname( __FILE__ ) . '/../vendor/json-rest-api/plugin.php' );
+		require_once( dirname( __FILE__ ) . '/../vendor/json-rest-api/plugin.php' );
+		require_once( dirname( __FILE__ ) . '/../includes/class-wp-rest-oembed-controller.php' );
 	}
 
 	/**
@@ -42,6 +43,13 @@ class WP_REST_oEmbed_Test_Controller extends WP_UnitTestCase {
 		/* @var WP_REST_Server $wp_rest_server */
 		global $wp_rest_server;
 		$this->server = $wp_rest_server = new WP_REST_Server;
+
+		// Configure the REST API route.
+		add_action( 'rest_api_init', array( new WP_REST_oEmbed_Controller(), 'register_routes' ) );
+
+		// Filter the REST API response to output XML if requested.
+		add_filter( 'rest_pre_serve_request', '_oembed_rest_pre_serve_request', 10, 4 );
+
 		do_action( 'rest_api_init' );
 	}
 
@@ -123,7 +131,7 @@ class WP_REST_oEmbed_Test_Controller extends WP_UnitTestCase {
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
-		$this->assertEquals( 'oembed_invalid_format', $data[0]['code'] );
+		$this->assertTrue( is_array( $data ) );
 	}
 
 	/**

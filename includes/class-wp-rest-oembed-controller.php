@@ -8,7 +8,7 @@
 /**
  * Class WP_REST_oEmbed_Controller
  */
-class WP_REST_oEmbed_Controller {
+final class WP_REST_oEmbed_Controller {
 	/**
 	 * Register the API routes.
 	 */
@@ -24,7 +24,7 @@ class WP_REST_oEmbed_Controller {
 					),
 					'format'   => array(
 						'default'           => 'json',
-						'sanitize_callback' => 'sanitize_text_field',
+						'sanitize_callback' => 'wp_oembed_ensure_format',
 					),
 					'maxwidth' => array(
 						'default'           => apply_filters( 'oembed_default_width', 600 ),
@@ -32,7 +32,7 @@ class WP_REST_oEmbed_Controller {
 					),
 				),
 			),
-			'schema' => array( $this, 'get_item_schema' ),
+			'schema' => array( $this, 'get_public_item_schema' ),
 		) );
 	}
 
@@ -41,10 +41,10 @@ class WP_REST_oEmbed_Controller {
 	 *
 	 * Returns the JSON object for the post.
 	 *
-	 * @param WP_REST_Request $request Full details about the request.
+	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_Error|WP_REST_Response
 	 */
-	public function get_item( WP_REST_Request $request ) {
+	public function get_item( $request ) {
 		$post_id = url_to_postid( $request['url'] );
 
 		/**
@@ -59,12 +59,7 @@ class WP_REST_oEmbed_Controller {
 			return new WP_Error( 'oembed_invalid_url', __( 'Invalid URL.', 'oembed-api' ), array( 'status' => 404 ) );
 		}
 
-		// Todo: Perhaps just default to json if something invalid is provided.
-		if ( ! in_array( $request['format'], array( 'json', 'xml' ) ) ) {
-			return new WP_Error( 'oembed_invalid_format', __( 'Invalid format.', 'oembed-api' ), array( 'status' => 501 ) );
-		}
-
-		return rest_ensure_response( get_oembed_response_data( $post_id, $request['maxwidth'] ) );
+		return get_oembed_response_data( $post_id, $request['maxwidth'] );
 	}
 
 	/**
@@ -72,10 +67,10 @@ class WP_REST_oEmbed_Controller {
 	 *
 	 * @return array The item's schema.
 	 */
-	public function get_item_schema() {
+	public function get_public_item_schema() {
 		$schema = array(
 			'$schema'    => 'http://json-schema.org/draft-04/schema#',
-			'title'      => 'oEmbed response',
+			'title'      => 'oembed',
 			'type'       => 'object',
 			'properties' => array(
 				'type'          => array(
@@ -83,7 +78,7 @@ class WP_REST_oEmbed_Controller {
 					'type'        => 'string',
 				),
 				'version'       => array(
-					'description' => 'The oEmbed version number. Always 1.0.',
+					'description' => 'The oEmbed version number.',
 					'type'        => 'number',
 				),
 				'width'         => array(

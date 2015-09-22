@@ -216,4 +216,15 @@ class WP_oEmbed_Test_Plugin extends WP_UnitTestCase {
 		$this->assertarrayHasKey( 'wp_oembed_add_mce_plugin', $wp_filter['mce_external_plugins'][10] );
 		$this->assertarrayHasKey( 'wp_oembed_load_mce_script', $wp_filter['wp_enqueue_editor'][10] );
 	}
+
+	/**
+	 * Test the wp_oembed_ensure_format function.
+	 */
+	function test_wp_oembed_ensure_format() {
+		$this->assertEquals( 'json', wp_oembed_ensure_format( 'json' ) );
+		$this->assertEquals( 'xml', wp_oembed_ensure_format( 'xml' ) );
+		$this->assertEquals( 'json', wp_oembed_ensure_format( 123 ) );
+		$this->assertEquals( 'json', wp_oembed_ensure_format( 'random' ) );
+		$this->assertEquals( 'json', wp_oembed_ensure_format( array() ) );
+	}
 }

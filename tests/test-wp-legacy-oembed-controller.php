@@ -34,25 +34,6 @@ class WP_Legacy_oEmbed_Test_Controller extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test a request with invalid format.
-	 */
-	function test_request_invalid_format() {
-		$post_id = $this->factory->post->create();
-
-		// WP_Query arguments.
-		$request = array(
-			'url'	  => get_permalink( $post_id ),
-			'format'   => 'random',
-			'maxwidth' => 600,
-			'callback' => '',
-		);
-
-		$legacy_controller = new WP_Legacy_oEmbed_Controller();
-
-		$this->assertEquals( 'Invalid format', $legacy_controller->dispatch( $request ) );
-	}
-
-	/**
 	 * Test request for a normal post.
 	 */
 	function test_request_json() {

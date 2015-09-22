@@ -35,13 +35,8 @@
  * @codeCoverageIgnore
  */
 function oembed_api_init() {
-	// Pull in the plugin classes and template tags.
-	include( dirname( __FILE__ ) . '/includes/class-wp-rest-oembed-controller.php' );
-	include( dirname( __FILE__ ) . '/includes/class-wp-legacy-oembed-controller.php' );
-	include( dirname( __FILE__ ) . '/includes/functions.php' );
-
-	// Sets up the default filters and actions.
-	include( dirname( __FILE__ ) . '/includes/default-filters.php' );
+	require_once( dirname( __FILE__ ) . '/includes/functions.php' );
+	require_once( dirname( __FILE__ ) . '/includes/default-filters.php' );
 }
 
 /**
