@@ -18,18 +18,24 @@ add_action( 'init', 'wp_oembed_register_scripts' );
 
 // Load fallback if REST API isn't available.
 if ( ! defined( 'REST_API_VERSION' ) || ! version_compare( REST_API_VERSION, '2.0-beta3', '>=' ) ) {
+	// Pull in the required class.
+	require_once( dirname( dirname( __FILE__ ) ) . '/includes/class-wp-legacy-oembed-controller.php' );
+
 	// Add needed query vars.
 	add_filter( 'query_vars', 'wp_oembed_add_query_vars' );
 
 	// Hook into parse_query.
 	add_action( 'parse_query', array( new WP_Legacy_oEmbed_Controller(), 'parse_query' ) );
+} else {
+	// Pull in the required class.
+	require_once( dirname( dirname( __FILE__ ) ) . '/includes/class-wp-rest-oembed-controller.php' );
+
+	// Configure the REST API route.
+	add_action( 'rest_api_init', array( new WP_REST_oEmbed_Controller(), 'register_routes' ) );
+
+	// Filter the REST API response to output XML if requested.
+	add_filter( 'rest_pre_serve_request', '_oembed_rest_pre_serve_request', 10, 4 );
 }
-
-// Configure the REST API route.
-add_action( 'rest_api_init', array( new WP_REST_oEmbed_Controller(), 'register_routes' ) );
-
-// Filter the REST API response to output XML if requested.
-add_filter( 'rest_pre_serve_request', '_oembed_rest_pre_serve_request', 10, 4 );
 
 // Filter the oEmbed XML response to create an XML string.
 add_filter( 'oembed_xml_response', '_oembed_create_xml', 10, 2 );
