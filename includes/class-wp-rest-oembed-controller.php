@@ -42,7 +42,6 @@ class WP_REST_oEmbed_Controller {
 	 * Returns the JSON object for the post.
 	 *
 	 * @param WP_REST_Request $request Full details about the request.
-	 *
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public function get_item( WP_REST_Request $request ) {
@@ -71,7 +70,7 @@ class WP_REST_oEmbed_Controller {
 	/**
 	 * Get the item's schema for display / public consumption purposes, conforming to JSON Schema.
 	 *
-	 * @return array
+	 * @return array The item's schema.
 	 */
 	public function get_item_schema() {
 		$schema = array(
