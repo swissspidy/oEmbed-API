@@ -8,7 +8,7 @@
 /**
  * Class WP_REST_oEmbed_Controller
  */
-class WP_REST_oEmbed_Controller extends WP_REST_Controller {
+final class WP_REST_oEmbed_Controller {
 	/**
 	 * Register the API routes.
 	 */
