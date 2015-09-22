@@ -40,7 +40,7 @@ class WP_Legacy_oEmbed_Controller {
 
 		$url = esc_url_raw( get_query_var( 'url' ) );
 
-		$format = sanitize_text_field( get_query_var( 'format', 'json' ) );
+		$format = wp_oembed_ensure_format( get_query_var( 'format' ) );
 
 		/**
 		 * Filter the maxwidth oEmbed parameter.
@@ -72,11 +72,6 @@ class WP_Legacy_oEmbed_Controller {
 	 * @return string The oEmbed API response.
 	 */
 	public function dispatch( $request ) {
-		if ( ! in_array( $request['format'], array( 'json', 'xml' ) ) ) {
-			status_header( 501 );
-			return 'Invalid format';
-		}
-
 		$post_id = url_to_postid( $request['url'] );
 
 		/**

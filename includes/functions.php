@@ -270,6 +270,22 @@ function wp_oembed_load_mce_script( $opts ) {
 }
 
 /**
+ * Ensures that the specified format is either JSON or XML.
+ *
+ * Returns JSON if something else is provided.
+ *
+ * @param string $format The given oEmbed response format.
+ * @return string The format, either XML or JSON.
+ */
+function wp_oembed_ensure_format( $format ) {
+	if ( ! in_array( $format, array( 'json', 'xml' ) ) ) {
+		return 'json';
+	}
+
+	return $format;
+}
+
+/**
  * Hooks into the REST API output to print XML instead of JSON.
  *
  * @access private

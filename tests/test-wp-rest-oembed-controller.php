@@ -131,7 +131,7 @@ class WP_REST_oEmbed_Test_Controller extends WP_UnitTestCase {
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
-		$this->assertEquals( 'oembed_invalid_format', $data[0]['code'] );
+		$this->assertTrue( is_array( $data ) );
 	}
 
 	/**
