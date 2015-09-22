@@ -65,7 +65,7 @@ final class WP_REST_oEmbed_Controller {
 	/**
 	 * Get the item's schema for display / public consumption purposes, conforming to JSON Schema.
 	 *
-	 * @return array
+	 * @return array The item's schema.
 	 */
 	public function get_public_item_schema() {
 		$schema = array(

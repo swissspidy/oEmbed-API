@@ -246,10 +246,10 @@ function wp_oembed_register_scripts() {
 }
 
 /**
- * Register our TinyMCE plugin
+ * Register our TinyMCE plugin.
  *
  * @param array $plugins List of current TinyMCE plugins.
- * @return array
+ * @return array The modified list of TinyMCE plugins.
  */
 function wp_oembed_add_mce_plugin( $plugins ) {
 	$plugins['autoembed'] = plugins_url( 'scripts/tinymce-plugin.js', dirname( __FILE__ ) );
@@ -372,8 +372,7 @@ function _oembed_create_xml( $result, $data ) {
  * Add the query vars we need for the legacy controller.
  *
  * @param array $query_vars Registered query vars.
- *
- * @return array
+ * @return array The modified query vars array.
  */
 function wp_oembed_add_query_vars( $query_vars ) {
 	return array_merge( $query_vars, array( 'oembed', 'format', 'url', '_jsonp', 'maxwidth' ) );
@@ -400,8 +399,7 @@ function wp_oembed_include_template( $template ) {
  *
  * @param string $html The unfiltered oEmbed HTML.
  * @param string $url  URL of the content to be embedded.
- *
- * @return string
+ * @return string The filtered and sanitized oEmbed result.
  */
 function wp_filter_oembed_result( $html, $url ) {
 	require_once( ABSPATH . WPINC . '/class-oembed.php' );
