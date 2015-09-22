@@ -3,7 +3,7 @@ Contributors:      swissspidy, pento, netweb
 Donate link:         
 Tags:              oembed, api  
 Requires at least: 3.9  
-Tested up to:      4.3  
+Tested up to:      4.4-trunk  
 Stable tag:        trunk  
 License:           GPLv2 or later  
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html  
@@ -131,6 +131,17 @@ remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
 
 ## Changelog ##
 
+### 0.8.0 ###
+
+* New: Added translations for Arabic, Arabic (Morocco), Spanish, French, Italian, Finnish, Hebrew
+* Enhancement: Majorly improved embed template
+* Enhancement: Added a 404 page for non-existent posts
+* Enhancement: Improved API controllers
+* Enhancement: Better multisite support
+* Fixed: Redirect to the right URL when post slugs change
+* Fixed: Now with proper emoji support
+* Fixed: Hitting esc now closes the sharing dialog
+
 ### 0.7.0 ###
 * New: Code Climate configuration
 * New: Added translations for Danish (Denmark), German (Germany), German (Switzerland), Japanese, Greek, and English (Australia).
@@ -168,6 +179,9 @@ remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
 * First release
 
 ## Upgrade Notice ##
+
+### 0.8.0 ###
+This version comes with plenty of new translations, better multisite support and and a majorly improved embed template with design and accessibility improvements.
 
 ### 0.7.0 ###
 This version includes many new translations, full RTL language support and also has better Internet Explorer compatibility.
