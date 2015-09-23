@@ -39,6 +39,8 @@ function wp_oembed_add_host_js() {
 /**
  * Get the URL to embed a specific post, for example in an iframe.
  *
+ * @SuppressWarnings(PHPMD.ElseExpression)
+ *
  * @param int|WP_Post $post Optional. Post ID or object. Defaults to the current post.
  * @return string|false The post embed URL on success, false if the post doesn't exist.
  */
