@@ -93,41 +93,35 @@ To complement these two functions, `get_oembed_endpoint_url` returns the URL to 
 
 Disabling the rewrite endpoint:
 
-```
-remove_action( 'init', 'wp_oembed_rewrite_endpoint' );
-```
+`remove_action( 'init', 'wp_oembed_rewrite_endpoint' );`
 
 Disabling the legacy controller:
 
-```
+<pre><code>
 function my_remove_oembed_query_vars( $query_vars ) {
 	unset $query_vars['oembed'];
 	return $query_vars;
 }
 add_filter( 'query_vars', 'my_remove_oembed_query_vars' );
-```
+</code></pre>
 
 Disabling the REST API route:
 
-```
+<pre><code>
 function my_disable_oembed_route( $endpoints ) {
 	unset $endpoints['/wp/v2/oembed'];
 	return $endpoints;
 }
 add_action( 'rest_endpoints', 'my_disable_oembed_route' );
-```
+</code></pre>
 
 Disabling auto discovery of other sites:
 
-```
-add_filter( 'embed_oembed_discover', '__return_false' );
-```
+`add_filter( 'embed_oembed_discover', '__return_false' );`
 
 Disabling output of the discovery links on your site:
 
-```
-remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
-```
+`remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );`
 
 ## Changelog ##
 
