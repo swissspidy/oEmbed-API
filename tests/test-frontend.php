@@ -194,8 +194,8 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 		$doc = new DOMDocument();
 		$this->assertTrue( $doc->loadHTML( $actual ) );
 		$this->assertFalse( strpos( $actual, 'Page not found' ) );
-		$this->assertNotFalse( strpos( $actual, 'Hello World' ) );
-		$this->assertNotFalse( strpos( $actual, 'canola.jpg' ) );
+		$this->assertTrue( false !== strpos( $actual, 'Hello World' ) );
+		$this->assertTrue( false !== strpos( $actual, 'canola.jpg' ) );
 	}
 
 	/**
@@ -250,8 +250,8 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 		$doc = new DOMDocument();
 		$this->assertTrue( $doc->loadHTML( $actual ) );
 		$this->assertFalse( strpos( $actual, 'Page not found' ) );
-		$this->assertNotFalse( strpos( $actual, 'Hello World' ) );
-		$this->assertNotFalse( strpos( $actual, 'canola.jpg' ) );
+		$this->assertTrue( false !== strpos( $actual, 'Hello World' ) );
+		$this->assertTrue( false !== strpos( $actual, 'canola.jpg' ) );
 	}
 
 	/**
