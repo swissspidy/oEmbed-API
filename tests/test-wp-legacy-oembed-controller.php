@@ -30,7 +30,7 @@ class WP_Legacy_oEmbed_Test_Controller extends WP_UnitTestCase {
 
 		$legacy_controller = new WP_Legacy_oEmbed_Controller();
 
-		$this->assertEquals( 'Not Found', $legacy_controller->dispatch( $request ) );
+		$this->assertEquals( 'Invalid URL.', $legacy_controller->dispatch( $request ) );
 	}
 
 	/**
