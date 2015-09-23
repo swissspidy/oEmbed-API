@@ -426,6 +426,9 @@ function wp_filter_oembed_result( $html, $url ) {
 	}
 
 	$allowed_html = array(
+		'script' => array(
+			'type' => true,
+		),
 		'iframe' => array(
 			'src'          => true,
 			'width'        => true,
