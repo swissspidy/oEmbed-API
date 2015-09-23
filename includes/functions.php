@@ -320,7 +320,7 @@ function _oembed_rest_pre_serve_request( $served, $result, $request, $server ) {
 	$data = $server->response_to_data( $result, false );
 
 	if ( 404 === $result->get_status() ) {
-		$data = $data [0];
+		$data = $data[0];
 	}
 
 	/**
