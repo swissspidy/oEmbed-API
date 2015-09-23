@@ -113,7 +113,12 @@ function get_post_embed_html( $post = null, $width, $height ) {
 
 	$embed_url = get_post_embed_url( $post );
 
-	$output = sprintf(
+	$output = "<script type='text/javascript'>\n";
+	$output .= "if ( ! receiveEmbedMessage || typeof( receiveEmbedMessage ) != 'function' ) {\n";
+	$output .= file_get_contents( dirname( dirname( __FILE__ ) ) . '/scripts/frontend.js' );
+	$output .= "\n}\n</script>";
+
+	$output .= sprintf(
 		'<iframe sandbox="allow-scripts" security="restricted" src="%1$s" width="%2$d" height="%3$d" title="%4$s" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>',
 		esc_url( $embed_url ),
 		$width,
@@ -354,13 +359,13 @@ function _oembed_create_xml( $result, $data ) {
 			$element = $oembed->addChild( $key );
 
 			foreach ( $value as $k => $v ) {
-				$element->addChild( $k, $v );
+				$element->addChild( $k, esc_html( $v ) );
 			}
 
 			continue;
 		}
 
-		$oembed->addChild( $key, $value );
+		$oembed->addChild( $key, esc_html( $value ) );
 	}
 
 	$result = $oembed->asXML();
