@@ -189,11 +189,30 @@ class WP_REST_oEmbed_Test_Controller extends WP_UnitTestCase {
 		$request = new WP_REST_Request( 'GET', '/wp/v2/oembed' );
 		$request->set_param( 'url', get_permalink( $post->ID ) );
 		$request->set_param( 'format', 'xml' );
+		$request->set_param( 'maxwidth', 400 );
 
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
 		$this->assertTrue( is_array( $data ) );
+
+		$this->assertArrayHasKey( 'version', $data );
+		$this->assertArrayHasKey( 'provider_name', $data );
+		$this->assertArrayHasKey( 'provider_url', $data );
+		$this->assertArrayHasKey( 'author_name', $data );
+		$this->assertArrayHasKey( 'author_url', $data );
+		$this->assertArrayHasKey( 'title', $data );
+		$this->assertArrayHasKey( 'type', $data );
+		$this->assertArrayHasKey( 'width', $data );
+
+		$this->assertEquals( '1.0', $data['version'] );
+		$this->assertEquals( get_bloginfo( 'name' ), $data['provider_name'] );
+		$this->assertEquals( get_home_url(), $data['provider_url'] );
+		$this->assertEquals( $user->display_name, $data['author_name'] );
+		$this->assertEquals( get_author_posts_url( $user->ID, $user->user_nicename ), $data['author_url'] );
+		$this->assertEquals( $post->post_title, $data['title'] );
+		$this->assertEquals( 'rich', $data['type'] );
+		$this->assertTrue( $data['width'] <= $request->get_param( 'maxwidth' ) );
 	}
 
 	/**
