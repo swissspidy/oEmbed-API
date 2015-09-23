@@ -49,7 +49,7 @@ class WP_Legacy_oEmbed_Test_Controller extends WP_UnitTestCase {
 		$request = array(
 			'url'	  => get_permalink( $post->ID ),
 			'format'   => 'json',
-			'maxwidth' => 600,
+			'maxwidth' => 400,
 			'callback' => '',
 			'oembed'   => true,
 		);
@@ -67,6 +67,7 @@ class WP_Legacy_oEmbed_Test_Controller extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'author_url', $data );
 		$this->assertArrayHasKey( 'title', $data );
 		$this->assertArrayHasKey( 'type', $data );
+		$this->assertArrayHasKey( 'width', $data );
 
 		$this->assertEquals( '1.0', $data['version'] );
 		$this->assertEquals( get_bloginfo( 'name' ), $data['provider_name'] );
@@ -75,6 +76,7 @@ class WP_Legacy_oEmbed_Test_Controller extends WP_UnitTestCase {
 		$this->assertEquals( get_author_posts_url( $user->ID, $user->user_nicename ), $data['author_url'] );
 		$this->assertEquals( $post->post_title, $data['title'] );
 		$this->assertEquals( 'rich', $data['type'] );
+		$this->assertTrue( $data['width'] <= $request['maxwidth'] );
 	}
 
 	/**
