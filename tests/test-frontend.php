@@ -139,9 +139,9 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test rest_oembed_output method.
+	 * Test default oEmbed output for a post.
 	 */
-	function test_rest_oembed_output() {
+	function test_oembed_output() {
 		$user = $this->factory->user->create_and_get( array(
 			'display_name' => 'John Doe',
 		) );
@@ -168,9 +168,40 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test rest_oembed_output method.
+	 * Test oEmbed output for a post with a thumbnail.
 	 */
-	function test_rest_oembed_output_404() {
+	function test_oembed_output_thumbnail() {
+		$post_id       = $this->factory->post->create( array(
+			'post_title'   => 'Hello World',
+			'post_content' => 'Foo Bar',
+			'post_excerpt' => 'Bar Baz',
+		) );
+		$file          = DIR_TESTDATA . '/images/canola.jpg';
+		$attachment_id = $this->factory->attachment->create_object( $file, $post_id, array(
+			'post_mime_type' => 'image/jpeg',
+		) );
+		set_post_thumbnail( $post_id, $attachment_id );
+
+		$this->go_to( get_permalink( $post_id ) );
+		$GLOBALS['wp_query']->query_vars['embed'] = true;
+
+		$this->assertQueryTrue( 'is_single', 'is_singular' );
+
+		ob_start();
+		include( dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php' );
+		$actual = ob_get_clean();
+
+		$doc = new DOMDocument();
+		$this->assertTrue( $doc->loadHTML( $actual ) );
+		$this->assertFalse( strpos( $actual, 'Page not found' ) );
+		$this->assertNotFalse( strpos( $actual, 'Hello World' ) );
+		$this->assertNotFalse( strpos( $actual, 'canola.jpg' ) );
+	}
+
+	/**
+	 * Test oEmbed output for a non-existent post.
+	 */
+	function test_oembed_output_404() {
 		global $wp_rewrite;
 
 		$wp_rewrite->init();
@@ -192,6 +223,35 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 
 		$wp_rewrite->set_permalink_structure( '' );
 		$wp_rewrite->init();
+	}
+
+	/**
+	 * Test oEmbed output for an attachment.
+	 */
+	function test_oembed_output_attachment() {
+		$post          = $this->factory->post->create_and_get();
+		$file          = DIR_TESTDATA . '/images/canola.jpg';
+		$attachment_id = $this->factory->attachment->create_object( $file, $post->ID, array(
+			'post_mime_type' => 'image/jpeg',
+			'post_title'     => 'Hello World',
+			'post_content'   => 'Foo Bar',
+			'post_excerpt'   => 'Bar Baz',
+		) );
+
+		$this->go_to( get_attachment_link( $attachment_id ) );
+		$GLOBALS['wp_query']->query_vars['embed'] = true;
+
+		$this->assertQueryTrue( 'is_single', 'is_singular', 'is_attachment' );
+
+		ob_start();
+		include( dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php' );
+		$actual = ob_get_clean();
+
+		$doc = new DOMDocument();
+		$this->assertTrue( $doc->loadHTML( $actual ) );
+		$this->assertFalse( strpos( $actual, 'Page not found' ) );
+		$this->assertNotFalse( strpos( $actual, 'Hello World' ) );
+		$this->assertNotFalse( strpos( $actual, 'canola.jpg' ) );
 	}
 
 	/**
