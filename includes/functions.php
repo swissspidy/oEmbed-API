@@ -322,13 +322,12 @@ function _oembed_rest_pre_serve_request( $served, $result, $request, $server ) {
 	/**
 	 * Filter the XML response.
 	 *
-	 * @param string $result The built XML.
-	 * @param array  $data   The original oEmbed response data.
+	 * @param array $data The original oEmbed response data.
 	 */
-	$result = apply_filters( 'oembed_xml_response', false, $data );
+	$result = apply_filters( 'oembed_xml_response', $data );
 
 	// Bail if there's no XML.
-	if ( ! $result ) {
+	if ( ! is_string( $result ) ) {
 		status_header( 501 );
 		die( 'Not implemented' );
 	}
@@ -343,34 +342,35 @@ function _oembed_rest_pre_serve_request( $served, $result, $request, $server ) {
 }
 
 /**
- * Create an XML string from the oEmbed response data
+ * Create an XML string from the oEmbed response data.
+ *
+ * @SuppressWarnings(PHPMD.ElseExpression)
  *
  * @access private
  *
- * @param string|false $result The XML response string.
- * @param array        $data   The original oEmbed response data.
+ * @param array            $data The original oEmbed response data.
+ * @param SimpleXMLElement $node Optional. XML node to append the result to recursively.
  * @return string|false XML string on success, false on error.
  */
-function _oembed_create_xml( $result, $data ) {
-	$oembed = new SimpleXMLElement( '<oembed></oembed>' );
-
-	foreach ( $data as $key => $value ) {
-		if ( is_array( $value ) ) {
-			$element = $oembed->addChild( $key );
-
-			foreach ( $value as $k => $v ) {
-				$element->addChild( $k, esc_html( $v ) );
-			}
-
-			continue;
-		}
-
-		$oembed->addChild( $key, esc_html( $value ) );
+function _oembed_create_xml( $data, $node = null ) {
+	if ( null === $node ) {
+		$node = new SimpleXMLElement( '<oembed></oembed>' );
 	}
 
-	$result = $oembed->asXML();
+	foreach ( $data as $key => $value ) {
+		if ( is_numeric( $key ) ) {
+			$key = 'oembed';
+		}
 
-	return $result;
+		if ( is_array( $value ) ) {
+			$item = $node->addChild( $key );
+			_oembed_create_xml( $value, $item );
+		} else {
+			$node->addChild( $key, esc_html( $value ) );
+		}
+	}
+
+	return $node->asXML();
 }
 
 /**

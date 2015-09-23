@@ -38,7 +38,7 @@ if ( ! defined( 'REST_API_VERSION' ) || ! version_compare( REST_API_VERSION, '2.
 }
 
 // Filter the oEmbed XML response to create an XML string.
-add_filter( 'oembed_xml_response', '_oembed_create_xml', 10, 2 );
+add_filter( 'oembed_xml_response', '_oembed_create_xml' );
 
 // Add a rewrite endpoint for the iframe.
 add_action( 'init', 'wp_oembed_rewrite_endpoint' );

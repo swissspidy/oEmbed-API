@@ -148,16 +148,11 @@ class WP_Legacy_oEmbed_Controller {
 	 * @return string The XML response data.
 	 */
 	public function xml_response( $data ) {
-		/**
-		 * Filter the XML response.
-		 *
-		 * @param string $result The built XML.
-		 * @param array  $data   The original oEmbed response data.
-		 */
-		$result = apply_filters( 'oembed_xml_response', false, $data );
+		/** This filter is documented in includes/functions.php */
+		$result = apply_filters( 'oembed_xml_response', $data );
 
 		// Bail if there's no XML.
-		if ( ! $result ) {
+		if ( ! is_string( $result ) ) {
 			status_header( 501 );
 			return 'Not implemented';
 		}

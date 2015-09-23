@@ -227,4 +227,56 @@ class WP_oEmbed_Test_Plugin extends WP_UnitTestCase {
 		$this->assertEquals( 'json', wp_oembed_ensure_format( 'random' ) );
 		$this->assertEquals( 'json', wp_oembed_ensure_format( array() ) );
 	}
+
+	/**
+	 * Test the _oembed_create_xml function.
+	 */
+	function test_oembed_create_xml() {
+		$actual = _oembed_create_xml( array(
+			'foo'  => 'bar',
+			'bar'  => 'baz',
+			'ping' => 'pong',
+		) );
+
+		$expected = '<oembed><foo>bar</foo><bar>baz</bar><ping>pong</ping></oembed>';
+
+		$this->assertStringEndsWith( $expected, trim( $actual ) );
+
+		$actual = _oembed_create_xml( array(
+			'foo' => array(
+				'bar' => 'baz',
+			),
+			'ping' => 'pong',
+		) );
+
+		$expected = '<oembed><foo><bar>baz</bar></foo><ping>pong</ping></oembed>';
+
+		$this->assertStringEndsWith( $expected, trim( $actual ) );
+
+		$actual = _oembed_create_xml( array(
+			'foo' => array(
+				'bar' => array(
+					'ping' => 'pong',
+				),
+			),
+			'hello' => 'world',
+		) );
+
+		$expected = '<oembed><foo><bar><ping>pong</ping></bar></foo><hello>world</hello></oembed>';
+
+		$this->assertStringEndsWith( $expected, trim( $actual ) );
+
+		$actual = _oembed_create_xml( array(
+			array(
+				'foo' => array(
+					'bar',
+				),
+			),
+			'helloworld',
+		) );
+
+		$expected = '<oembed><oembed><foo><oembed>bar</oembed></foo></oembed><oembed>helloworld</oembed></oembed>';
+
+		$this->assertStringEndsWith( $expected, trim( $actual ) );
+	}
 }
