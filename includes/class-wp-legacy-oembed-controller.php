@@ -84,7 +84,7 @@ class WP_Legacy_oEmbed_Controller {
 
 		if ( false === $data ) {
 			status_header( 404 );
-			return 'Not Found';
+			return __( 'Invalid URL.', 'oembed-api' );
 		}
 
 		if ( 'json' === $request['format'] ) {
