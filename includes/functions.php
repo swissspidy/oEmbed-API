@@ -28,11 +28,7 @@ function wp_oembed_add_discovery_links() {
  * Add JS to handle the messages from the embedded iframes.
  */
 function wp_oembed_add_host_js() {
-	?>
-	<script type="text/javascript">
-		<?php readfile( dirname( dirname( __FILE__ ) ) . '/scripts/frontend.js' ); ?>
-	</script>
-	<?php
+	wp_enqueue_script( 'wp-oembed', plugin_dir_url( dirname( __FILE__ ) ) . 'scripts/frontend.js' );
 }
 
 
