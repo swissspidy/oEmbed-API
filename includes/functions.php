@@ -49,10 +49,10 @@ function get_post_embed_url( $post = null ) {
 		return false;
 	}
 
-	$embed_url = add_query_arg( array( 'embed' => 'true' ), get_permalink( $post ) );
-
 	if ( get_option( 'permalink_structure' ) ) {
 		$embed_url = trailingslashit( get_permalink( $post ) ) . user_trailingslashit( 'embed' );
+	} else {
+		$embed_url = add_query_arg( array( 'embed' => 'true' ), get_permalink( $post ) );
 	}
 
 	return $embed_url;
@@ -71,10 +71,10 @@ function get_post_embed_url( $post = null ) {
  * @return string The oEmbed endpoint URL.
  */
 function get_oembed_endpoint_url( $permalink = '', $format = 'json' ) {
-	$url = add_query_arg( array( 'oembed' => 'true' ), home_url( '/' ) );
-
 	if ( function_exists( 'rest_url' ) ) {
 		$url = rest_url( 'wp/v2/oembed' );
+	} else {
+		$url = add_query_arg( array( 'oembed' => 'true' ), home_url( '/' ) );
 	}
 
 	if ( 'json' === $format ) {
