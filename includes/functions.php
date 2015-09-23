@@ -119,7 +119,7 @@ function get_post_embed_html( $post = null, $width, $height ) {
 	$output .= "\n}\n</script>";
 
 	$output .= sprintf(
-		'<iframe sandbox="allow-scripts" security="restricted" src="%1$s" width="%2$d" height="%3$d" title="%4$s" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>',
+		'<iframe sandbox="allow-scripts" security="restricted" src="%1$s" width="%2$d" height="%3$d" title="%4$s" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" class="wp-embedded-content"></iframe>',
 		esc_url( $embed_url ),
 		$width,
 		$height,
@@ -437,6 +437,7 @@ function wp_filter_oembed_result( $html, $url ) {
 			'marginheight' => true,
 			'scrolling'    => true,
 			'title'        => true,
+			'class'        => true,
 		),
 	);
 
