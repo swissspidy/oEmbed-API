@@ -322,13 +322,12 @@ function _oembed_rest_pre_serve_request( $served, $result, $request, $server ) {
 	/**
 	 * Filter the XML response.
 	 *
-	 * @param string $result The built XML.
-	 * @param array  $data   The original oEmbed response data.
+	 * @param array $data The original oEmbed response data.
 	 */
-	$result = apply_filters( 'oembed_xml_response', false, $data );
+	$result = apply_filters( 'oembed_xml_response', $data );
 
 	// Bail if there's no XML.
-	if ( ! $result ) {
+	if ( ! is_string( $result ) ) {
 		status_header( 501 );
 		die( 'Not implemented' );
 	}
@@ -347,11 +346,10 @@ function _oembed_rest_pre_serve_request( $served, $result, $request, $server ) {
  *
  * @access private
  *
- * @param string|false $result The XML response string.
- * @param array        $data   The original oEmbed response data.
+ * @param array $data The original oEmbed response data.
  * @return string|false XML string on success, false on error.
  */
-function _oembed_create_xml( $result, $data ) {
+function _oembed_create_xml( $data ) {
 	$oembed = new SimpleXMLElement( '<oembed></oembed>' );
 
 	foreach ( $data as $key => $value ) {
