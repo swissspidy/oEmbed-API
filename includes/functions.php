@@ -359,13 +359,13 @@ function _oembed_create_xml( $result, $data ) {
 			$element = $oembed->addChild( $key );
 
 			foreach ( $value as $k => $v ) {
-				$element->addChild( $k, $v );
+				$element->addChild( $k, esc_html( $v ) );
 			}
 
 			continue;
 		}
 
-		$oembed->addChild( $key, $value );
+		$oembed->addChild( $key, esc_html( $value ) );
 	}
 
 	$result = $oembed->asXML();
