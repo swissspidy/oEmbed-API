@@ -64,6 +64,8 @@ function get_post_embed_url( $post = null ) {
  * Pass an empty string as the first argument
  * to get the endpoint base URL.
  *
+ * @SuppressWarnings(PHPMD.ElseExpression)
+ *
  * @param string $permalink Optional. The permalink used for the `url` query arg.
  * @param string $format    Optional. The requested response format. Default is json.
  * @return string The oEmbed endpoint URL.
