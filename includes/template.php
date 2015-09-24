@@ -236,6 +236,7 @@
 			-webkit-transform-style: preserve-3d;
 			-moz-transform-style: preserve-3d;
 			transform-style: preserve-3d;
+			overflow: hidden;
 		}
 
 		.wp-embed-share-dialog-text {
@@ -246,9 +247,9 @@
 		}
 
 		p.wp-embed-share-title {
-			margin: 0 0 15px;
+			margin: 15px 0;
 			font-weight: bold;
-			font-size: 18px;
+			font-size: 16px;
 			line-height: 1.3;
 		}
 
@@ -257,6 +258,7 @@
 			max-width: 600px;
 			border: 0;
 			height: 28px;
+			margin: 0 0 15px 0;
 			padding: 0 5px;
 			text-align: center;
 			font: 400 14px/1.5 'Open Sans', sans-serif;
@@ -517,7 +519,11 @@
 				<div class="wp-embed-share-dialog-content">
 					<div class="wp-embed-share-dialog-text">
 						<p class="wp-embed-share-title">
-							<?php _e( 'Copy and paste this URL into your site to embed:', 'oembed-api' ); ?>
+							<?php _e( 'Copy and paste the HTML code below into your site to embed:', 'oembed-api' ); ?>
+						</p>
+						<input type="text" value="<?php echo esc_attr( get_post_embed_html( null, 600, 400 ) ); ?>" class="wp-embed-share-input"/>
+						<p class="wp-embed-share-title">
+							<?php _e( 'If you use WordPress, copy and paste this URL instead:', 'oembed-api' ); ?>
 						</p>
 						<input type="text" value="<?php the_permalink(); ?>" class="wp-embed-share-input"/>
 					</div>

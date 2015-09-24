@@ -135,7 +135,7 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 		wp_oembed_add_host_js();
 		$actual = ob_get_clean();
 
-		$this->assertTrue( false !== strpos( $actual, '<script type="text/javascript">' ) );
+		$this->assertTrue( wp_script_is( 'wp-oembed' ) );
 	}
 
 	/**
