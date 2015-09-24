@@ -9,6 +9,10 @@ php:
     - 7.0
     - hhvm
 
+matrix:
+    allow_failures:
+        - php: hhvm
+
 env:
     - WP_VERSION=nightly WP_MULTISITE=0
     - WP_VERSION=nightly WP_MULTISITE=1
@@ -26,7 +30,7 @@ before_script:
 
 script:
   - grunt checktextdomain
-  - if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.2" ]]; then vendor/bin/phpmd includes text cleancode,codesize,naming,unusedcode; fi
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.2" ]]; then vendor/bin/phpmd includes text codesize,naming,unusedcode; fi
   - if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.2" ]]; then vendor/bin/phpcpd -n includes; fi
   - vendor/bin/phpcs -n --report=emacs --standard=phpcs.ruleset.xml includes
   - phpunit --coverage-clover build/logs/clover.xml

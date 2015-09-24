@@ -242,42 +242,6 @@ class WP_REST_oEmbed_Test_Controller extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test HTTP headers set by the rest_pre_serve_request method.
-	 *
-	 * @runInSeparateProcess
-	 */
-	function test_rest_pre_serve_request_headers() {
-		if ( ! function_exists( 'xdebug_get_headers' ) ) {
-			$this->markTestSkipped( 'xdebug is required for this test' );
-		}
-
-		$user = $this->factory->user->create_and_get( array(
-			'display_name' => 'John Doe',
-		) );
-		$post = $this->factory->post->create_and_get( array(
-			'post_author' => $user->ID,
-			'post_title'  => 'Hello World',
-		) );
-
-		$request = new WP_REST_Request( 'GET', '/wp/v2/oembed' );
-		$request->set_param( 'url', get_permalink( $post->ID ) );
-		$request->set_param( 'format', 'xml' );
-
-		$response = $this->server->dispatch( $request );
-
-		ob_start();
-		_oembed_rest_pre_serve_request( true, $response, $request, $this->server );
-		$output = ob_get_clean();
-
-		$this->assertNotEmpty( $output );
-
-		$headers = xdebug_get_headers();
-
-		$this->assertEquals( 1, count( $headers ) );
-		$this->assertTrue( in_array( 'Content-Type: text/xml; charset=' . get_option( 'blog_charset' ), $headers ) );
-	}
-
-	/**
 	 * Test the rest_pre_serve_request method.
 	 */
 	function test_rest_pre_serve_request_wrong_format() {
