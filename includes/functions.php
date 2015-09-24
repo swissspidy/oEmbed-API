@@ -469,8 +469,6 @@ function wp_filter_oembed_result( $html, $url ) {
  * @return string The modified excerpt.
  */
 function wp_oembed_excerpt_more( $more_string ) {
-	global $post;
-
 	if ( false === get_query_var( 'embed', false ) ) {
 		return $more_string;
 	}
