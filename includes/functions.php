@@ -39,8 +39,6 @@ function wp_oembed_add_host_js() {
 /**
  * Get the URL to embed a specific post, for example in an iframe.
  *
- * @SuppressWarnings(PHPMD.ElseExpression)
- *
  * @param int|WP_Post $post Optional. Post ID or object. Defaults to the current post.
  * @return string|false The post embed URL on success, false if the post doesn't exist.
  */
@@ -65,8 +63,6 @@ function get_post_embed_url( $post = null ) {
  *
  * Pass an empty string as the first argument
  * to get the endpoint base URL.
- *
- * @SuppressWarnings(PHPMD.ElseExpression)
  *
  * @param string $permalink Optional. The permalink used for the `url` query arg.
  * @param string $format    Optional. The requested response format. Default is json.
@@ -348,8 +344,6 @@ function _oembed_rest_pre_serve_request( $served, $result, $request, $server ) {
 /**
  * Create an XML string from the oEmbed response data.
  *
- * @SuppressWarnings(PHPMD.ElseExpression)
- *
  * @access private
  *
  * @param array            $data The original oEmbed response data.
@@ -447,7 +441,7 @@ function wp_filter_oembed_result( $html, $url ) {
 
 	if ( ! $trusted ) {
 		$html = wp_kses( $html, $allowed_html );
-		$html = preg_replace( '|^(<iframe.*?></iframe>).*$|', '$1', $html );
+		$html = preg_replace( '|^.*(<iframe.*?></iframe>).*$|', '$1', $html );
 		$html = str_replace( '<iframe', '<iframe sandbox="allow-scripts" security="restricted"', $html );
 
 		preg_match( '/ src=[\'"]([^\'"]*)[\'"]/', $html, $results );
@@ -470,8 +464,6 @@ function wp_filter_oembed_result( $html, $url ) {
 
 /**
  * Filter the string in the "more" link displayed after a trimmed excerpt.
- *
- * @SuppressWarnings(PHPMD.ElseExpression)
  *
  * @param string $more_string The string shown within the more link.
  * @return string The modified excerpt.
