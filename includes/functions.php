@@ -441,7 +441,7 @@ function wp_filter_oembed_result( $html, $url ) {
 
 	if ( ! $trusted ) {
 		$html = wp_kses( $html, $allowed_html );
-		$html = preg_replace( '|^(<iframe.*?></iframe>).*$|', '$1', $html );
+		$html = preg_replace( '|^.*(<iframe.*?></iframe>).*$|', '$1', $html );
 		$html = str_replace( '<iframe', '<iframe sandbox="allow-scripts" security="restricted"', $html );
 
 		preg_match( '/ src=[\'"]([^\'"]*)[\'"]/', $html, $results );
