@@ -8,6 +8,12 @@ php:
     - 5.6
     - 7.0
     - hhvm
+    - hhvm-nightly
+
+matrix:
+    allow_failures:
+        - php: hhvm
+        - php: hhvm-nightly
 
 env:
     - WP_VERSION=nightly WP_MULTISITE=0
