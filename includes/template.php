@@ -101,6 +101,12 @@
 			height: auto;
 		}
 
+		.wp-embed-featured-image.square {
+			float: left;
+			max-width: 160px;
+			margin-right: 20px;
+		}
+
 		.wp-embed p {
 			margin: 0;
 		}
@@ -260,6 +266,13 @@
 			padding: 0 5px;
 			text-align: center;
 			font: 400 14px/1.5 'Open Sans', sans-serif;
+		}
+
+		html[dir="rtl"] .wp-embed-featured-image.square {
+			float: right;
+			margin-right: 0;
+
+			margin-left: 20px;
 		}
 
 		html[dir="rtl"] .wp-embed-site-title a {
@@ -437,16 +450,25 @@
 				$thumbnail_id = get_the_ID();
 			}
 
-			if ( $thumbnail_id ) :
-				/**
-				 * Filters the oEmbed thumbnail image size.
-				 *
-				 * @param string|array $image_size   Thumbnail size to use in the embed.
-				 * @param int          $thumbnail_id The current thumbnail ID.
-				 */
-				$image_size = apply_filters( 'oembed_image_size', array( 600, 340 ), $thumbnail_id );
-				?>
-				<div class="wp-embed-featured-image">
+			if ( $thumbnail_id ) {
+				$aspect_ratio = 1 / 1;
+				$measurements = array( 1, 1 );
+
+				$meta = wp_get_attachment_metadata( $thumbnail_id );
+				foreach ( $meta['sizes'] as $size => $data ) {
+					if ( $data['width'] / $data['height'] > $aspect_ratio ) {
+						$aspect_ratio = $data['width'] / $data['height'];
+						$measurements = array( $data['width'], $data['height'] );
+						$image_size    = $size;
+					}
+				}
+
+				$shape = $measurements[0] / $measurements[1] >= 1.75 ? 'rectangular' : 'square';
+			}
+			?>
+
+			<?php if ( $thumbnail_id && 'rectangular' === $shape ) : ?>
+				<div class="wp-embed-featured-image rectangular">
 					<a href="<?php the_permalink(); ?>" target="_top">
 						<?php echo wp_get_attachment_image( $thumbnail_id, $image_size ); ?>
 					</a>
@@ -458,6 +480,14 @@
 					<?php the_title(); ?>
 				</a>
 			</p>
+
+			<?php if ( $thumbnail_id && 'square' === $shape ) : ?>
+				<div class="wp-embed-featured-image square">
+					<a href="<?php the_permalink(); ?>" target="_top">
+						<?php echo wp_get_attachment_image( $thumbnail_id, $image_size ); ?>
+					</a>
+				</div>
+			<?php endif; ?>
 
 			<div class="wp-embed-excerpt"><?php the_excerpt_embed(); ?></div>
 
