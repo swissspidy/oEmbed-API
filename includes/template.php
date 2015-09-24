@@ -451,15 +451,18 @@
 			}
 
 			if ( $thumbnail_id ) {
-				$aspect_ratio = 1 / 1;
+				$aspect_ratio = 1;
 				$measurements = array( 1, 1 );
+				$image_size   = 'full'; // Fallback.
 
 				$meta = wp_get_attachment_metadata( $thumbnail_id );
-				foreach ( $meta['sizes'] as $size => $data ) {
-					if ( $data['width'] / $data['height'] > $aspect_ratio ) {
-						$aspect_ratio = $data['width'] / $data['height'];
-						$measurements = array( $data['width'], $data['height'] );
-						$image_size    = $size;
+				if ( is_array( $meta ) ) {
+					foreach ( $meta['sizes'] as $size => $data ) {
+						if ( $data['width'] / $data['height'] > $aspect_ratio ) {
+							$aspect_ratio = $data['width'] / $data['height'];
+							$measurements = array( $data['width'], $data['height'] );
+							$image_size   = $size;
+						}
 					}
 				}
 
