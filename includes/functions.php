@@ -451,7 +451,7 @@ function wp_filter_oembed_result( $html, $url ) {
 		}
 	}
 
-	if ( '' === $html ) {
+	if ( ! $html || false === strpos( $html, '<iframe' ) ) {
 		return false;
 	}
 
