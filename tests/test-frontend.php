@@ -104,7 +104,7 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 		$html   = '<span>Hello</span><p>World</p>';
 		$actual = wp_filter_oembed_result( $html, '' );
 
-		$this->assertEquals( 'HelloWorld', $actual );
+		$this->assertEquals( false, $actual );
 
 		$html   = '<div><p></p></div><script></script>';
 		$actual = wp_filter_oembed_result( $html, '' );
