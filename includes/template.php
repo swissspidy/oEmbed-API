@@ -311,7 +311,7 @@
 			'use strict';
 
 			var secret = window.location.hash.replace( /.*secret=([\d\w]{10}).*/, '$1' ),
-				share_dialog, share_dialog_open, share_dialog_close, share_input, resize_limiter;
+				share_dialog, share_dialog_open, share_dialog_close, share_input, resizing;
 
 			function sendEmbedMessage(message, value) {
 				window.parent.postMessage( {
@@ -403,24 +403,11 @@
 					return;
 				}
 
-				/**
-				 * We need to limit how often we send the message,
-				 * otherwise we're just wasting CPU.
-				 * */
-				if ( resize_limiter ) {
-					return;
-				}
-				resize_limiter = true;
+				clearTimeout( resizing );
 
-				/**
-				 * Call onresize immediately, in case the resize finished before we got the final size.
-				 */
-				setTimeout( function () {
-					resize_limiter = false;
-					window.onresize();
-				}, 50 );
-
-				sendEmbedMessage( 'height', Math.ceil( document.body.getBoundingClientRect().height ) );
+				resizing = setTimeout( function () {
+					sendEmbedMessage( 'height', Math.ceil( document.body.getBoundingClientRect().height ) );
+				}, 100 );
 			};
 		})( window, document );
 	</script>
