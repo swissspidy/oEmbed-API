@@ -116,6 +116,10 @@
 			color: #32373c;
 		}
 
+		.wp-embed .wp-embed-more {
+			color: #b4b9be;
+		}
+
 		.wp-embed-meta {
 			display: table;
 			width: 100%;

@@ -473,7 +473,11 @@ function wp_oembed_excerpt_more( $more_string ) {
 		return $more_string;
 	}
 
-	return '&hellip;';
+	return sprintf(
+		' <a class="wp-embed-more" href="%s" target="_top">%s</a>',
+		get_the_permalink(),
+		__( 'Read more&hellip;', 'oembed-api' )
+	);
 }
 
 /**
