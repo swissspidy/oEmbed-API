@@ -51,7 +51,13 @@ function get_post_embed_url( $post = null ) {
 		$embed_url = add_query_arg( array( 'embed' => 'true' ), get_permalink( $post ) );
 	}
 
-	return $embed_url;
+	/**
+	 * Filter the URL to embed a specific post.
+	 *
+	 * @param string  $embed_url The post embed URL.
+	 * @param WP_Post $post      The corresponding post object.
+	 */
+	return esc_url_raw( apply_filters( 'post_embed_url', $embed_url, $post ) );
 }
 
 /**
