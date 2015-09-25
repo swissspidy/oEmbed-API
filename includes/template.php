@@ -316,17 +316,19 @@
 				share_dialog = document.querySelector( '.wp-embed-share-dialog' );
 				share_dialog_open = document.querySelector( '.wp-embed-share-dialog-open' );
 				share_dialog_close = document.querySelector( '.wp-embed-share-dialog-close' );
-				share_input = document.querySelector( '.wp-embed-share-input' );
+				share_input = document.querySelectorAll( '.wp-embed-share-input' );
 
 				if ( share_input ) {
-					share_input.onclick = function ( e ) {
-						e.target.select();
-					};
+					for ( var i = 0; i < share_input.length; i++ ) {
+						share_input[i].onclick = function ( e ) {
+							e.target.select();
+						};
+					}
 				}
 
 				function openSharingDialog() {
 					share_dialog.className = share_dialog.className.replace( 'hidden', '' );
-					share_input.select();
+					share_input[0].select();
 				}
 
 				function closeSharingDialog() {
@@ -337,7 +339,6 @@
 				if ( share_dialog_open ) {
 					share_dialog_open.onclick = function ( e ) {
 						openSharingDialog();
-						share_input.select();
 						e.preventDefault();
 					};
 				}
