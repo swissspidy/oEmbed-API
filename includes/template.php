@@ -310,7 +310,16 @@
 		(function ( window, document ) {
 			'use strict';
 
-			var hash, secret, share_dialog, share_dialog_open, share_dialog_close, share_input, resize_limiter;
+			var secret = window.location.hash.replace( /.*secret=([\d\w]{10}).*/, '$1' ),
+				share_dialog, share_dialog_open, share_dialog_close, share_input, resize_limiter;
+
+			function sendEmbedMessage(message, value) {
+				window.parent.postMessage( {
+					message: message,
+					value: value,
+					secret: secret
+				}, '*' );
+			}
 
 			window.onload = function () {
 				share_dialog = document.querySelector( '.wp-embed-share-dialog' );
@@ -360,17 +369,10 @@
 					return;
 				}
 
-				hash = window.location.hash;
-				secret = hash.replace( /.*secret=([\d\w]{10}).*/, '$1' );
-
 				/**
 				 * Send this document's height to the parent (embedding) site.
 				 */
-				window.parent.postMessage( {
-					message: 'height',
-					value: Math.ceil( document.body.getBoundingClientRect().height ),
-					secret: secret
-				}, '*' );
+				sendEmbedMessage( 'height', Math.ceil( document.body.getBoundingClientRect().height ) );
 
 				/**
 				 * Detect clicks to external (_top) links.
@@ -387,11 +389,7 @@
 						/**
 						 * Send link target to the parent (embedding) site.
 						 */
-						window.parent.postMessage( {
-							message: 'link',
-							value: href,
-							secret: secret
-						}, '*' );
+						sendEmbedMessage( 'link', href );
 						e.preventDefault();
 					}
 				}
@@ -422,11 +420,7 @@
 					window.onresize();
 				}, 50 );
 
-				window.parent.postMessage( {
-					message: 'height',
-					value: Math.ceil( document.body.getBoundingClientRect().height ),
-					secret: secret
-				}, '*' );
+				sendEmbedMessage( 'height', Math.ceil( document.body.getBoundingClientRect().height ) );
 			};
 		})( window, document );
 	</script>
