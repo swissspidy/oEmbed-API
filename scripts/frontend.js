@@ -1,31 +1,29 @@
 function receiveEmbedMessage( e ) {
-	var iframes = document.getElementsByTagName( 'iframe' );
+	var iframes = document.querySelectorAll( '.wp-embedded-content[data-secret]' )
 	for ( var ii = 0; ii < iframes.length; ii++ ) {
-		if ( iframes[ ii ].getAttribute( 'data-secret' ) === e.data.secret ) {
-			var source = iframes[ ii ];
+		var source = iframes[ ii ];
 
-			// Resize the iframe on request.
-			if ( 'height' === e.data.message ) {
-				var height = e.data.value;
-				if ( height > 1000 ) {
-					height = 1000;
-				} else if ( height < 100 ) {
-					height = 100;
-				}
-
-				source.height = (height) + "px";
+		// Resize the iframe on request.
+		if ( 'height' === e.data.message ) {
+			var height = e.data.value;
+			if ( height > 1000 ) {
+				height = 1000;
+			} else if ( height < 100 ) {
+				height = 100;
 			}
 
-			// Link to a specific URL on request.
-			if ( 'link' === e.data.message ) {
-				var sourceURL = document.createElement( 'a' ), targetURL = document.createElement( 'a' );
-				sourceURL.href = source.getAttribute( 'src' );
-				targetURL.href = e.data.value;
+			source.height = (height) + "px";
+		}
 
-				// Only continue if link hostname matches iframe's hostname.
-				if ( targetURL.host === sourceURL.host && document.activeElement === source ) {
-					window.top.location.href = e.data.value;
-				}
+		// Link to a specific URL on request.
+		if ( 'link' === e.data.message ) {
+			var sourceURL = document.createElement( 'a' ), targetURL = document.createElement( 'a' );
+			sourceURL.href = source.getAttribute( 'src' );
+			targetURL.href = e.data.value;
+
+			// Only continue if link hostname matches iframe's hostname.
+			if ( targetURL.host === sourceURL.host && document.activeElement === source ) {
+				window.top.location.href = e.data.value;
 			}
 		}
 	}
@@ -33,7 +31,10 @@ function receiveEmbedMessage( e ) {
 
 window.addEventListener( 'message', receiveEmbedMessage, false );
 
+var existingOnload = window.onload;
 window.onload = function () {
+	if ( typeof existingOnload === 'function' ) { existingOnload(); }
+
 	var isIE10 = 10 === new Function( "/*@cc_on return @_jscript_version; @*/" )(),
 		isIE11 = !! navigator.userAgent.match( /Trident.*rv\:11\./ );
 
