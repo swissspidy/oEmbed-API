@@ -297,6 +297,11 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 
 		$actual = wp_oembed_excerpt_more( '' );
 
-		$this->assertEquals( ' <span class="wp-embed-more">&hellip; (2 words)&lrm;</span>', $actual );
+		$expected = sprintf(
+			'&hellip; <a class="wp-embed-more" href="%s" target="_top">Read more</a>',
+			get_the_permalink()
+		);
+
+		$this->assertEquals( $expected, $actual );
 	}
 }

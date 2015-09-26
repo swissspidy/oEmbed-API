@@ -122,7 +122,7 @@
 			color: #32373c;
 		}
 
-		.wp-embed-more {
+		.wp-embed .wp-embed-more {
 			color: #b4b9be;
 		}
 
