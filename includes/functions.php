@@ -459,7 +459,7 @@ function wp_filter_oembed_result( $html, $url ) {
 		$html = str_replace( $results[0], " src=\"$url\" data-secret=\"$secret\"", $html );
 	}
 
-	if ( ! $html || false === strpos( $html, '<iframe' ) ) {
+	if ( ! $html || ( ! $trusted && false === strpos( $html, '<iframe' ) ) ) {
 		return false;
 	}
 
