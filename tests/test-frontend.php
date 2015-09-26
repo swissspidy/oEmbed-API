@@ -308,7 +308,7 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 		$actual = wp_oembed_excerpt_more( '' );
 
 		$expected = sprintf(
-			' <a class="wp-embed-more" href="%s" target="_top">Read more&hellip;</a>',
+			'&hellip; <a class="wp-embed-more" href="%s" target="_top">Read more</a>',
 			get_the_permalink()
 		);
 
