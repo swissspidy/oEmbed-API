@@ -427,6 +427,10 @@ function wp_filter_oembed_result( $html, $url ) {
 		}
 	}
 
+	if ( true === $trusted ) {
+		return $html;
+	}
+
 	$allowed_html = array(
 		'iframe' => array(
 			'src'          => true,
@@ -441,20 +445,18 @@ function wp_filter_oembed_result( $html, $url ) {
 		),
 	);
 
-	if ( ! $trusted ) {
-		$html = wp_kses( $html, $allowed_html );
-		$html = preg_replace( '|^.*(<iframe.*?></iframe>).*$|', '$1', $html );
-		$html = str_replace( '<iframe', '<iframe sandbox="allow-scripts" security="restricted"', $html );
+	$html = wp_kses( $html, $allowed_html );
+	$html = preg_replace( '|^.*(<iframe.*?></iframe>).*$|', '$1', $html );
+	$html = str_replace( '<iframe', '<iframe sandbox="allow-scripts" security="restricted"', $html );
 
-		preg_match( '/ src=[\'"]([^\'"]*)[\'"]/', $html, $results );
+	preg_match( '/ src=[\'"]([^\'"]*)[\'"]/', $html, $results );
 
-		if ( ! empty( $results ) ) {
-			$secret = wp_generate_password( 10, false );
+	if ( ! empty( $results ) ) {
+		$secret = wp_generate_password( 10, false );
 
-			$url = esc_url( "{$results[1]}#?secret=$secret" );
+		$url = esc_url( "{$results[1]}#?secret=$secret" );
 
-			$html = str_replace( $results[0], " src=\"$url\" data-secret=\"$secret\"", $html );
-		}
+		$html = str_replace( $results[0], " src=\"$url\" data-secret=\"$secret\"", $html );
 	}
 
 	if ( ! $html || false === strpos( $html, '<iframe' ) ) {

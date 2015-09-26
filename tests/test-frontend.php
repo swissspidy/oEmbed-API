@@ -98,18 +98,18 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test filter_oembed_result_trusted method without iframe.
+	 * Test untrusted HTML without iframe.
 	 */
 	function test_filter_oembed_result_no_iframe() {
 		$html   = '<span>Hello</span><p>World</p>';
 		$actual = wp_filter_oembed_result( $html, '' );
 
-		$this->assertEquals( false, $actual );
+		$this->assertFalse( $actual );
 
 		$html   = '<div><p></p></div><script></script>';
 		$actual = wp_filter_oembed_result( $html, '' );
 
-		$this->assertEquals( '', $actual );
+		$this->assertFalse( $actual );
 	}
 
 	/**
