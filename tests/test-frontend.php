@@ -10,7 +10,7 @@
  */
 class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	/**
-	 * Test our template_include hook
+	 * Test template inclusion.
 	 */
 	function test_template_include() {
 		$this->assertEquals( '', wp_oembed_include_template( '' ) );
@@ -23,17 +23,17 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 		$this->assertEquals( dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php', wp_oembed_include_template( '' ) );
 	}
 	/**
-	 * Test output of add_oembed_discovery_links.
+	 * Test discovery links.
 	 */
 	function test_add_oembed_discovery_links_non_singular() {
 		ob_start();
 		wp_oembed_add_discovery_links();
 		$actual = ob_get_clean();
-		$this->assertEquals( '', $actual );
+		$this->assertSame( '', $actual );
 	}
 
 	/**
-	 * Test output of add_oembed_discovery_links.
+	 * Test discovery links on a single post.
 	 */
 	function test_add_oembed_discovery_links() {
 		$post_id = $this->factory->post->create();
@@ -52,7 +52,7 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test filter_oembed_result_trusted method.
+	 * Test trusted HTML.
 	 */
 	function test_filter_oembed_result_trusted() {
 		$html   = '<p></p><iframe onload="alert(1)"></iframe>';
@@ -63,7 +63,7 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test filter_oembed_result_trusted method.
+	 * Test untrusted HTML.
 	 */
 	function test_filter_oembed_result_untrusted() {
 		$html   = '<p></p><iframe onload="alert(1)" src="http://example.com/sample-page/"></iframe>';
@@ -83,16 +83,6 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	function test_filter_oembed_result_multiple_tags() {
 		$html   = '<div><iframe></iframe><iframe></iframe><p></p></div>';
 		$actual = wp_filter_oembed_result( $html, '' );
-
-		$this->assertEquals( '<iframe sandbox="allow-scripts" security="restricted"></iframe>', $actual );
-	}
-
-	/**
-	 * Test filter_oembed_result_trusted method for current site.
-	 */
-	function test_filter_oembed_result_current_site() {
-		$html   = '<p></p><iframe onload="alert(1)"></iframe>';
-		$actual = wp_filter_oembed_result( $html, home_url( '/' ) );
 
 		$this->assertEquals( '<iframe sandbox="allow-scripts" security="restricted"></iframe>', $actual );
 	}
@@ -133,7 +123,7 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	function test_add_host_js() {
 		ob_start();
 		wp_oembed_add_host_js();
-		$actual = ob_get_clean();
+		ob_end_clean();
 
 		$this->assertTrue( wp_script_is( 'wp-oembed' ) );
 	}
@@ -286,7 +276,7 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test the wp_oembed_excerpt_more function.
+	 * Test the excerpt.
 	 */
 	function test_wp_oembed_excerpt_more_no_embed() {
 		$GLOBALS['wp_query'] = new WP_Query();
@@ -295,10 +285,10 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test the wp_oembed_excerpt_more function.
+	 * Test excerpt function.
 	 */
 	function test_wp_oembed_excerpt_more() {
-		$GLOBALS['wp_query']                      = new WP_Query();
+		$GLOBALS['wp_query'] = new WP_Query();
 		$GLOBALS['wp_query']->query_vars['embed'] = true;
 
 		$GLOBALS['post'] = $this->factory->post->create_and_get( array(
