@@ -33,7 +33,11 @@ window.addEventListener( 'message', receiveEmbedMessage, false );
 
 var existingOnload = window.onload;
 window.onload = function () {
-	if ( typeof existingOnload === 'function' ) { existingOnload(); }
+	if ( typeof existingOnload === 'function' ) { 
+		try {
+			existingOnload();
+		} catch(e) {}
+	}
 
 	var isIE10 = 10 === new Function( "/*@cc_on return @_jscript_version; @*/" )(),
 		isIE11 = !! navigator.userAgent.match( /Trident.*rv\:11\./ );
