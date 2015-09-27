@@ -569,3 +569,12 @@ function wp_oembed_old_slug_redirect() {
 	wp_redirect( get_post_embed_url( $post_id ), 301 );
 	exit;
 }
+
+/**
+ * Dequeue all styles and scripts in the embed template by default.
+ */
+function wp_oembed_dequeue_styles() {
+	global $wp_styles, $wp_scripts;
+	$wp_styles->queue = array();
+	$wp_scripts->queue = array();
+}

@@ -54,9 +54,14 @@ add_filter( 'template_redirect', 'wp_oembed_old_slug_redirect', 1 );
 
 add_action( 'wp_head', 'wp_oembed_add_discovery_links' );
 add_action( 'wp_head', 'wp_oembed_add_host_js' );
+add_action( 'wp_head', 'wp_print_head_scripts' );
 
 add_action( 'oembed_head', 'print_emoji_detection_script' );
 add_action( 'oembed_head', 'print_emoji_styles' );
+add_action( 'oembed_head', 'wp_print_head_scripts' );
+add_action( 'oembed_head', 'wp_oembed_dequeue_styles', 1 );
+
+add_action( 'oembed_footer', 'wp_print_footer_scripts', 20 );
 
 add_filter( 'oembed_result', 'wp_filter_oembed_result', 10, 2 );
 
