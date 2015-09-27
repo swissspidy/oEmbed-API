@@ -359,11 +359,11 @@
 					};
 				}
 
-				document.onkeydown = function ( e ) {
+				document.addEventListener( 'keydown', function ( e ) {
 					if ( e.keyCode === 27 && -1 === share_dialog.className.indexOf( 'hidden' ) ) {
 						closeSharingDialog();
 					}
-				};
+				}, false );
 
 				if ( window.self === window.top ) {
 					return;
