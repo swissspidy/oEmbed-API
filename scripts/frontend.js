@@ -2,7 +2,10 @@
 	'use strict';
 
 	function receiveEmbedMessage( e ) {
-		var iframes = document.querySelectorAll( '.wp-embedded-content[data-secret]' )
+		if ( ! ( e.data.secret || e.data.message || e.data.value ) ) {
+			return;
+		}
+		var iframes = document.querySelectorAll( '.wp-embedded-content[data-secret=' + e.data.secret + ']' )
 		for ( var ii = 0; ii < iframes.length; ii++ ) {
 			var source = iframes[ ii ];
 
