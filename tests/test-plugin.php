@@ -55,7 +55,7 @@ class WP_oEmbed_Test_Plugin extends WP_UnitTestCase {
 		$permalink = get_permalink( $post_id );
 		$embed_url = get_post_embed_url( $post_id );
 
-		$this->assertEquals( $permalink . '/embed', $embed_url );
+		$this->assertEquals( user_trailingslashit( trailingslashit( $permalink ) . 'embed' ), $embed_url );
 
 		update_option( 'permalink_structure', '' );
 	}
@@ -174,7 +174,7 @@ class WP_oEmbed_Test_Plugin extends WP_UnitTestCase {
 		/* @var WP $wp */
 		global $wp;
 
-		foreach ( array( 'oembed', 'format', 'url', '_jsonp', 'maxwidth' ) as $query_var ) {
+		foreach ( array( 'embed', 'oembed', 'format', 'url', '_jsonp', 'maxwidth' ) as $query_var ) {
 			$this->assertTrue( in_array( $query_var, $wp->public_query_vars ) );
 		}
 	}
@@ -243,7 +243,7 @@ class WP_oEmbed_Test_Plugin extends WP_UnitTestCase {
 		$this->assertStringEndsWith( $expected, trim( $actual ) );
 
 		$actual = _oembed_create_xml( array(
-			'foo' => array(
+			'foo'  => array(
 				'bar' => 'baz',
 			),
 			'ping' => 'pong',
@@ -254,7 +254,7 @@ class WP_oEmbed_Test_Plugin extends WP_UnitTestCase {
 		$this->assertStringEndsWith( $expected, trim( $actual ) );
 
 		$actual = _oembed_create_xml( array(
-			'foo' => array(
+			'foo'   => array(
 				'bar' => array(
 					'ping' => 'pong',
 				),
@@ -278,5 +278,26 @@ class WP_oEmbed_Test_Plugin extends WP_UnitTestCase {
 		$expected = '<oembed><oembed><foo><oembed>bar</oembed></foo></oembed><oembed>helloworld</oembed></oembed>';
 
 		$this->assertStringEndsWith( $expected, trim( $actual ) );
+	}
+
+	/**
+	 * Test is_embed.
+	 */
+	function test_is_embed() {
+		$this->assertFalse( is_embed() );
+
+		$post_id = $this->factory->post->create();
+		$this->go_to( get_post_embed_url( $post_id ) );
+		$this->assertTrue( is_embed() );
+
+		$file          = DIR_TESTDATA . '/images/canola.jpg';
+		$attachment_id = $this->factory->attachment->create_object( $file, $post_id, array(
+			'post_mime_type' => 'image/jpeg',
+		) );
+		$this->go_to( get_post_embed_url( $attachment_id ) );
+		$this->assertTrue( is_embed() );
+
+		$this->go_to( home_url( '/?p=123&embed=true' ) );
+		$this->assertTrue( is_embed() );
 	}
 }

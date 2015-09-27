@@ -380,7 +380,7 @@ function _oembed_create_xml( $data, $node = null ) {
  * @return array The modified query vars array.
  */
 function wp_oembed_add_query_vars( $query_vars ) {
-	return array_merge( $query_vars, array( 'oembed', 'format', 'url', '_jsonp', 'maxwidth' ) );
+	return array_merge( $query_vars, array( 'embed', 'oembed', 'format', 'url', '_jsonp', 'maxwidth' ) );
 }
 
 /**
@@ -390,11 +390,20 @@ function wp_oembed_add_query_vars( $query_vars ) {
  * @return string The filtered template.
  */
 function wp_oembed_include_template( $template ) {
-	if ( false !== get_query_var( 'embed', false ) && ( is_singular() || is_404() ) ) {
+	if ( is_embed() ) {
 		return dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php';
 	}
 
 	return $template;
+}
+
+/**
+ * Is the query for an embedded post?
+ *
+ * @return bool Whether we're in an embedded post or not.
+ */
+function is_embed() {
+	return (bool) false !== get_query_var( 'embed', false ) && ( is_singular() || is_404() );
 }
 
 /**
@@ -473,7 +482,7 @@ function wp_filter_oembed_result( $html, $url ) {
  * @return string The modified excerpt.
  */
 function wp_oembed_excerpt_more( $more_string ) {
-	if ( false === get_query_var( 'embed', false ) ) {
+	if ( ! is_embed() ) {
 		return $more_string;
 	}
 

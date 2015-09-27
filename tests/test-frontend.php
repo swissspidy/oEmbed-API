@@ -16,8 +16,7 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 		$this->assertEquals( '', wp_oembed_include_template( '' ) );
 
 		$post_id = $this->factory->post->create();
-		$this->go_to( get_permalink( $post_id ) );
-		$GLOBALS['wp_query']->query_vars['embed'] = true;
+		$this->go_to( get_post_embed_url( $post_id ) );
 
 		$this->assertQueryTrue( 'is_single', 'is_singular' );
 		$this->assertEquals( dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php', wp_oembed_include_template( '' ) );
@@ -143,8 +142,7 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 			'post_content' => 'Foo Bar',
 			'post_excerpt' => 'Bar Baz',
 		) );
-		$this->go_to( get_permalink( $post_id ) );
-		$GLOBALS['wp_query']->query_vars['embed'] = true;
+		$this->go_to( get_post_embed_url( $post_id ) );
 
 		$this->assertQueryTrue( 'is_single', 'is_singular' );
 
@@ -173,8 +171,7 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 		) );
 		set_post_thumbnail( $post_id, $attachment_id );
 
-		$this->go_to( get_permalink( $post_id ) );
-		$GLOBALS['wp_query']->query_vars['embed'] = true;
+		$this->go_to( get_post_embed_url( $post_id ) );
 
 		$this->assertQueryTrue( 'is_single', 'is_singular' );
 
@@ -193,13 +190,7 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	 * Test oEmbed output for a non-existent post.
 	 */
 	function test_oembed_output_404() {
-		global $wp_rewrite;
-
-		$wp_rewrite->init();
-		$wp_rewrite->set_permalink_structure( '/%postname%/' );
-		$wp_rewrite->flush_rules();
-
-		$this->go_to( home_url( '/non-existent-post/embed/' ) );
+		$this->go_to( home_url( '/?p=123&embed=true' ) );
 		$GLOBALS['wp_query']->query_vars['embed'] = true;
 
 		$this->assertQueryTrue( 'is_404' );
@@ -213,9 +204,6 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 		$doc = new DOMDocument();
 		$this->assertTrue( $doc->loadHTML( $actual ) );
 		$this->assertTrue( false !== strpos( $actual, 'Page not found' ) );
-
-		$wp_rewrite->set_permalink_structure( '' );
-		$wp_rewrite->init();
 	}
 
 	/**
@@ -231,8 +219,7 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 			'post_excerpt'   => 'Bar Baz',
 		) );
 
-		$this->go_to( get_attachment_link( $attachment_id ) );
-		$GLOBALS['wp_query']->query_vars['embed'] = true;
+		$this->go_to( get_post_embed_url( $attachment_id ) );
 
 		$this->assertQueryTrue( 'is_single', 'is_singular', 'is_attachment' );
 
@@ -291,12 +278,13 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	 * Test excerpt function.
 	 */
 	function test_wp_oembed_excerpt_more() {
-		$GLOBALS['wp_query'] = new WP_Query();
-		$GLOBALS['wp_query']->query_vars['embed'] = true;
-
-		$GLOBALS['post'] = $this->factory->post->create_and_get( array(
+		$post_id = $this->factory->post->create( array(
 			'post_content' => 'Foo Bar',
 		) );
+
+		$this->assertEquals( '', wp_oembed_excerpt_more( '' ) );
+
+		$this->go_to( get_post_embed_url( $post_id ) );
 
 		$actual = wp_oembed_excerpt_more( '' );
 
