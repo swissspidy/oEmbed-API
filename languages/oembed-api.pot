@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2+.
 msgid ""
 msgstr ""
-"Project-Id-Version: oEmbed API 0.6.0\n"
+"Project-Id-Version: oEmbed API 0.8.0\n"
 "Report-Msgid-Bugs-To: https://pascalbirchler.com\n"
 "POT-Creation-Date: 2015-07-27 13:00:02+00:00\n"
 "MIME-Version: 1.0\n"
@@ -24,40 +24,47 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: includes/class-wp-rest-oembed-controller.php:62
+#: includes/class-wp-legacy-oembed-controller.php:87
+#: includes/class-wp-rest-oembed-controller.php:59
 msgid "Invalid URL."
 msgstr ""
 
-#: includes/class-wp-rest-oembed-controller.php:67
-msgid "Invalid format."
-msgstr ""
-
-#: includes/functions.php:121
+#: includes/functions.php:128
 msgid "Embedded WordPress Post"
 msgstr ""
 
-#: includes/template.php:37
-msgid "&hellip; (%d word)"
-msgid_plural "&hellip; (%d words)"
-msgstr[0] ""
-msgstr[1] ""
+#: includes/functions.php:485
+msgid "Read more"
+msgstr ""
 
-#: includes/template.php:423
+#: includes/template.php:517
 msgid "%s <span class=\"screen-reader-text\">Comment</span>"
 msgid_plural "%s <span class=\"screen-reader-text\">Comments</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/template.php:436
+#: includes/template.php:531
 msgid "Open sharing dialog"
 msgstr ""
 
-#: includes/template.php:445
-msgid "Copy and paste this URL into your site to embed:"
+#: includes/template.php:541
+msgid "Copy and paste the HTML code below into your site to embed:"
 msgstr ""
 
-#: includes/template.php:455
+#: includes/template.php:545
+msgid "If you use WordPress, copy and paste this URL instead:"
+msgstr ""
+
+#: includes/template.php:551
 msgid "Close sharing dialog"
+msgstr ""
+
+#: includes/template.php:560
+msgid "Page not found"
+msgstr ""
+
+#: includes/template.php:563
+msgid "Error 404! The requested content was not found."
 msgstr ""
 
 #. Plugin Name of the plugin/theme
@@ -80,11 +87,7 @@ msgstr ""
 msgid "https://pascalbirchler.com"
 msgstr ""
 
-#: includes/template.php:31
-#. translators: If your word count is based on single characters (e.g. East
-#. Asian characters), enter 'characters_excluding_spaces' or
-#. 'characters_including_spaces'. Otherwise, enter 'words'. Do not translate
-#. into your own language.
-msgctxt "Word count type. Do not translate!"
-msgid "words"
+#: includes/functions.php:481
+msgctxt "read more link"
+msgid "&hellip; %s"
 msgstr ""
