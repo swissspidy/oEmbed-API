@@ -48,7 +48,7 @@ class WP_Legacy_oEmbed_Controller {
 		 * @param int $maxwidth Maximum allowed width. Defaults to 600.
 		 */
 		$maxwidth = apply_filters( 'oembed_default_width', 600 );
-		$maxwidth = get_query_var( 'maxwidth', $maxwidth );
+		$maxwidth = absint( get_query_var( 'maxwidth', $maxwidth ) );
 
 		$callback = get_query_var( '_jsonp', false );
 
