@@ -147,22 +147,12 @@ function get_post_embed_html( $post = null, $width, $height ) {
  * @return array|false Response data on success, false if post doesn't exist.
  */
 function get_oembed_response_data( $post = null, $width ) {
-	/**
-	 * Current post object.
-	 *
-	 * @var WP_Post $post
-	 */
 	$post = get_post( $post );
 
 	if ( ! $post ) {
 		return false;
 	}
 
-	/**
-	 * User object for the post author.
-	 *
-	 * @var WP_User $author
-	 */
 	$author = get_userdata( $post->post_author );
 
 	// If a post doesn't have an author, fall back to the site's name.
@@ -220,8 +210,13 @@ function get_oembed_response_data( $post = null, $width ) {
 		$thumbnail_id = get_post_thumbnail_id( $post->ID );
 	}
 
-	if ( 'attachment' === get_post_type( $post ) && wp_attachment_is_image( $post->ID ) ) {
-		$thumbnail_id = $post->ID;
+	if ( 'attachment' === get_post_type( $post ) ) {
+		if ( wp_attachment_is_image( $post ) ) {
+			$thumbnail_id = $post->ID;
+		} else if ( wp_attachment_is( 'video', $post ) ) {
+			$thumbnail_id = get_post_thumbnail_id( $post );
+			$data['type'] = 'video';
+		}
 	}
 
 	if ( $thumbnail_id ) {
@@ -232,7 +227,7 @@ function get_oembed_response_data( $post = null, $width ) {
 	}
 
 	/**
-	 * Filters the oEmbed response data.
+	 * Filter the oEmbed response data.
 	 *
 	 * @param array   $data The response data.
 	 * @param WP_Post $post The post object.
