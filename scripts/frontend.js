@@ -1,4 +1,6 @@
-(function () {
+( function ( window, document ) {
+	'use strict';
+
 	function receiveEmbedMessage( e ) {
 		var iframes = document.querySelectorAll( '.wp-embedded-content[data-secret]' )
 		for ( var ii = 0; ii < iframes.length; ii++ ) {
@@ -32,20 +34,13 @@
 
 	window.addEventListener( 'message', receiveEmbedMessage, false );
 
-	var existingOnload = window.onload;
-	window.onload = function () {
-		if ( typeof existingOnload === 'function' ) {
-			try {
-				existingOnload();
-			} catch ( e ) {}
-		}
-
+	function onLoad() {
 		var isIE10 = 10 === new Function( "/*@cc_on return @_jscript_version; @*/" )(),
 			isIE11 = !!navigator.userAgent.match( /Trident.*rv\:11\./ );
 
 		// Remove security attribute from iframes in IE10 and IE11.
 		if ( isIE10 || isIE11 ) {
-			var iframes = document.querySelectorAll( '.wp-embedded-content' ), iframeClone;
+			var iframes = document.querySelectorAll( '.wp-embedded-content[security]' ), iframeClone;
 			for ( var i = 0; i < iframes.length; i++ ) {
 				iframeClone = iframes[ i ].cloneNode( true );
 				iframeClone.removeAttribute( 'security' );
@@ -53,5 +48,7 @@
 				iframes[ i ].parentNode.removeChild( iframes[ i ] );
 			}
 		}
-	};
-}());
+	}
+
+	document.addEventListener( 'load', onLoad, false );
+} )( window, document );

@@ -321,7 +321,7 @@
 				}, '*' );
 			}
 
-			window.onload = function () {
+			function onLoad() {
 				share_dialog = document.querySelector( '.wp-embed-share-dialog' );
 				share_dialog_open = document.querySelector( '.wp-embed-share-dialog-open' );
 				share_dialog_close = document.querySelector( '.wp-embed-share-dialog-close' );
@@ -393,12 +393,14 @@
 						e.preventDefault();
 					}
 				}
-			};
+			}
+
+			document.addEventListener( 'load', onLoad, false );
 
 			/**
 			 * Iframe resize handler.
 			 */
-			window.onresize = function () {
+			function onResize() {
 				if ( window.self === window.top ) {
 					return;
 				}
@@ -408,8 +410,10 @@
 				resizing = setTimeout( function () {
 					sendEmbedMessage( 'height', Math.ceil( document.body.getBoundingClientRect().height ) );
 				}, 100 );
-			};
-		})( window, document );
+			}
+
+			window.addEventListener( 'resize', onResize, false );
+		} )( window, document );
 	</script>
 	<?php
 	/**
