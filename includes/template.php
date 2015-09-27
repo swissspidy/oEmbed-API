@@ -395,6 +395,7 @@
 				}
 			}
 
+			document.addEventListener( 'DOMContentLoaded', onLoad, false );
 			document.addEventListener( 'load', onLoad, false );
 
 			/**
