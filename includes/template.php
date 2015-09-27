@@ -565,27 +565,28 @@
 		</div>
 
 		<div class="wp-embed-meta">
-			<?php
-			$site_icon_url = admin_url( 'images/w-logo-blue.png' );
-
-			if ( function_exists( 'get_site_icon_url' ) ) {
-				$site_icon_url = get_site_icon_url( 32, $site_icon_url );
-			}
-
-			/**
-			 * Filters the site icon URL for use in the oEmbed template.
-			 *
-			 * @param string $site_icon_url The site icon URL.
-			 */
-			$site_icon_url = apply_filters( 'oembed_site_icon_url', $site_icon_url );
-
-			printf(
-				'<img src="%s" width="32" height="32" alt="" class="wp-embed-site-icon"/>',
-				esc_url( $site_icon_url )
-			);
-			?>
 			<div class="wp-embed-site-title">
-				<?php printf( '<a href="%s" target="_top">%s</a>', esc_url( home_url() ), get_bloginfo( 'name' ) ); ?>
+				<?php
+				$site_icon_url = admin_url( 'images/w-logo-blue.png' );
+
+				if ( function_exists( 'get_site_icon_url' ) ) {
+					$site_icon_url = get_site_icon_url( 32, $site_icon_url );
+				}
+
+				/**
+				 * Filters the site icon URL for use in the oEmbed template.
+				 *
+				 * @param string $site_icon_url The site icon URL.
+				 */
+				$site_icon_url = apply_filters( 'oembed_site_icon_url', $site_icon_url );
+
+				printf(
+					'<a href="%s" target="_top"><img src="%s" width="32" height="32" alt="" class="wp-embed-site-icon"/><span>%s</span></a>',
+					esc_url( home_url() ),
+					esc_url( $site_icon_url ),
+					esc_attr( get_bloginfo( 'name' ) )
+				);
+				?>
 			</div>
 		</div>
 	<?php endif; ?>

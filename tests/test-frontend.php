@@ -22,6 +22,7 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 		$this->assertQueryTrue( 'is_single', 'is_singular' );
 		$this->assertEquals( dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php', wp_oembed_include_template( '' ) );
 	}
+
 	/**
 	 * Test discovery links.
 	 */
@@ -202,6 +203,8 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 		$GLOBALS['wp_query']->query_vars['embed'] = true;
 
 		$this->assertQueryTrue( 'is_404' );
+
+		$this->assertEquals( dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php', wp_oembed_include_template( '' ) );
 
 		ob_start();
 		include( dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php' );
