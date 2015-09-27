@@ -73,3 +73,4 @@ add_filter( 'the_excerpt_embed', 'wptexturize' );
 add_filter( 'the_excerpt_embed', 'convert_chars' );
 add_filter( 'the_excerpt_embed', 'wpautop' );
 add_filter( 'the_excerpt_embed', 'shortcode_unautop' );
+add_filter( 'the_excerpt_embed', 'wp_oembed_excerpt_attachment' );

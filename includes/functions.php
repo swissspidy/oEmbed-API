@@ -510,6 +510,22 @@ function the_excerpt_embed() {
 }
 
 /**
+ * Filters the post excerpt for the embed template.
+ *
+ * Shows players for video and audio attachments.
+ *
+ * @param string $content The current post excerpt.
+ * @return THe modified post excerpt.
+ */
+function wp_oembed_excerpt_attachment( $content ) {
+	if ( is_attachment() ) {
+		return prepend_attachment( '' );
+	}
+
+	return $content;
+}
+
+/**
  * Custom old slug redirection function.
  *
  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
