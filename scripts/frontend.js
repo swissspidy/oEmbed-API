@@ -53,5 +53,5 @@
 		}
 	}
 
-	document.addEventListener( 'load', onLoad, false );
+	document.addEventListener( 'DOMContentLoaded', onLoad, false );
 } )( window, document );
