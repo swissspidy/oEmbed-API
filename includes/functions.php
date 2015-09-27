@@ -196,6 +196,10 @@ function get_oembed_response_data( $post = null, $width ) {
 
 	$height = ceil( $width / 16 * 9 );
 
+	if ( 200 > $height ) {
+		$height = 200;
+	}
+
 	$data = array(
 		'version'       => '1.0',
 		'provider_name' => get_bloginfo( 'name' ),

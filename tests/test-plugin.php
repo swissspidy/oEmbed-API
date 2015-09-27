@@ -130,7 +130,7 @@ class WP_oEmbed_Test_Plugin extends WP_UnitTestCase {
 		$data = get_oembed_response_data( $post, 100 );
 
 		$this->assertEquals( 200, $data['width'] );
-		$this->assertEquals( 113, $data['height'] );
+		$this->assertEquals( 200, $data['height'] );
 	}
 
 	function test_get_oembed_response_data_thumbnail() {
