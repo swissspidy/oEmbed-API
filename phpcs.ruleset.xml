@@ -12,5 +12,6 @@
 		<exclude name="WordPress.XSS.EscapeOutput" />
 		<exclude name="WordPress.VIP.DirectDatabaseQuery" />
 		<exclude name="WordPress.WP.PreparedSQL" />
+		<exclude name="WordPress.VIP.AdminBarRemoval" />
 	</rule>
 </ruleset>
