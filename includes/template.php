@@ -422,8 +422,8 @@
 	do_action( 'oembed_head' );
 	?>
 </head>
-<body>
-<div class="wp-embed">
+<body <?php body_class(); ?>>
+<div <?php post_class( 'wp-embed' ); ?>>
 	<?php
 	if ( have_posts() ) :
 		while ( have_posts() ) : the_post();

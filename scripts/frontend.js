@@ -21,8 +21,8 @@
 				var height = e.data.value;
 				if ( height > 1000 ) {
 					height = 1000;
-				} else if ( height < 100 ) {
-					height = 100;
+				} else if ( height < 200 ) {
+					height = 200;
 				}
 
 				source.height = (height) + "px";

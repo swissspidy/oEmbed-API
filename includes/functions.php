@@ -146,31 +146,10 @@ function get_post_embed_html( $post = null, $width, $height ) {
  * @return array|false Response data on success, false if post doesn't exist.
  */
 function get_oembed_response_data( $post = null, $width ) {
-	/**
-	 * Current post object.
-	 *
-	 * @var WP_Post $post
-	 */
 	$post = get_post( $post );
 
 	if ( ! $post ) {
 		return false;
-	}
-
-	/**
-	 * User object for the post author.
-	 *
-	 * @var WP_User $author
-	 */
-	$author = get_userdata( $post->post_author );
-
-	// If a post doesn't have an author, fall back to the site's name.
-	$author_name = get_bloginfo( 'name' );
-	$author_url  = get_home_url();
-
-	if ( $author ) {
-		$author_name = $author->display_name;
-		$author_url  = get_author_posts_url( $author->ID, $author->user_nicename );
 	}
 
 	/**
@@ -195,12 +174,16 @@ function get_oembed_response_data( $post = null, $width ) {
 
 	$height = ceil( $width / 16 * 9 );
 
+	if ( 200 > $height ) {
+		$height = 200;
+	}
+
 	$data = array(
 		'version'       => '1.0',
 		'provider_name' => get_bloginfo( 'name' ),
 		'provider_url'  => get_home_url(),
-		'author_name'   => $author_name,
-		'author_url'    => $author_url,
+		'author_name'   => get_bloginfo( 'name' ),
+		'author_url'    => get_home_url(),
 		'title'         => $post->post_title,
 		'type'          => 'rich',
 		'width'         => $width,
@@ -208,6 +191,41 @@ function get_oembed_response_data( $post = null, $width ) {
 		'html'          => get_post_embed_html( $post, $width, $height ),
 	);
 
+	/**
+	 * Filter the oEmbed response data.
+	 *
+	 * @param array   $data The response data.
+	 * @param WP_Post $post The post object.
+	 */
+	return apply_filters( 'oembed_response_data', $data, $post );
+}
+
+/**
+ * Filters the oEmbed response data to add author information.
+ *
+ * @param array   $data The response data.
+ * @param WP_Post $post The post object.
+ * @return array The modified response data.
+ */
+function get_oembed_response_data_author( $data, $post ) {
+	$author = get_userdata( $post->post_author );
+
+	if ( $author ) {
+		$data['author_name'] = $author->display_name;
+		$data['author_url']  = get_author_posts_url( $author->ID, $author->user_nicename );
+	}
+
+	return $data;
+}
+
+/**
+ * Filters the oEmbed response data to add media information for thumbnails and attachments.
+ *
+ * @param array   $data The response data.
+ * @param WP_Post $post The post object.
+ * @return array The modified response data.
+ */
+function get_oembed_response_data_media( $data, $post ) {
 	// Add post thumbnail to response if available.
 	$thumbnail_id = false;
 
@@ -215,24 +233,23 @@ function get_oembed_response_data( $post = null, $width ) {
 		$thumbnail_id = get_post_thumbnail_id( $post->ID );
 	}
 
-	if ( 'attachment' === get_post_type( $post ) && wp_attachment_is_image( $post->ID ) ) {
-		$thumbnail_id = $post->ID;
+	if ( 'attachment' === get_post_type( $post ) ) {
+		if ( wp_attachment_is_image( $post ) ) {
+			$thumbnail_id = $post->ID;
+		} else if ( wp_attachment_is( 'video', $post ) ) {
+			$thumbnail_id = get_post_thumbnail_id( $post );
+			$data['type'] = 'video';
+		}
 	}
 
 	if ( $thumbnail_id ) {
-		list( $thumbnail_url, $thumbnail_width, $thumbnail_height ) = wp_get_attachment_image_src( $thumbnail_id, array( $width, 99999 ) );
+		list( $thumbnail_url, $thumbnail_width, $thumbnail_height ) = wp_get_attachment_image_src( $thumbnail_id, array( $data['width'], 99999 ) );
 		$data['thumbnail_url']    = $thumbnail_url;
 		$data['thumbnail_width']  = $thumbnail_width;
 		$data['thumbnail_height'] = $thumbnail_height;
 	}
 
-	/**
-	 * Filters the oEmbed response data.
-	 *
-	 * @param array   $data The response data.
-	 * @param WP_Post $post The post object.
-	 */
-	return apply_filters( 'oembed_response_data', $data, $post );
+	return $data;
 }
 
 /**
@@ -408,8 +425,6 @@ function is_embed() {
 /**
  * If the $url isn't on the trusted providers list, we need to filter the HTML heavily for security.
  *
- * @SuppressWarnings(PHPMD.CyclomaticComplexity)
- *
  * @param string $html The unfiltered oEmbed HTML.
  * @param string $url  URL of the content to be embedded.
  * @return string The filtered and sanitized oEmbed result.
@@ -509,6 +524,22 @@ function the_excerpt_embed() {
 }
 
 /**
+ * Filters the post excerpt for the embed template.
+ *
+ * Shows players for video and audio attachments.
+ *
+ * @param string $content The current post excerpt.
+ * @return string The modified post excerpt.
+ */
+function wp_oembed_excerpt_attachment( $content ) {
+	if ( is_attachment() ) {
+		return prepend_attachment( '' );
+	}
+
+	return $content;
+}
+
+/**
  * Custom old slug redirection function.
  *
  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
@@ -567,4 +598,13 @@ function wp_oembed_old_slug_redirect() {
 
 	wp_redirect( get_post_embed_url( $post_id ), 301 );
 	exit;
+}
+
+/**
+ * Disable the admin bar in the embed template.
+ */
+function wp_oembed_disable_admin_bar() {
+	if ( is_embed() ) {
+		add_filter( 'show_admin_bar', '__return_false' );
+	}
 }

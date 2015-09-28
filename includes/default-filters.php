@@ -16,6 +16,9 @@ add_action( 'init', 'wp_oembed_load_textdomain' );
 // Register scripts.
 add_action( 'init', 'wp_oembed_register_scripts' );
 
+// Disable the admin bar in embeds.
+add_action( 'parse_query', 'wp_oembed_disable_admin_bar' );
+
 // Load fallback if REST API isn't available.
 if ( ! defined( 'REST_API_VERSION' ) || ! version_compare( REST_API_VERSION, '2.0-beta3', '>=' ) ) {
 	// Pull in the required class.
@@ -54,9 +57,13 @@ add_filter( 'template_redirect', 'wp_oembed_old_slug_redirect', 1 );
 
 add_action( 'wp_head', 'wp_oembed_add_discovery_links' );
 add_action( 'wp_head', 'wp_oembed_add_host_js' );
+add_action( 'wp_head', 'wp_print_head_scripts' );
 
 add_action( 'oembed_head', 'print_emoji_detection_script' );
 add_action( 'oembed_head', 'print_emoji_styles' );
+add_action( 'oembed_head', 'wp_print_head_scripts' );
+
+add_action( 'oembed_footer', 'wp_print_footer_scripts', 20 );
 
 add_filter( 'oembed_result', 'wp_filter_oembed_result', 10, 2 );
 
@@ -68,3 +75,7 @@ add_filter( 'the_excerpt_embed', 'wptexturize' );
 add_filter( 'the_excerpt_embed', 'convert_chars' );
 add_filter( 'the_excerpt_embed', 'wpautop' );
 add_filter( 'the_excerpt_embed', 'shortcode_unautop' );
+add_filter( 'the_excerpt_embed', 'wp_oembed_excerpt_attachment' );
+
+add_filter( 'oembed_response_data', 'get_oembed_response_data_author', 10, 2 );
+add_filter( 'oembed_response_data', 'get_oembed_response_data_media', 10, 2 );
