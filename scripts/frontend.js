@@ -1,7 +1,14 @@
 ( function ( window, document ) {
 	'use strict';
 
-	function receiveEmbedMessage( e ) {
+	window.wp = window.wp || {};
+
+	// Don't execute this twice.
+	if ( !! window.wp.receiveEmbedMessage ) {
+		return;
+	}
+
+	window.wp.receiveEmbedMessage = function( e ) {
 		if ( ! ( e.data.secret || e.data.message || e.data.value ) ) {
 			return;
 		}
@@ -35,7 +42,7 @@
 		}
 	}
 
-	window.addEventListener( 'message', receiveEmbedMessage, false );
+	window.addEventListener( 'message', window.wp.receiveEmbedMessage, false );
 
 	function onLoad() {
 		var isIE10 = 10 === new Function( "/*@cc_on return @_jscript_version; @*/" )(),
