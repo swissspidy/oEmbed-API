@@ -602,12 +602,10 @@ function wp_oembed_old_slug_redirect() {
 }
 
 /**
- * Dequeue all styles and scripts in the embed template by default.
+ * Disable the admin bar in the embed template.
  */
-function wp_oembed_dequeue_styles() {
-	$wp_styles  = wp_styles();
-	$wp_scripts = wp_scripts();
-
-	$wp_styles->queue  = array();
-	$wp_scripts->queue = array();
+function wp_oembed_disable_admin_bar() {
+	if ( is_embed() ) {
+		add_filter( 'show_admin_bar', '__return_false' );
+	}
 }
