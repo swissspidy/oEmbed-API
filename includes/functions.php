@@ -408,8 +408,6 @@ function is_embed() {
 /**
  * If the $url isn't on the trusted providers list, we need to filter the HTML heavily for security.
  *
- * @SuppressWarnings(PHPMD.CyclomaticComplexity)
- *
  * @param string $html The unfiltered oEmbed HTML.
  * @param string $url  URL of the content to be embedded.
  * @return string The filtered and sanitized oEmbed result.
@@ -514,7 +512,7 @@ function the_excerpt_embed() {
  * Shows players for video and audio attachments.
  *
  * @param string $content The current post excerpt.
- * @return THe modified post excerpt.
+ * @return string The modified post excerpt.
  */
 function wp_oembed_excerpt_attachment( $content ) {
 	if ( is_attachment() ) {
