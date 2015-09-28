@@ -139,6 +139,7 @@
 			transform: translateY(-50%);
 			height: 25px;
 			width: 25px;
+			border: 0;
 		}
 
 		.wp-embed-site-title {
