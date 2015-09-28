@@ -76,6 +76,7 @@
 			color: #82878c;
 			background: white;
 			border: 1px solid #e5e5e5;
+			-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 			box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 			box-sizing: border-box;
 			/* Clearfix */
@@ -136,6 +137,7 @@
 			position: absolute;
 			top: 50%;
 			left: 0;
+			-webkit-transform: translateY(-50%);
 			transform: translateY(-50%);
 			height: 25px;
 			width: 25px;
@@ -249,6 +251,7 @@
 		.wp-embed-share-dialog-text {
 			position: relative;
 			top: 50%;
+			-webkit-transform: translateY(-50%);
 			transform: translateY(-50%);
 			padding: 0 20px;
 		}
