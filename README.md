@@ -1,5 +1,5 @@
 # oEmbed API #
-Contributors:      swissspidy, pento, netweb  
+Contributors:      swissspidy, pento  
 Donate link:         
 Tags:              oembed, api  
 Requires at least: 3.9  
@@ -124,6 +124,16 @@ Disabling output of the discovery links on your site:
 `remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );`
 
 ## Changelog ##
+
+### 0.9.0 ###
+* New: Added new `is_embed` conditional tag.
+* New: Support for embedding video and audio attachments.
+* Enhancement: More classes to better target the embedded content via CSS.
+* Enhancement: Major JavaScript improvements leading to better performance.
+* Enhancement: More robust XML generation.
+* Enhancement: Show read more link instead of word count in the excerpt.
+* Fixed: Correct sanitization of the `maxwidth` param in the legacy controller.
+* Fixed: Better sanitization of the resulting HTML.
 
 ### 0.8.0 ###
 
