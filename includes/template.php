@@ -8,7 +8,9 @@
  * @package WP_oEmbed
  */
 
-header( 'X-WP-oembed: true' );
+if ( ! headers_sent() ) {
+	header( 'X-WP-oembed: true' );
+}
 
 ?>
 <!DOCTYPE html>
