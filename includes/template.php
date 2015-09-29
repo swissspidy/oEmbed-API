@@ -18,7 +18,7 @@ if ( ! headers_sent() ) {
 <head>
 	<title><?php wp_title( '-', true, 'right' ); ?></title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700"/>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600"/>
 	<style type="text/css">
 		html, body {
 			padding: 0;
@@ -196,7 +196,6 @@ if ( ! headers_sent() ) {
 			right: 0;
 			bottom: 0;
 			background-color: rgba(10, 10, 10, 0.8);
-			text-align: center;
 			color: #fff;
 			opacity: 1;
 			transition: opacity .25s ease-in-out;
@@ -262,29 +261,72 @@ if ( ! headers_sent() ) {
 		}
 
 		.wp-embed-share-dialog-text {
-			position: relative;
-			top: 50%;
-			-webkit-transform: translateY(-50%);
-			transform: translateY(-50%);
-			padding: 0 20px;
+			margin-top: 25px;
+			padding: 20px;
 		}
 
-		p.wp-embed-share-title {
-			margin: 15px 0;
-			font-weight: bold;
+		.wp-embed-share-tabs {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		.wp-embed-share-tab-button {
+			display: inline;
+		}
+
+		.wp-embed-share-tab-button button {
+			padding: 0;
+			margin: 0 0 20px;
+			border: none;
+			background: transparent;
 			font-size: 16px;
 			line-height: 1.3;
+			color: #aaa;
+			cursor: pointer;
+			-webkit-transition: color .1s ease-in;
+			transition: color .1s ease-in;
+		}
+
+		.wp-embed-share-tab-button button:hover {
+			color: #fff;
+		}
+
+		.wp-embed-share-tab-button + .wp-embed-share-tab-button {
+			margin-left: 5px;
+			padding-left: 5px;
+			border-left: 1px solid #aaa;
+		}
+
+		.wp-embed-share-tab-button[aria-selected="true"] button {
+			color: #fff;
+		}
+
+		.wp-embed-share-tab[aria-hidden="true"] {
+			display: none;
+		}
+
+		p.wp-embed-share-description {
+			margin: 0;
+			font-size: 14px;
+			line-height: 1;
+			font-style: italic;
+			color: #aaa;
 		}
 
 		.wp-embed-share-input {
+			box-sizing: border-box;
 			width: 100%;
-			max-width: 600px;
 			border: 0;
 			height: 28px;
-			margin: 0 0 15px 0;
+			margin: 0 0 10px 0;
 			padding: 0 5px;
-			text-align: center;
 			font: 400 14px/1.5 'Open Sans', sans-serif;
+			resize: none;
+		}
+
+		textarea.wp-embed-share-input {
+			height: 72px;
 		}
 
 		html[dir="rtl"] .wp-embed-featured-image.square {
@@ -328,7 +370,7 @@ if ( ! headers_sent() ) {
 			'use strict';
 
 			var secret = window.location.hash.replace( /.*secret=([\d\w]{10}).*/, '$1' ),
-				share_dialog, share_dialog_open, share_dialog_close, share_input, resizing;
+				share_dialog, share_dialog_open, share_dialog_close, share_dialog_tabs, share_input, resizing;
 
 			function sendEmbedMessage(message, value) {
 				window.parent.postMessage( {
@@ -343,10 +385,11 @@ if ( ! headers_sent() ) {
 				share_dialog_open = document.querySelector( '.wp-embed-share-dialog-open' );
 				share_dialog_close = document.querySelector( '.wp-embed-share-dialog-close' );
 				share_input = document.querySelectorAll( '.wp-embed-share-input' );
+				share_dialog_tabs = document.querySelectorAll( '.wp-embed-share-tab-button button' );
 
 				if ( share_input ) {
 					for ( var i = 0; i < share_input.length; i++ ) {
-						share_input[i].onclick = function ( e ) {
+						share_input[ i ].onclick = function ( e ) {
 							e.target.select();
 						};
 					}
@@ -374,6 +417,19 @@ if ( ! headers_sent() ) {
 						closeSharingDialog();
 						e.preventDefault();
 					};
+				}
+
+				if ( share_dialog_tabs ) {
+					for ( var i = 0; i < share_dialog_tabs.length; i++ ) {
+						share_dialog_tabs[ i ].onclick = function ( e ) {
+							var currentTab = document.querySelector( '.wp-embed-share-tab-button[aria-selected="true"]' );
+							currentTab.setAttribute( 'aria-selected', 'false' );
+							document.querySelector( '#' + currentTab.getAttribute( 'aria-controls' ) ).setAttribute( 'aria-hidden', 'true' );
+
+							e.target.parentElement.setAttribute( 'aria-selected', 'true' );
+							document.querySelector( '#' + e.target.parentElement.getAttribute( 'aria-controls' ) ).setAttribute( 'aria-hidden', 'false' );
+						};
+					}
 				}
 
 				document.addEventListener( 'keydown', function ( e ) {
@@ -554,18 +610,31 @@ if ( ! headers_sent() ) {
 			<div class="wp-embed-share-dialog hidden">
 				<div class="wp-embed-share-dialog-content">
 					<div class="wp-embed-share-dialog-text">
-						<p class="wp-embed-share-title">
-							<?php _e( 'Copy and paste the HTML code below into your site to embed:', 'oembed-api' ); ?>
-						</p>
-						<input type="text" value="<?php echo esc_attr( get_post_embed_html( null, 600, 400 ) ); ?>" class="wp-embed-share-input"/>
-						<p class="wp-embed-share-title">
-							<?php _e( 'If you use WordPress, copy and paste this URL instead:', 'oembed-api' ); ?>
-						</p>
-						<input type="text" value="<?php the_permalink(); ?>" class="wp-embed-share-input"/>
+						<ul class="wp-embed-share-tabs" role="tablist">
+							<li id="wp-embed-share-tab-button-wordpress" class="wp-embed-share-tab-button" role="tab" aria-controls="wp-embed-share-tab-wordpress" aria-selected="true">
+								<button><?php _e( 'WordPress Embed', 'oembed-api' ); ?></button>
+							</li>
+							<li id="wp-embed-share-tab-button-embed" class="wp-embed-share-tab-button" role="tab" aria-controls="wp-embed-share-tab-html" aria-selected="false">
+								<button><?php _e( 'HTML Embed', 'oembed-api' ); ?></button>
+							</li>
+						</ul>
+						<div id="wp-embed-share-tab-wordpress" class="wp-embed-share-tab" role="tabpanel" aria-labelledby="wp-embed-share-tab-button-wordpress" aria-hidden="false">
+							<input type="text" value="<?php the_permalink(); ?>" class="wp-embed-share-input"/>
+
+							<p class="wp-embed-share-description">
+								<?php _e( 'Copy and paste this URL into your WordPress site to embed', 'oembed-api' ); ?>
+							</p>
+						</div>
+						<div id="wp-embed-share-tab-html" class="wp-embed-share-tab" role="tabpanel" aria-labelledby="wp-embed-share-tab-button-html" aria-hidden="true">
+							<textarea class="wp-embed-share-input"><?php echo esc_attr( get_post_embed_html( null, 600, 400 ) ); ?></textarea>
+
+							<p class="wp-embed-share-description">
+								<?php _e( 'Copy and paste this code into your site to embed', 'oembed-api' ); ?>
+							</p>
+						</div>
 					</div>
 
-					<button type="button" class="wp-embed-share-dialog-close"
-					        aria-label="<?php _e( 'Close sharing dialog', 'oembed-api' ); ?>">
+					<button type="button" class="wp-embed-share-dialog-close" aria-label="<?php _e( 'Close sharing dialog', 'oembed-api' ); ?>">
 						<span class="dashicons dashicons-no"></span>
 					</button>
 				</div>

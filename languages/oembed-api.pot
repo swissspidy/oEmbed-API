@@ -37,33 +37,41 @@ msgstr ""
 msgid "Read more"
 msgstr ""
 
-#: includes/template.php:518
+#: includes/template.php:590
 msgid "%s <span class=\"screen-reader-text\">Comment</span>"
 msgid_plural "%s <span class=\"screen-reader-text\">Comments</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/template.php:532
+#: includes/template.php:604
 msgid "Open sharing dialog"
 msgstr ""
 
-#: includes/template.php:542
-msgid "Copy and paste the HTML code below into your site to embed:"
+#: includes/template.php:615
+msgid "WordPress Embed"
 msgstr ""
 
-#: includes/template.php:546
-msgid "If you use WordPress, copy and paste this URL instead:"
+#: includes/template.php:618
+msgid "HTML Embed"
 msgstr ""
 
-#: includes/template.php:552
+#: includes/template.php:625
+msgid "Copy and paste this URL into your WordPress site to embed"
+msgstr ""
+
+#: includes/template.php:632
+msgid "Copy and paste this code into your site to embed"
+msgstr ""
+
+#: includes/template.php:637
 msgid "Close sharing dialog"
 msgstr ""
 
-#: includes/template.php:561
+#: includes/template.php:646
 msgid "Page not found"
 msgstr ""
 
-#: includes/template.php:564
+#: includes/template.php:649
 msgid "Error 404! The requested content was not found."
 msgstr ""
 
