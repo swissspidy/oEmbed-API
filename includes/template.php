@@ -104,6 +104,7 @@ if ( ! headers_sent() ) {
 		.wp-embed-featured-image img {
 			width: 100%;
 			height: auto;
+			border: none;
 		}
 
 		.wp-embed-featured-image.square {
@@ -317,7 +318,7 @@ if ( ! headers_sent() ) {
 		.wp-embed-share-input {
 			box-sizing: border-box;
 			width: 100%;
-			border: 0;
+			border: none;
 			height: 28px;
 			margin: 0 0 10px 0;
 			padding: 0 5px;
