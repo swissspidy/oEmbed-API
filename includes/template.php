@@ -222,6 +222,9 @@ if ( ! headers_sent() ) {
 		.wp-embed-share-dialog-open .dashicons,
 		.wp-embed-share-dialog-close .dashicons {
 			padding: 4px;
+		}
+
+		.wp-embed-share-dialog-open .dashicons {
 			top: 8px;
 		}
 
@@ -242,6 +245,12 @@ if ( ! headers_sent() ) {
 
 		.wp-embed-share-dialog-close:hover {
 			text-decoration: none;
+		}
+
+		.wp-embed-share-dialog-close .dashicons {
+			height: 24px;
+			width: 24px;
+			background-size: 24px;
 		}
 
 		.wp-embed-share-dialog-content {
