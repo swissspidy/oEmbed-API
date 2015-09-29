@@ -381,7 +381,7 @@ if ( ! headers_sent() ) {
 			var secret = window.location.hash.replace( /.*secret=([\d\w]{10}).*/, '$1' ),
 				share_dialog, share_dialog_open, share_dialog_close, share_dialog_tabs, share_input, resizing;
 
-			function sendEmbedMessage(message, value) {
+			function sendEmbedMessage( message, value ) {
 				window.parent.postMessage( {
 					message: message,
 					value: value,
@@ -406,7 +406,7 @@ if ( ! headers_sent() ) {
 
 				function openSharingDialog() {
 					share_dialog.className = share_dialog.className.replace( 'hidden', '' );
-					share_input[0].select();
+					share_input[ 0 ].select();
 				}
 
 				function closeSharingDialog() {
@@ -495,7 +495,7 @@ if ( ! headers_sent() ) {
 			}
 
 			window.addEventListener( 'resize', onResize, false );
-		} )( window, document );
+		})( window, document );
 	</script>
 	<?php
 	/**
