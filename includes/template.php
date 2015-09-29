@@ -8,6 +8,10 @@
  * @package WP_oEmbed
  */
 
+if ( ! headers_sent() ) {
+	header( 'X-WP-oembed: true' );
+}
+
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>

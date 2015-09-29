@@ -57,7 +57,6 @@ class WP_oEmbed_Test_HTTP_Headers extends WP_UnitTestCase {
 
 		$headers = xdebug_get_headers();
 
-		$this->assertEquals( 2, count( $headers ) );
 		$this->assertTrue( in_array( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ), $headers ) );
 		$this->assertTrue( in_array( 'X-Content-Type-Options: nosniff', $headers ) );
 
@@ -67,7 +66,6 @@ class WP_oEmbed_Test_HTTP_Headers extends WP_UnitTestCase {
 
 		$headers = xdebug_get_headers();
 
-		$this->assertEquals( 2, count( $headers ) );
 		$this->assertTrue( in_array( 'Content-Type: application/javascript; charset=' . get_option( 'blog_charset' ), $headers ) );
 		$this->assertTrue( in_array( 'X-Content-Type-Options: nosniff', $headers ) );
 	}
@@ -95,7 +93,6 @@ class WP_oEmbed_Test_HTTP_Headers extends WP_UnitTestCase {
 
 		$headers = xdebug_get_headers();
 
-		$this->assertEquals( 1, count( $headers ) );
 		$this->assertTrue( in_array( 'Content-Type: text/xml; charset=' . get_option( 'blog_charset' ), $headers ) );
 	}
 
@@ -134,7 +131,6 @@ class WP_oEmbed_Test_HTTP_Headers extends WP_UnitTestCase {
 
 		$headers = xdebug_get_headers();
 
-		$this->assertEquals( 1, count( $headers ) );
 		$this->assertTrue( in_array( 'Content-Type: text/xml; charset=' . get_option( 'blog_charset' ), $headers ) );
 	}
 }
