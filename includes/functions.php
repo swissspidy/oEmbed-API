@@ -605,6 +605,6 @@ function wp_oembed_old_slug_redirect() {
  */
 function wp_oembed_disable_admin_bar() {
 	if ( is_embed() ) {
-		add_filter( 'show_admin_bar', '__return_false' );
+		add_filter( 'show_admin_bar', '__return_false', 9999 );
 	}
 }
