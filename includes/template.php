@@ -267,7 +267,7 @@ if ( ! headers_sent() ) {
 		}
 
 		.wp-embed-share-tabs {
-			margin: 0;
+			margin: 0 0 20px;
 			padding: 0;
 			list-style: none;
 		}
@@ -277,8 +277,8 @@ if ( ! headers_sent() ) {
 		}
 
 		.wp-embed-share-tab-button button {
+			margin: 0;
 			padding: 0;
-			margin: 0 0 20px;
 			border: none;
 			background: transparent;
 			font-size: 16px;
@@ -294,8 +294,8 @@ if ( ! headers_sent() ) {
 		}
 
 		.wp-embed-share-tab-button + .wp-embed-share-tab-button {
-			margin-left: 5px;
-			padding-left: 5px;
+			margin: 0 0 0 5px;
+			padding: 0 0 0 5px;
 			border-left: 1px solid #aaa;
 		}
 
@@ -364,6 +364,13 @@ if ( ! headers_sent() ) {
 		html[dir="rtl"] .wp-embed-share-dialog-close {
 			right: auto;
 			left: 20px;
+		}
+
+		html[dir="rtl"] .wp-embed-share-tab-button + .wp-embed-share-tab-button {
+			margin: 0 5px 0 0;
+			padding: 0 5px 0 0;
+			border-left: none;
+			border-right: 1px solid #aaa;
 		}
 	</style>
 	<script type="text/javascript">
