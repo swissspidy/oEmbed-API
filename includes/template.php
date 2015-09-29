@@ -295,7 +295,7 @@ if ( ! headers_sent() ) {
 
 		.wp-embed-share-tab-button + .wp-embed-share-tab-button {
 			margin: 0 0 0 5px;
-			padding: 0 0 0 5px;
+			padding: 0 0 0 7px;
 			border-left: 1px solid #aaa;
 		}
 
@@ -369,7 +369,7 @@ if ( ! headers_sent() ) {
 
 		html[dir="rtl"] .wp-embed-share-tab-button + .wp-embed-share-tab-button {
 			margin: 0 5px 0 0;
-			padding: 0 5px 0 0;
+			padding: 0 7px 0 0;
 			border-left: none;
 			border-right: 1px solid #aaa;
 		}
