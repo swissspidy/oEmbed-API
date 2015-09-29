@@ -324,6 +324,7 @@ if ( ! headers_sent() ) {
 			padding: 0 5px;
 			font: 400 14px/1.5 'Open Sans', sans-serif;
 			resize: none;
+			cursor: text;
 		}
 
 		textarea.wp-embed-share-input {
@@ -627,14 +628,14 @@ if ( ! headers_sent() ) {
 							</li>
 						</ul>
 						<div id="wp-embed-share-tab-wordpress" class="wp-embed-share-tab" role="tabpanel" aria-labelledby="wp-embed-share-tab-button-wordpress" aria-hidden="false">
-							<input type="text" value="<?php the_permalink(); ?>" class="wp-embed-share-input"/>
+							<input type="text" value="<?php the_permalink(); ?>" class="wp-embed-share-input" readonly/>
 
 							<p class="wp-embed-share-description">
 								<?php _e( 'Copy and paste this URL into your WordPress site to embed', 'oembed-api' ); ?>
 							</p>
 						</div>
 						<div id="wp-embed-share-tab-html" class="wp-embed-share-tab" role="tabpanel" aria-labelledby="wp-embed-share-tab-button-html" aria-hidden="true">
-							<textarea class="wp-embed-share-input"><?php echo esc_attr( get_post_embed_html( null, 600, 400 ) ); ?></textarea>
+							<textarea class="wp-embed-share-input" readonly><?php echo esc_attr( get_post_embed_html( null, 600, 400 ) ); ?></textarea>
 
 							<p class="wp-embed-share-description">
 								<?php _e( 'Copy and paste this code into your site to embed', 'oembed-api' ); ?>
