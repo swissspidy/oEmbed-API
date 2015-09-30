@@ -91,6 +91,8 @@ To complement these two functions, `get_oembed_endpoint_url` returns the URL to 
 
 **Disabling the feature:**
 
+If you want to completely disable this feature and remove all visible traces, you can use [this plugin](https://gist.github.com/swissspidy/4289519f048c30b5f77e). Alternatively, you can disable the various moving parts as follows:
+
 Disabling the rewrite endpoint:
 
 `remove_action( 'init', 'wp_oembed_rewrite_endpoint' );`
@@ -98,11 +100,10 @@ Disabling the rewrite endpoint:
 Disabling the legacy controller:
 
 <pre><code>
-function my_remove_oembed_query_vars( $query_vars ) {
-	unset $query_vars['oembed'];
-	return $query_vars;
+function my_disable_oembed_query_vars( $query_vars ) {
+	return array_diff( $query_vars, array( 'embed', 'oembed', 'format', 'url', '_jsonp', 'maxwidth' ) );
 }
-add_filter( 'query_vars', 'my_remove_oembed_query_vars' );
+add_filter( 'query_vars', 'my_disable_oembed_query_vars' );
 </code></pre>
 
 Disabling the REST API route:
@@ -115,7 +116,7 @@ function my_disable_oembed_route( $endpoints ) {
 add_action( 'rest_endpoints', 'my_disable_oembed_route' );
 </code></pre>
 
-Disabling auto discovery of other sites:
+Disabling auto discovery of other sites (including your own):
 
 `add_filter( 'embed_oembed_discover', '__return_false' );`
 
