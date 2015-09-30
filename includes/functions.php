@@ -433,24 +433,8 @@ function wp_filter_oembed_result( $html, $url ) {
 	require_once( ABSPATH . WPINC . '/class-oembed.php' );
 	$wp_oembed = _wp_oembed_get_object();
 
-	$trusted = false;
-
-	foreach ( $wp_oembed->providers as $matchmask => $data ) {
-		$regex = $data[1];
-
-		// Turn the asterisk-type provider URLs into regex.
-		if ( ! $regex ) {
-			$matchmask = '#' . str_replace( '___wildcard___', '(.+)', preg_quote( str_replace( '*', '___wildcard___', $matchmask ), '#' ) ) . '#i';
-			$matchmask = preg_replace( '|^#http\\\://|', '#https?\://', $matchmask );
-		}
-
-		if ( preg_match( $matchmask, $url ) ) {
-			$trusted = true;
-			break;
-		}
-	}
-
-	if ( true === $trusted ) {
+	// Don't modify the HTML for trusted providers.
+	if ( false !== $wp_oembed->get_provider( $url, array( 'discover' => false ) ) ) {
 		return $html;
 	}
 

@@ -2,7 +2,7 @@
 Contributors:      swissspidy, pento  
 Donate link:         
 Tags:              oembed, api  
-Requires at least: 3.9  
+Requires at least: 4.0  
 Tested up to:      4.4-trunk  
 Stable tag:        trunk  
 License:           GPLv2 or later  

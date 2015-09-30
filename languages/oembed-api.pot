@@ -33,45 +33,45 @@ msgstr ""
 msgid "Embedded WordPress Post"
 msgstr ""
 
-#: includes/functions.php:508
+#: includes/functions.php:492
 msgid "Read more"
 msgstr ""
 
-#: includes/template.php:590
+#: includes/template.php:599
 msgid "%s <span class=\"screen-reader-text\">Comment</span>"
 msgid_plural "%s <span class=\"screen-reader-text\">Comments</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/template.php:604
+#: includes/template.php:613
 msgid "Open sharing dialog"
 msgstr ""
 
-#: includes/template.php:615
+#: includes/template.php:624
 msgid "WordPress Embed"
 msgstr ""
 
-#: includes/template.php:618
+#: includes/template.php:627
 msgid "HTML Embed"
 msgstr ""
 
-#: includes/template.php:625
+#: includes/template.php:634
 msgid "Copy and paste this URL into your WordPress site to embed"
 msgstr ""
 
-#: includes/template.php:632
+#: includes/template.php:641
 msgid "Copy and paste this code into your site to embed"
 msgstr ""
 
-#: includes/template.php:637
+#: includes/template.php:646
 msgid "Close sharing dialog"
 msgstr ""
 
-#: includes/template.php:646
+#: includes/template.php:655
 msgid "Page not found"
 msgstr ""
 
-#: includes/template.php:649
+#: includes/template.php:658
 msgid "Error 404! The requested content was not found."
 msgstr ""
 
@@ -95,7 +95,7 @@ msgstr ""
 msgid "https://pascalbirchler.com"
 msgstr ""
 
-#: includes/functions.php:504
+#: includes/functions.php:488
 msgctxt "read more link"
 msgid "&hellip; %s"
 msgstr ""
