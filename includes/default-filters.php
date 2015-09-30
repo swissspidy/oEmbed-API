@@ -62,6 +62,8 @@ add_action( 'wp_head', 'wp_print_head_scripts' );
 add_action( 'oembed_head', 'print_emoji_detection_script' );
 add_action( 'oembed_head', 'print_emoji_styles' );
 add_action( 'oembed_head', 'wp_print_head_scripts' );
+add_action( 'oembed_head', 'wp_no_robots' );
+add_action( 'oembed_head', 'rel_canonical' );
 
 add_action( 'oembed_footer', 'wp_print_footer_scripts', 20 );
 
