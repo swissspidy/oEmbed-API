@@ -57,7 +57,6 @@ add_filter( 'template_redirect', 'wp_oembed_old_slug_redirect', 1 );
 
 add_action( 'wp_head', 'wp_oembed_add_discovery_links' );
 add_action( 'wp_head', 'wp_oembed_add_host_js' );
-add_action( 'wp_head', 'wp_print_head_scripts' );
 
 add_action( 'oembed_head', 'print_emoji_detection_script' );
 add_action( 'oembed_head', 'print_emoji_styles' );
