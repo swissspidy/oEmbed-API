@@ -122,6 +122,35 @@ class WP_oEmbed_Test_Plugin extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test get_oembed_response_data with an author.
+	 */
+	function test_get_oembed_response_data_author() {
+		$user_id = $this->factory->user->create( array(
+			'display_name' => 'John Doe',
+		) );
+
+		$post = $this->factory->post->create_and_get( array(
+			'post_title'  => 'Some Post',
+			'post_author' => $user_id,
+		) );
+
+		$data = get_oembed_response_data( $post, 400 );
+
+		$this->assertSame( array(
+			'version'       => '1.0',
+			'provider_name' => get_bloginfo( 'name' ),
+			'provider_url'  => get_home_url( '/' ),
+			'author_name'   => 'John Doe',
+			'author_url'    => get_author_posts_url( $user_id ),
+			'title'         => 'Some Post',
+			'type'          => 'rich',
+			'width'         => 400,
+			'height'        => 225,
+			'html'          => get_post_embed_html( $post, 400, 225 ),
+		), $data );
+	}
+
+	/**
 	 * Test get_oembed_response_data for a draft post.
 	 */
 	function test_get_oembed_response_data_draft_post() {
