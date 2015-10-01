@@ -57,7 +57,7 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	function test_filter_oembed_result_trusted() {
 		$html   = '<p></p><iframe onload="alert(1)"></iframe>';
 
-		$actual = wp_filter_oembed_result( $html, 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' );
+		$actual = wp_filter_oembed_result( $html, (object) array( 'type' => 'rich' ), 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' );
 
 		$this->assertEquals( $html, $actual );
 	}
@@ -67,7 +67,7 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	 */
 	function test_filter_oembed_result_untrusted() {
 		$html   = '<p></p><iframe onload="alert(1)" src="http://example.com/sample-page/"></iframe>';
-		$actual = wp_filter_oembed_result( $html, 'http://example.com/sample-page/' );
+		$actual = wp_filter_oembed_result( $html, (object) array( 'type' => 'rich' ), 'http://example.com/sample-page/' );
 
 		$matches = array();
 		preg_match( '|src=".*#\?secret=([\w\d]+)" data-secret="([\w\d]+)"|', $actual, $matches );
@@ -82,7 +82,23 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	 */
 	function test_filter_oembed_result_multiple_tags() {
 		$html   = '<div><iframe></iframe><iframe></iframe><p></p></div>';
-		$actual = wp_filter_oembed_result( $html, '' );
+		$actual = wp_filter_oembed_result( $html, (object) array( 'type' => 'rich' ), '' );
+
+		$this->assertEquals( '<iframe sandbox="allow-scripts" security="restricted"></iframe>', $actual );
+	}
+
+	/**
+	 * Test that only 1 iframe is allowed, nothing else.
+	 */
+	function test_filter_oembed_result_newlines() {
+		$html = <<<EOD
+<script>var = 1;</script>
+<iframe></iframe>
+<iframe></iframe>
+<p></p>
+EOD;
+
+		$actual = wp_filter_oembed_result( $html, (object) array( 'type' => 'rich' ), '' );
 
 		$this->assertEquals( '<iframe sandbox="allow-scripts" security="restricted"></iframe>', $actual );
 	}
@@ -92,12 +108,12 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	 */
 	function test_filter_oembed_result_no_iframe() {
 		$html   = '<span>Hello</span><p>World</p>';
-		$actual = wp_filter_oembed_result( $html, '' );
+		$actual = wp_filter_oembed_result( $html, (object) array( 'type' => 'rich' ), '' );
 
 		$this->assertFalse( $actual );
 
 		$html   = '<div><p></p></div><script></script>';
-		$actual = wp_filter_oembed_result( $html, '' );
+		$actual = wp_filter_oembed_result( $html, (object) array( 'type' => 'rich' ), '' );
 
 		$this->assertFalse( $actual );
 	}
@@ -107,7 +123,7 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	 */
 	function test_filter_oembed_result_secret() {
 		$html   = '<iframe src="https://wordpress.org"></iframe>';
-		$actual = wp_filter_oembed_result( $html, '' );
+		$actual = wp_filter_oembed_result( $html, (object) array( 'type' => 'rich' ), '' );
 
 		$matches = array();
 		preg_match( '|src="https://wordpress.org#\?secret=([\w\d]+)" data-secret="([\w\d]+)"|', $actual, $matches );
@@ -115,6 +131,22 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 		$this->assertTrue( isset( $matches[1] ) );
 		$this->assertTrue( isset( $matches[2] ) );
 		$this->assertEquals( $matches[1], $matches[2] );
+	}
+
+	/**
+	 * Test what happens when a wrong type is passed.
+	 */
+	function test_filter_oembed_result_wrong_type() {
+		$actual = wp_filter_oembed_result( 'some string', (object) array( 'type' => 'link' ), '' );
+
+		$this->assertEquals( 'some string', $actual );
+	}
+
+	/**
+	 * Test what happens when there isn't a result
+	 */
+	function test_filter_oembed_result_false() {
+		$this->assertFalse( wp_filter_oembed_result( false, (object) array( 'type' => 'rich' ), '' ) );
 	}
 
 	/**

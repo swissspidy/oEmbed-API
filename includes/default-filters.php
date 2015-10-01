@@ -66,7 +66,7 @@ add_action( 'oembed_head', 'rel_canonical' );
 
 add_action( 'oembed_footer', 'wp_print_footer_scripts', 20 );
 
-add_filter( 'oembed_result', 'wp_filter_oembed_result', 10, 2 );
+add_filter( 'oembed_dataparse', 'wp_filter_oembed_result', 10, 3 );
 
 add_filter( 'embed_oembed_discover', '__return_true' );
 
@@ -78,5 +78,5 @@ add_filter( 'the_excerpt_embed', 'wpautop' );
 add_filter( 'the_excerpt_embed', 'shortcode_unautop' );
 add_filter( 'the_excerpt_embed', 'wp_oembed_excerpt_attachment' );
 
-add_filter( 'oembed_response_data', 'get_oembed_response_data_author', 10, 2 );
-add_filter( 'oembed_response_data', 'get_oembed_response_data_media', 10, 2 );
+add_filter( 'oembed_response_data', 'get_oembed_response_data_author', 10, 2, 4 );
+add_filter( 'oembed_response_data', 'get_oembed_response_data_rich', 10, 4 );

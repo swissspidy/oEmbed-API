@@ -107,7 +107,7 @@ class WP_oEmbed_Test_Plugin extends WP_UnitTestCase {
 
 		$data = get_oembed_response_data( $post, 400 );
 
-		$this->assertSame( array(
+		$this->assertEqualSets( array(
 			'version'       => '1.0',
 			'provider_name' => get_bloginfo( 'name' ),
 			'provider_url'  => get_home_url( '/' ),
@@ -136,7 +136,7 @@ class WP_oEmbed_Test_Plugin extends WP_UnitTestCase {
 
 		$data = get_oembed_response_data( $post, 400 );
 
-		$this->assertSame( array(
+		$this->assertEqualSets( array(
 			'version'       => '1.0',
 			'provider_name' => get_bloginfo( 'name' ),
 			'provider_url'  => get_home_url( '/' ),
@@ -148,6 +148,31 @@ class WP_oEmbed_Test_Plugin extends WP_UnitTestCase {
 			'height'        => 225,
 			'html'          => get_post_embed_html( $post, 400, 225 ),
 		), $data );
+	}
+
+	/**
+	 * Test get_oembed_response_data normally.
+	 */
+	function test_get_oembed_response_link() {
+		remove_filter( 'oembed_response_data', 'get_oembed_response_data_rich', 10, 4 );
+
+		$post = $this->factory->post->create_and_get( array(
+			'post_title' => 'Some Post',
+		) );
+
+		$data = get_oembed_response_data( $post, 600 );
+
+		$this->assertEqualSets( array(
+			'version'       => '1.0',
+			'provider_name' => get_bloginfo( 'name' ),
+			'provider_url'  => get_home_url( '/' ),
+			'author_name'   => get_bloginfo( 'name' ),
+			'author_url'    => get_home_url( '/' ),
+			'title'         => 'Some Post',
+			'type'          => 'link',
+		), $data );
+
+		add_filter( 'oembed_response_data', 'get_oembed_response_data_rich', 10, 4 );
 	}
 
 	/**
@@ -287,7 +312,7 @@ class WP_oEmbed_Test_Plugin extends WP_UnitTestCase {
 		$this->assertarrayHasKey( 'wp_oembed_add_discovery_links', $wp_filter['wp_head'][10] );
 		$this->assertarrayHasKey( 'wp_oembed_add_host_js', $wp_filter['wp_head'][10] );
 		$this->assertarrayHasKey( 'wp_oembed_include_template', $wp_filter['template_include'][10] );
-		$this->assertarrayHasKey( 'wp_filter_oembed_result', $wp_filter['oembed_result'][10] );
+		$this->assertarrayHasKey( 'wp_filter_oembed_result', $wp_filter['oembed_dataparse'][10] );
 		$this->assertarrayHasKey( '__return_true', $wp_filter['embed_oembed_discover'][10] );
 
 		// TinyMCE.

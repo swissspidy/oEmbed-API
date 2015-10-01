@@ -189,19 +189,18 @@ function get_oembed_response_data( $post = null, $width ) {
 		'author_name'   => get_bloginfo( 'name' ),
 		'author_url'    => get_home_url(),
 		'title'         => $post->post_title,
-		'type'          => 'rich',
-		'width'         => absint( $width ),
-		'height'        => absint( $height ),
-		'html'          => get_post_embed_html( $post, $width, $height ),
+		'type'          => 'link',
 	);
 
 	/**
 	 * Filter the oEmbed response data.
 	 *
-	 * @param array   $data The response data.
-	 * @param WP_Post $post The post object.
+	 * @param array   $data   The response data.
+	 * @param WP_Post $post   The post object.
+	 * @param int     $width  The requested width.
+	 * @param int     $height The calculated height.
 	 */
-	return apply_filters( 'oembed_response_data', $data, $post );
+	return apply_filters( 'oembed_response_data', $data, $post, $width, $height );
 }
 
 /**
@@ -216,20 +215,27 @@ function get_oembed_response_data_author( $data, $post ) {
 
 	if ( $author ) {
 		$data['author_name'] = $author->display_name;
-		$data['author_url']  = get_author_posts_url( $author->ID, $author->user_nicename );
+		$data['author_url']  = get_author_posts_url( $author->ID );
 	}
 
 	return $data;
 }
 
 /**
- * Filters the oEmbed response data to add media information for thumbnails and attachments.
+ * Filters the oEmbed response data to return an iframe embed code.
  *
- * @param array   $data The response data.
- * @param WP_Post $post The post object.
+ * @param array   $data   The response data.
+ * @param WP_Post $post   The post object.
+ * @param int     $width  The requested width.
+ * @param int     $height The calculated height.
  * @return array The modified response data.
  */
-function get_oembed_response_data_media( $data, $post ) {
+function get_oembed_response_data_rich( $data, $post, $width, $height ) {
+	$data['width']  = absint( $width );
+	$data['height'] = absint( $height );
+	$data['type']   = 'rich';
+	$data['html']   = get_post_embed_html( $post, $width, $height );
+
 	// Add post thumbnail to response if available.
 	$thumbnail_id = false;
 
@@ -247,7 +253,7 @@ function get_oembed_response_data_media( $data, $post ) {
 	}
 
 	if ( $thumbnail_id ) {
-		list( $thumbnail_url, $thumbnail_width, $thumbnail_height ) = wp_get_attachment_image_src( $thumbnail_id, array( $data['width'], 99999 ) );
+		list( $thumbnail_url, $thumbnail_width, $thumbnail_height ) = wp_get_attachment_image_src( $thumbnail_id, array( $width, 99999 ) );
 		$data['thumbnail_url']    = $thumbnail_url;
 		$data['thumbnail_width']  = $thumbnail_width;
 		$data['thumbnail_height'] = $thumbnail_height;
@@ -427,19 +433,27 @@ function is_embed() {
 }
 
 /**
- * If the $url isn't on the trusted providers list, we need to filter the HTML heavily for security.
+ * Filters the returned oEmbed HTML.
  *
- * @param string $html The unfiltered oEmbed HTML.
- * @param string $url  URL of the content to be embedded.
+ * If the $url isn't on the trusted providers list,
+ * we need to filter the HTML heavily for security.
+ *
+ * @param string $return The returned oEmbed HTML.
+ * @param object $data   A data object result from an oEmbed provider.
+ * @param string $url    The URL of the content to be embedded.
  * @return string The filtered and sanitized oEmbed result.
  */
-function wp_filter_oembed_result( $html, $url ) {
+function wp_filter_oembed_result( $return, $data, $url ) {
+	if ( false === $return || ! in_array( $data->type, array( 'rich', 'video' ) ) ) {
+		return $return;
+	}
+
 	require_once( ABSPATH . WPINC . '/class-oembed.php' );
 	$wp_oembed = _wp_oembed_get_object();
 
 	// Don't modify the HTML for trusted providers.
 	if ( false !== $wp_oembed->get_provider( $url, array( 'discover' => false ) ) ) {
-		return $html;
+		return $return;
 	}
 
 	$allowed_html = array(
@@ -456,9 +470,14 @@ function wp_filter_oembed_result( $html, $url ) {
 		),
 	);
 
-	$html = wp_kses( $html, $allowed_html );
-	$html = preg_replace( '|^.*(<iframe.*?></iframe>).*$|', '$1', $html );
-	$html = str_replace( '<iframe', '<iframe sandbox="allow-scripts" security="restricted"', $html );
+	$html = wp_kses( $return, $allowed_html );
+	preg_match( '|^.*(<iframe.*?></iframe>).*$|m', $html, $iframes );
+
+	if ( empty( $iframes ) ) {
+		return false;
+	}
+
+	$html = str_replace( '<iframe', '<iframe sandbox="allow-scripts" security="restricted"', $iframes[1] );
 
 	preg_match( '/ src=[\'"]([^\'"]*)[\'"]/', $html, $results );
 
