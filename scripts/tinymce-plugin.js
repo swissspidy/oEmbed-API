@@ -1,6 +1,8 @@
-( function( tinymce ) {
-	tinymce.PluginManager.add( 'autoembed', function( editor, url ) {
-		editor.on( 'init', function() {
+(function ( tinymce ) {
+	'use strict';
+
+	tinymce.PluginManager.add( 'autoembed', function ( editor, url ) {
+		editor.on( 'init', function () {
 			var scriptId = editor.dom.uniqueId();
 
 			var scriptElm = editor.dom.create( 'script', {
@@ -9,7 +11,7 @@
 				src: url + '/frontend.js'
 			} );
 
-			editor.getDoc().getElementsByTagName( 'head' )[0].appendChild( scriptElm );
+			editor.getDoc().getElementsByTagName( 'head' )[ 0 ].appendChild( scriptElm );
 		} );
 	} );
-} )( window.tinymce );
+})( window.tinymce );
