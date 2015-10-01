@@ -12,13 +12,14 @@ if ( ! headers_sent() ) {
 	header( 'X-WP-oembed: true' );
 }
 
+wp_enqueue_style( 'open-sans' );
+
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
 	<title><?php wp_title( '-', true, 'right' ); ?></title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600"/>
 	<style type="text/css">
 		html, body {
 			padding: 0;
