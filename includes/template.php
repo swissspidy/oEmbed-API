@@ -565,7 +565,24 @@ if ( ! headers_sent() ) {
 					}
 				}
 
+				/**
+				 * Filter the thumbnail image size for use in the embed template.
+				 *
+				 * @param string $image_size Thumbnail image size.
+				 */
+				$image_size = apply_filters( 'oembed_thumbnail_image_size', $image_size );
+
 				$shape = $measurements[0] / $measurements[1] >= 1.75 ? 'rectangular' : 'square';
+
+				/**
+				 * Filter the thumbnail shape for use in the embed template.
+				 *
+				 * Rectangular images are shown above the title
+				 * while square images are shown next to the content.
+				 *
+				 * @param string $shape Thumbnail image shape. Either 'rectangular' or 'square'.
+				 */
+				$shape = apply_filters( 'oembed_thumbnail_image_shape', $shape );
 			}
 			?>
 
@@ -603,7 +620,7 @@ if ( ! headers_sent() ) {
 					}
 
 					/**
-					 * Filters the site icon URL for use in the oEmbed template.
+					 * Filters the site icon URL for use in the embed template.
 					 *
 					 * @param string $site_icon_url The site icon URL.
 					 */
@@ -697,7 +714,7 @@ if ( ! headers_sent() ) {
 				}
 
 				/**
-				 * Filters the site icon URL for use in the oEmbed template.
+				 * Filters the site icon URL for use in the embed template.
 				 *
 				 * @param string $site_icon_url The site icon URL.
 				 */
