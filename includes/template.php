@@ -196,7 +196,7 @@ if ( ! headers_sent() ) {
 			left: 0;
 			right: 0;
 			bottom: 0;
-			background-color: rgba(10, 10, 10, 0.8);
+			background-color: rgba(10, 10, 10, 0.9);
 			color: #fff;
 			opacity: 1;
 			transition: opacity .25s ease-in-out;
@@ -289,18 +289,18 @@ if ( ! headers_sent() ) {
 			transition: color .1s ease-in;
 		}
 
+		.wp-embed-share-tab-button [aria-selected="true"] {
+			color: #fff;
+		}
+
 		.wp-embed-share-tab-button button:hover {
 			color: #fff;
 		}
 
 		.wp-embed-share-tab-button + .wp-embed-share-tab-button {
-			margin: 0 0 0 5px;
-			padding: 0 0 0 7px;
+			margin: 0 0 0 10px;
+			padding: 0 0 0 11px;
 			border-left: 1px solid #aaa;
-		}
-
-		.wp-embed-share-tab-button[aria-selected="true"] button {
-			color: #fff;
 		}
 
 		.wp-embed-share-tab[aria-hidden="true"] {
@@ -368,8 +368,8 @@ if ( ! headers_sent() ) {
 		}
 
 		html[dir="rtl"] .wp-embed-share-tab-button + .wp-embed-share-tab-button {
-			margin: 0 5px 0 0;
-			padding: 0 7px 0 0;
+			margin: 0 10px 0 0;
+			padding: 0 11px 0 0;
 			border-left: none;
 			border-right: 1px solid #aaa;
 		}
@@ -398,9 +398,9 @@ if ( ! headers_sent() ) {
 
 				if ( share_input ) {
 					for ( var i = 0; i < share_input.length; i++ ) {
-						share_input[ i ].onclick = function ( e ) {
+						share_input[ i ].addEventListener( 'click', function ( e ) {
 							e.target.select();
-						};
+						} );
 					}
 				}
 
@@ -415,29 +415,58 @@ if ( ! headers_sent() ) {
 				}
 
 				if ( share_dialog_open ) {
-					share_dialog_open.onclick = function ( e ) {
+					share_dialog_open.addEventListener( 'click', function ( e ) {
 						openSharingDialog();
 						e.preventDefault();
-					};
+					} );
 				}
 
 				if ( share_dialog_close ) {
-					share_dialog_close.onclick = function ( e ) {
+					share_dialog_close.addEventListener( 'click', function ( e ) {
 						closeSharingDialog();
 						e.preventDefault();
-					};
+					} );
 				}
 
 				if ( share_dialog_tabs ) {
 					for ( var i = 0; i < share_dialog_tabs.length; i++ ) {
-						share_dialog_tabs[ i ].onclick = function ( e ) {
-							var currentTab = document.querySelector( '.wp-embed-share-tab-button[aria-selected="true"]' );
+						share_dialog_tabs[ i ].addEventListener( 'click', function ( e ) {
+							var currentTab = document.querySelector( '.wp-embed-share-tab-button [aria-selected="true"]' );
 							currentTab.setAttribute( 'aria-selected', 'false' );
 							document.querySelector( '#' + currentTab.getAttribute( 'aria-controls' ) ).setAttribute( 'aria-hidden', 'true' );
 
-							e.target.parentElement.setAttribute( 'aria-selected', 'true' );
-							document.querySelector( '#' + e.target.parentElement.getAttribute( 'aria-controls' ) ).setAttribute( 'aria-hidden', 'false' );
-						};
+							e.target.setAttribute( 'aria-selected', 'true' );
+							document.querySelector( '#' + e.target.getAttribute( 'aria-controls' ) ).setAttribute( 'aria-hidden', 'false' );
+						} );
+
+						share_dialog_tabs[ i ].addEventListener( 'keydown', function ( e ) {
+							var previousSibling = e.target.parentElement.previousElementSibling,
+								nextSibling = e.target.parentElement.nextElementSibling,
+								newTab;
+
+							if ( 37 === e.keyCode ) {
+								newTab = previousSibling;
+							} else if ( 39 === e.keyCode ) {
+								newTab = nextSibling;
+							} else {
+								return false;
+							}
+
+							if ( 'rtl' === document.documentElement.getAttribute( 'dir' ) ) {
+								newTab = ( newTab === previousSibling ) ? nextSibling : previousSibling;
+							}
+
+							if ( newTab ) {
+								e.target.setAttribute( 'tabindex', '-1' );
+								e.target.setAttribute( 'aria-selected', false );
+								document.querySelector( '#' + e.target.getAttribute( 'aria-controls' ) ).setAttribute( 'aria-hidden', 'true' );
+
+								newTab.firstElementChild.setAttribute( 'tabindex', '0' );
+								newTab.firstElementChild.setAttribute( 'aria-selected', 'true' );
+								newTab.firstElementChild.focus();
+								document.querySelector( '#' + newTab.firstElementChild.getAttribute( 'aria-controls' ) ).setAttribute( 'aria-hidden', 'false' );
+							}
+						} );
 					}
 				}
 
@@ -461,7 +490,7 @@ if ( ! headers_sent() ) {
 				 */
 				var links = document.getElementsByTagName( 'a' );
 				for ( var i = 0; i < links.length; i++ ) {
-					links[ i ].onclick = function ( e ) {
+					links[ i ].addEventListener( 'click', function ( e ) {
 						if ( e.target.hasAttribute( 'href' ) ) {
 							var href = e.target.getAttribute( 'href' );
 						} else {
@@ -473,7 +502,7 @@ if ( ! headers_sent() ) {
 						 */
 						sendEmbedMessage( 'link', href );
 						e.preventDefault();
-					}
+					} );
 				}
 			}
 
@@ -620,22 +649,22 @@ if ( ! headers_sent() ) {
 				<div class="wp-embed-share-dialog-content">
 					<div class="wp-embed-share-dialog-text">
 						<ul class="wp-embed-share-tabs" role="tablist">
-							<li id="wp-embed-share-tab-button-wordpress" class="wp-embed-share-tab-button" role="tab" aria-controls="wp-embed-share-tab-wordpress" aria-selected="true">
-								<button><?php _e( 'WordPress Embed', 'oembed-api' ); ?></button>
+							<li id="wp-embed-share-tab-button-wordpress" class="wp-embed-share-tab-button" role="presentation">
+								<button role="tab" aria-controls="wp-embed-share-tab-wordpress" aria-selected="true" tabindex="0"><?php _e( 'WordPress Embed', 'oembed-api' ); ?></button>
 							</li>
-							<li id="wp-embed-share-tab-button-embed" class="wp-embed-share-tab-button" role="tab" aria-controls="wp-embed-share-tab-html" aria-selected="false">
-								<button><?php _e( 'HTML Embed', 'oembed-api' ); ?></button>
+							<li id="wp-embed-share-tab-button-embed" class="wp-embed-share-tab-button" role="presentation">
+								<button role="tab" aria-controls="wp-embed-share-tab-html" aria-selected="false" tabindex="-1"><?php _e( 'HTML Embed', 'oembed-api' ); ?></button>
 							</li>
 						</ul>
 						<div id="wp-embed-share-tab-wordpress" class="wp-embed-share-tab" role="tabpanel" aria-labelledby="wp-embed-share-tab-button-wordpress" aria-hidden="false">
-							<input type="text" value="<?php the_permalink(); ?>" class="wp-embed-share-input" readonly/>
+							<input type="text" value="<?php the_permalink(); ?>" class="wp-embed-share-input" tabindex="0" readonly/>
 
 							<p class="wp-embed-share-description">
 								<?php _e( 'Copy and paste this URL into your WordPress site to embed', 'oembed-api' ); ?>
 							</p>
 						</div>
 						<div id="wp-embed-share-tab-html" class="wp-embed-share-tab" role="tabpanel" aria-labelledby="wp-embed-share-tab-button-html" aria-hidden="true">
-							<textarea class="wp-embed-share-input" readonly><?php echo esc_attr( get_post_embed_html( null, 600, 400 ) ); ?></textarea>
+							<textarea class="wp-embed-share-input" tabindex="0" readonly><?php echo esc_attr( get_post_embed_html( null, 600, 400 ) ); ?></textarea>
 
 							<p class="wp-embed-share-description">
 								<?php _e( 'Copy and paste this code into your site to embed', 'oembed-api' ); ?>
