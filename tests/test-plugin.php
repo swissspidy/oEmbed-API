@@ -179,6 +179,9 @@ class WP_oEmbed_Test_Plugin extends WP_UnitTestCase {
 		$this->assertEquals( 200, $data['height'] );
 	}
 
+	/**
+	 * Test get_oembed_response_data with a post thumbnail.
+	 */
 	function test_get_oembed_response_data_thumbnail() {
 		$post          = $this->factory->post->create_and_get();
 		$file          = DIR_TESTDATA . '/images/canola.jpg';
