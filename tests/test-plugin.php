@@ -156,40 +156,6 @@ class WP_oEmbed_Test_Plugin extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test get_oembed_response_data for a private post as an editor.
-	 */
-	function test_get_oembed_response_data_private_post_with_permissions() {
-		$post = $this->factory->post->create( array(
-			'post_title'   => 'Hello World',
-			'post_content' => 'Foo Bar',
-			'post_excerpt' => 'Bar Baz',
-			'post_status'  => 'private',
-		) );
-
-		$user_id = $this->factory->user->create( array(
-			'role'         => 'editor',
-			'display_name' => 'Foobar',
-		) );
-
-		wp_set_current_user( $user_id );
-
-		$data = get_oembed_response_data( $post, 600 );
-
-		$this->assertSame( array(
-			'version'       => '1.0',
-			'provider_name' => get_bloginfo( 'name' ),
-			'provider_url'  => get_home_url( '/' ),
-			'author_name'   => get_bloginfo( 'name' ),
-			'author_url'    => get_home_url( '/' ),
-			'title'         => 'Hello World',
-			'type'          => 'rich',
-			'width'         => 600,
-			'height'        => 338,
-			'html'          => get_post_embed_html( $post, 600, 338 ),
-		), $data );
-	}
-
-	/**
 	 * Test get_oembed_response_data with a maxwidth that is too high.
 	 */
 	function test_get_oembed_response_data_maxwidth_too_high() {

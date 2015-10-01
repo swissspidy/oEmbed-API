@@ -152,7 +152,7 @@ function get_oembed_response_data( $post = null, $width ) {
 		return false;
 	}
 
-	if ( 'publish' !== get_post_status( $post ) && ! ( 'private' === get_post_status( $post ) && current_user_can( 'read_private_posts', $post->ID ) ) ) {
+	if ( 'publish' !== get_post_status( $post ) ) {
 		return false;
 	}
 
