@@ -648,7 +648,7 @@ if ( ! headers_sent() ) {
 										get_comments_number(),
 										'oembed-api'
 									),
-									get_comments_number()
+									absint( get_comments_number() )
 								);
 								?>
 							</a>
@@ -656,7 +656,7 @@ if ( ! headers_sent() ) {
 					<?php endif; ?>
 					<div class="wp-embed-share">
 						<button type="button" class="wp-embed-share-dialog-open"
-						        aria-label="<?php _e( 'Open sharing dialog', 'oembed-api' ); ?>">
+						        aria-label="<?php esc_attr_e( 'Open sharing dialog', 'oembed-api' ); ?>">
 							<span class="dashicons dashicons-share"></span>
 						</button>
 					</div>
@@ -667,10 +667,10 @@ if ( ! headers_sent() ) {
 					<div class="wp-embed-share-dialog-text">
 						<ul class="wp-embed-share-tabs" role="tablist">
 							<li id="wp-embed-share-tab-button-wordpress" class="wp-embed-share-tab-button" role="presentation">
-								<button role="tab" aria-controls="wp-embed-share-tab-wordpress" aria-selected="true" tabindex="0"><?php _e( 'WordPress Embed', 'oembed-api' ); ?></button>
+								<button role="tab" aria-controls="wp-embed-share-tab-wordpress" aria-selected="true" tabindex="0"><?php esc_html_e( 'WordPress Embed', 'oembed-api' ); ?></button>
 							</li>
 							<li id="wp-embed-share-tab-button-embed" class="wp-embed-share-tab-button" role="presentation">
-								<button role="tab" aria-controls="wp-embed-share-tab-html" aria-selected="false" tabindex="-1"><?php _e( 'HTML Embed', 'oembed-api' ); ?></button>
+								<button role="tab" aria-controls="wp-embed-share-tab-html" aria-selected="false" tabindex="-1"><?php esc_html_e( 'HTML Embed', 'oembed-api' ); ?></button>
 							</li>
 						</ul>
 						<div id="wp-embed-share-tab-wordpress" class="wp-embed-share-tab" role="tabpanel" aria-labelledby="wp-embed-share-tab-button-wordpress" aria-hidden="false">
@@ -689,7 +689,7 @@ if ( ! headers_sent() ) {
 						</div>
 					</div>
 
-					<button type="button" class="wp-embed-share-dialog-close" aria-label="<?php _e( 'Close sharing dialog', 'oembed-api' ); ?>">
+					<button type="button" class="wp-embed-share-dialog-close" aria-label="<?php esc_attr_e( 'Close sharing dialog', 'oembed-api' ); ?>">
 						<span class="dashicons dashicons-no"></span>
 					</button>
 				</div>

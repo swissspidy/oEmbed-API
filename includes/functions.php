@@ -124,7 +124,7 @@ function get_post_embed_html( $post = null, $width, $height ) {
 		esc_url( $embed_url ),
 		absint( $width ),
 		absint( $height ),
-		__( 'Embedded WordPress Post', 'oembed-api' )
+		esc_attr__( 'Embedded WordPress Post', 'oembed-api' )
 	);
 
 	/**
