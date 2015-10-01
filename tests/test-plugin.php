@@ -298,29 +298,6 @@ class WP_oEmbed_Test_Plugin extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test our default filters and hooks.
-	 */
-	function test_filters() {
-		global $wp_filter;
-
-		// Init.
-		$this->assertarrayHasKey( 'wp_oembed_load_textdomain', $wp_filter['init'][10] );
-		$this->assertarrayHasKey( 'wp_oembed_register_scripts', $wp_filter['init'][10] );
-		$this->assertarrayHasKey( 'wp_oembed_rewrite_endpoint', $wp_filter['init'][10] );
-
-		// Template.
-		$this->assertarrayHasKey( 'wp_oembed_add_discovery_links', $wp_filter['wp_head'][10] );
-		$this->assertarrayHasKey( 'wp_oembed_add_host_js', $wp_filter['wp_head'][10] );
-		$this->assertarrayHasKey( 'wp_oembed_include_template', $wp_filter['template_include'][10] );
-		$this->assertarrayHasKey( 'wp_filter_oembed_result', $wp_filter['oembed_dataparse'][10] );
-		$this->assertarrayHasKey( '__return_true', $wp_filter['embed_oembed_discover'][10] );
-
-		// TinyMCE.
-		$this->assertarrayHasKey( 'wp_oembed_add_mce_plugin', $wp_filter['mce_external_plugins'][10] );
-		$this->assertarrayHasKey( 'wp_oembed_load_mce_script', $wp_filter['wp_enqueue_editor'][10] );
-	}
-
-	/**
 	 * Test the wp_oembed_ensure_format function.
 	 */
 	function test_wp_oembed_ensure_format() {
