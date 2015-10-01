@@ -235,6 +235,112 @@ class WP_oEmbed_Test_Frontend extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test oEmbed output for a draft post.
+	 */
+	function test_oembed_output_draft_post() {
+		$post_id = $this->factory->post->create( array(
+			'post_title'   => 'Hello World',
+			'post_content' => 'Foo Bar',
+			'post_excerpt' => 'Bar Baz',
+			'post_status'  => 'draft',
+		) );
+
+		$this->go_to( get_post_embed_url( $post_id ) );
+
+		$this->assertQueryTrue( 'is_404' );
+		$this->assertEquals( dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php', wp_oembed_include_template( '' ) );
+
+		ob_start();
+		include( dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php' );
+		$actual = ob_get_clean();
+
+		$doc = new DOMDocument();
+		$this->assertTrue( $doc->loadHTML( $actual ) );
+		$this->assertTrue( false !== strpos( $actual, 'Page not found' ) );
+	}
+
+	/**
+	 * Test oEmbed output for a scheduled post.
+	 */
+	function test_oembed_output_scheduled_post() {
+		$post_id = $this->factory->post->create( array(
+			'post_title'   => 'Hello World',
+			'post_content' => 'Foo Bar',
+			'post_excerpt' => 'Bar Baz',
+			'post_status'  => 'future',
+			'post_date'    => strftime( '%Y-%m-%d %H:%M:%S', strtotime( '+1 day' ) ),
+		) );
+
+		$this->go_to( get_post_embed_url( $post_id ) );
+
+		$this->assertQueryTrue( 'is_404' );
+		$this->assertEquals( dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php', wp_oembed_include_template( '' ) );
+
+		ob_start();
+		include( dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php' );
+		$actual = ob_get_clean();
+
+		$doc = new DOMDocument();
+		$this->assertTrue( $doc->loadHTML( $actual ) );
+		$this->assertTrue( false !== strpos( $actual, 'Page not found' ) );
+	}
+
+	/**
+	 * Test oEmbed output for a private post.
+	 */
+	function test_oembed_output_private_post() {
+		$post_id = $this->factory->post->create( array(
+			'post_title'   => 'Hello World',
+			'post_content' => 'Foo Bar',
+			'post_excerpt' => 'Bar Baz',
+			'post_status'  => 'private',
+		) );
+
+		$this->go_to( get_post_embed_url( $post_id ) );
+
+		$this->assertQueryTrue( 'is_404' );
+		$this->assertEquals( dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php', wp_oembed_include_template( '' ) );
+
+		ob_start();
+		include( dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php' );
+		$actual = ob_get_clean();
+
+		$doc = new DOMDocument();
+		$this->assertTrue( $doc->loadHTML( $actual ) );
+		$this->assertTrue( false !== strpos( $actual, 'Page not found' ) );
+	}
+
+	/**
+	 * Test oEmbed output for a private post as an editor.
+	 */
+	function test_oembed_output_private_post_with_permissions() {
+		$user_id = $this->factory->user->create( array( 'role' => 'editor' ) );
+		wp_set_current_user( $user_id );
+
+		$post_id = $this->factory->post->create( array(
+			'post_title'   => 'Hello World',
+			'post_content' => 'Foo Bar',
+			'post_excerpt' => 'Bar Baz',
+			'post_status'  => 'private',
+			'post_author'  => $user_id,
+		) );
+
+		$this->go_to( get_post_embed_url( $post_id ) );
+
+		$this->assertQueryTrue( 'is_single', 'is_singular' );
+		$this->assertEquals( dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php', wp_oembed_include_template( '' ) );
+
+		ob_start();
+		include( dirname( plugin_dir_path( __FILE__ ) ) . '/includes/template.php' );
+		$actual = ob_get_clean();
+
+		$doc = new DOMDocument();
+		$this->assertTrue( $doc->loadHTML( $actual ) );
+		$this->assertTrue( false === strpos( $actual, 'Page not found' ) );
+		$this->assertTrue( false !== strpos( $actual, 'Hello World' ) );
+	}
+
+	/**
 	 * Test if registering our script works.
 	 */
 	function test_register_scripts() {
