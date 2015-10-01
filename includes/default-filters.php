@@ -63,6 +63,7 @@ add_action( 'oembed_head', 'print_emoji_styles' );
 add_action( 'oembed_head', 'wp_print_head_scripts', 20 );
 add_action( 'oembed_head', 'wp_no_robots' );
 add_action( 'oembed_head', 'rel_canonical' );
+add_action( 'oembed_head', 'locale_stylesheet' );
 
 add_action( 'oembed_footer', 'wp_print_footer_scripts', 20 );
 
