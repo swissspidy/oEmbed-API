@@ -488,13 +488,13 @@ if ( ! headers_sent() ) {
 				/**
 				 * Detect clicks to external (_top) links.
 				 */
-				var links = document.getElementsByTagName( 'a' );
+				var links = document.getElementsByTagName( 'a' ), href;
 				for ( var i = 0; i < links.length; i++ ) {
 					links[ i ].addEventListener( 'click', function ( e ) {
 						if ( e.target.hasAttribute( 'href' ) ) {
-							var href = e.target.getAttribute( 'href' );
+							href = e.target.getAttribute( 'href' );
 						} else {
-							var href = e.target.parentElement.getAttribute( 'href' );
+							href = e.target.parentElement.getAttribute( 'href' );
 						}
 
 						/**
