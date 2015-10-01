@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: oEmbed API\n"
 "Report-Msgid-Bugs-To: https://pascalbirchler.com\n"
-"POT-Creation-Date: 2015-09-13 02:22+0900\n"
-"PO-Revision-Date: 2015-09-13 02:22+0900\n"
-"Last-Translator: Daisuke Takahashi <daisuke@extendwings.com>\n"
-"Language-Team: Daisuke Takahashi <daisuke@extendwings.com>\n"
+"POT-Creation-Date: 2015-10-02 02:00+0900\n"
+"PO-Revision-Date: 2015-10-02 02:18+0900\n"
+"Last-Translator: hinaloe <hina@hinaloe.net>\n"
+"Language-Team: Daisuke Takahashi, Hinaloe <daisuke@extendwings.com>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.4\n"
+"X-Generator: Poedit 1.8.1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-WPHeader: wp-api-oembed.php\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -21,39 +21,55 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: includes/class-wp-rest-oembed-controller.php:62
+#: includes/class-wp-legacy-oembed-controller.php:87
+#: includes/class-wp-rest-oembed-controller.php:59
 msgid "Invalid URL."
 msgstr "無効な URL です。"
 
-#: includes/class-wp-rest-oembed-controller.php:67
-msgid "Invalid format."
-msgstr "無効な形式です。"
-
-#: includes/functions.php:121
+#: includes/functions.php:127
 msgid "Embedded WordPress Post"
 msgstr "埋め込まれた WordPress の投稿"
 
-#: includes/template.php:37
-msgid "&hellip; (%d word)"
-msgid_plural "&hellip; (%d words)"
-msgstr[0] "&hellip; (%d 文字)"
+#: includes/functions.php:515
+msgid "Read more"
+msgstr "続きを読む"
 
-#: includes/template.php:423
+#: includes/template.php:628
 msgid "%s <span class=\"screen-reader-text\">Comment</span>"
 msgid_plural "%s <span class=\"screen-reader-text\">Comments</span>"
 msgstr[0] "%s <span class=\"screen-reader-text\">件のコメント</span>"
 
-#: includes/template.php:436
+#: includes/template.php:642
 msgid "Open sharing dialog"
 msgstr "共有ダイアログを開く"
 
-#: includes/template.php:445
-msgid "Copy and paste this URL into your site to embed:"
-msgstr "埋め込むにはこの URL をコピーして、サイトに貼り付けてください:"
+#: includes/template.php:653
+msgid "WordPress Embed"
+msgstr "WordPressに埋め込む"
 
-#: includes/template.php:455
+#: includes/template.php:656
+msgid "HTML Embed"
+msgstr "HTMLで埋め込む"
+
+#: includes/template.php:663
+msgid "Copy and paste this URL into your WordPress site to embed"
+msgstr "埋め込むにはこのURLをコピーしてWordPressサイトに貼り付けてください。"
+
+#: includes/template.php:670
+msgid "Copy and paste this code into your site to embed"
+msgstr "埋め込むにはこのコードをコピーしてサイトに貼り付けてください。"
+
+#: includes/template.php:675
 msgid "Close sharing dialog"
 msgstr "共有ダイアログを閉じる"
+
+#: includes/template.php:684
+msgid "Page not found"
+msgstr "ページが見つかりません"
+
+#: includes/template.php:687
+msgid "Error 404! The requested content was not found."
+msgstr "エラー 404 リクエストされたページは見つかりませんでした。"
 
 #. Plugin Name of the plugin/theme
 msgid "oEmbed API"
@@ -77,11 +93,21 @@ msgstr "Pascal Birchler"
 msgid "https://pascalbirchler.com"
 msgstr "https://pascalbirchler.com"
 
-#. translators: If your word count is based on single characters (e.g. East
-#. Asian characters), enter 'characters_excluding_spaces' or
-#. 'characters_including_spaces'. Otherwise, enter 'words'. Do not translate
-#. into your own language.
-#: includes/template.php:31
-msgctxt "Word count type. Do not translate!"
-msgid "words"
-msgstr "characters_including_spaces"
+#: includes/functions.php:511
+msgctxt "read more link"
+msgid "&hellip; %s"
+msgstr "&hellip; %s"
+
+#~ msgid "Invalid format."
+#~ msgstr "無効な形式です。"
+
+#~ msgid "&hellip; (%d word)"
+#~ msgid_plural "&hellip; (%d words)"
+#~ msgstr[0] "&hellip; (%d 文字)"
+
+#~ msgid "Copy and paste this URL into your site to embed:"
+#~ msgstr "埋め込むにはこの URL をコピーして、サイトに貼り付けてください:"
+
+#~ msgctxt "Word count type. Do not translate!"
+#~ msgid "words"
+#~ msgstr "characters_including_spaces"
