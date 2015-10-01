@@ -101,12 +101,92 @@ class WP_oEmbed_Test_Plugin extends WP_UnitTestCase {
 	 * Test get_oembed_response_data normally.
 	 */
 	function test_get_oembed_response_data() {
-		$post = $this->factory->post->create_and_get();
+		$post = $this->factory->post->create_and_get( array(
+			'post_title' => 'Some Post',
+		) );
 
 		$data = get_oembed_response_data( $post, 400 );
 
-		$this->assertEquals( 400, $data['width'] );
-		$this->assertEquals( 225, $data['height'] );
+		$this->assertSame( array(
+			'version'       => '1.0',
+			'provider_name' => get_bloginfo( 'name' ),
+			'provider_url'  => get_home_url( '/' ),
+			'author_name'   => get_bloginfo( 'name' ),
+			'author_url'    => get_home_url( '/' ),
+			'title'         => 'Some Post',
+			'type'          => 'rich',
+			'width'         => 400,
+			'height'        => 225,
+			'html'          => get_post_embed_html( $post, 400, 225 ),
+		), $data );
+	}
+
+	/**
+	 * Test get_oembed_response_data for a draft post.
+	 */
+	function test_get_oembed_response_data_draft_post() {
+		$post = $this->factory->post->create_and_get( array(
+			'post_status' => 'draft',
+		) );
+
+		$this->assertFalse( get_oembed_response_data( $post, 100 ) );
+	}
+
+	/**
+	 * Test get_oembed_response_data for a scheduled post.
+	 */
+	function test_get_oembed_response_data_scheduled_post() {
+		$post = $this->factory->post->create_and_get( array(
+			'post_status' => 'future',
+			'post_date'   => strftime( '%Y-%m-%d %H:%M:%S', strtotime( '+1 day' ) ),
+		) );
+
+		$this->assertFalse( get_oembed_response_data( $post, 100 ) );
+	}
+
+	/**
+	 * Test get_oembed_response_data for a private post.
+	 */
+	function test_get_oembed_response_data_private_post() {
+		$post = $this->factory->post->create_and_get( array(
+			'post_status' => 'private',
+		) );
+
+		$this->assertFalse( get_oembed_response_data( $post, 100 ) );
+	}
+
+	/**
+	 * Test get_oembed_response_data for a private post as an editor.
+	 */
+	function test_get_oembed_response_data_private_post_with_permissions() {
+		$post = $this->factory->post->create( array(
+			'post_title'   => 'Hello World',
+			'post_content' => 'Foo Bar',
+			'post_excerpt' => 'Bar Baz',
+			'post_status'  => 'private',
+		) );
+
+		$user_id = $this->factory->user->create( array(
+			'role'         => 'editor',
+			'display_name' => 'Foobar',
+		) );
+
+		wp_set_current_user( $user_id );
+
+		$data = get_oembed_response_data( $post, 600 );
+
+		$this->assertSame( array(
+			'version'       => '1.0',
+			'provider_name' => get_bloginfo( 'name' ),
+			'provider_url'  => get_home_url( '/' ),
+			'author_name'   => get_bloginfo( 'name' ),
+			'author_url'    => get_home_url( '/' ),
+			'title'         => 'Hello World',
+			'type'          => 'rich',
+			'width'         => 600,
+			'height'        => 338,
+			'html'          => get_post_embed_html( $post, 600, 338 ),
+		), $data );
 	}
 
 	/**
