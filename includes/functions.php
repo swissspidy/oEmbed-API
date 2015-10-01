@@ -122,8 +122,8 @@ function get_post_embed_html( $post = null, $width, $height ) {
 	$output .= sprintf(
 		'<iframe sandbox="allow-scripts" security="restricted" src="%1$s" width="%2$d" height="%3$d" title="%4$s" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" class="wp-embedded-content"></iframe>',
 		esc_url( $embed_url ),
-		$width,
-		$height,
+		absint( $width ),
+		absint( $height ),
 		__( 'Embedded WordPress Post', 'oembed-api' )
 	);
 
@@ -186,8 +186,8 @@ function get_oembed_response_data( $post = null, $width ) {
 		'author_url'    => get_home_url(),
 		'title'         => $post->post_title,
 		'type'          => 'rich',
-		'width'         => $width,
-		'height'        => $height,
+		'width'         => absint( $width ),
+		'height'        => absint( $height ),
 		'html'          => get_post_embed_html( $post, $width, $height ),
 	);
 
