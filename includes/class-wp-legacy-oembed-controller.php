@@ -112,14 +112,6 @@ class WP_Legacy_oEmbed_Controller {
 			$result = json_encode( $data );
 		}
 
-		/**
-		 * Filter the JSON response.
-		 *
-		 * @param string $result The encoded JSON.
-		 * @param array  $data   The original oEmbed response data.
-		 */
-		$result = apply_filters( 'oembed_json_response', $result, $data );
-
 		// Bail if the result couldn't be JSON encoded.
 		if ( ! $result ) {
 			status_header( 501 );
