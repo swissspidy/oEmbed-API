@@ -154,7 +154,7 @@ class WP_oEmbed_Test_Plugin extends WP_UnitTestCase {
 	 * Test get_oembed_response_data normally.
 	 */
 	function test_get_oembed_response_link() {
-		remove_filter( 'oembed_response_data', 'get_oembed_response_data_rich', 10, 4 );
+		remove_filter( 'oembed_response_data', 'get_oembed_response_data_rich' );
 
 		$post = $this->factory->post->create_and_get( array(
 			'post_title' => 'Some Post',
