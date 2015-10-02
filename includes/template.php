@@ -135,7 +135,7 @@ wp_enqueue_style( 'open-sans' );
 			color: #b4b9be;
 		}
 
-		.wp-embed-meta {
+		.wp-embed-footer {
 			display: table;
 			width: 100%;
 			margin-top: 30px;
@@ -164,11 +164,11 @@ wp_enqueue_style( 'open-sans' );
 		}
 
 		.wp-embed-site-title,
-		.wp-embed-social {
+		.wp-embed-meta {
 			display: table-cell;
 		}
 
-		.wp-embed-social {
+		.wp-embed-meta {
 			text-align: right;
 			white-space: nowrap;
 			vertical-align: middle;
@@ -179,7 +179,7 @@ wp_enqueue_style( 'open-sans' );
 			display: inline;
 		}
 
-		.wp-embed-social a:hover {
+		.wp-embed-meta a:hover {
 			text-decoration: none;
 			color: #0073aa;
 		}
@@ -353,11 +353,11 @@ wp_enqueue_style( 'open-sans' );
 			right: 0;
 		}
 
-		html[dir="rtl"] .wp-embed-social {
+		html[dir="rtl"] .wp-embed-meta {
 			text-align: left;
 		}
 
-		html[dir="rtl"] .wp-embed-meta {
+		html[dir="rtl"] .wp-embed-footer {
 		}
 
 		html[dir="rtl"] .wp-embed-share {
@@ -619,7 +619,7 @@ if ( have_posts() ) :
 			do_action( 'oembed_content' );
 			?>
 
-			<div class="wp-embed-meta">
+			<div class="wp-embed-footer">
 				<div class="wp-embed-site-title">
 					<?php
 					$site_icon_url = admin_url( 'images/w-logo-blue.png' );
@@ -644,7 +644,7 @@ if ( have_posts() ) :
 					?>
 				</div>
 
-				<div class="wp-embed-social">
+				<div class="wp-embed-meta">
 					<?php if ( get_comments_number() || comments_open() ) : ?>
 						<div class="wp-embed-comments">
 							<a href="<?php comments_link(); ?>" target="_top">
@@ -715,7 +715,7 @@ else :
 			<p><?php _e( 'Error 404! The requested content was not found.', 'oembed-api' ) ?></p>
 		</div>
 
-		<div class="wp-embed-meta">
+		<div class="wp-embed-footer">
 			<div class="wp-embed-site-title">
 				<?php
 				$site_icon_url = admin_url( 'images/w-logo-blue.png' );
