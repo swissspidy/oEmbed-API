@@ -1,12 +1,16 @@
 <?php
 /**
- * Sets up the template tags used by the plugin.
+ * Sets up oEmbed related template tags.
  *
- * @package WP_oEmbed
+ * @package WordPress
+ * @subpackage oEmbed
+ * @since 4.4.0
  */
 
 /**
- * Add oEmbed discovery links in the website <head>.
+ * Adds oEmbed discovery links in the website <head>.
+ *
+ * @since 4.4.0
  */
 function wp_oembed_add_discovery_links() {
 	$output = '';
@@ -19,21 +23,27 @@ function wp_oembed_add_discovery_links() {
 	/**
 	 * Filter the oEmbed discovery links.
 	 *
+	 * @since 4.4.0
+	 *
 	 * @param string $output HTML of the discovery links.
 	 */
 	echo apply_filters( 'oembed_discovery_links', $output );
 }
 
 /**
- * Add JS to handle the messages from the embedded iframes.
+ * Add the necessary JavaScript to communicate with the embedded iframes.
+ *
+ * @since 4.4.0
  */
 function wp_oembed_add_host_js() {
-	wp_enqueue_script( 'wp-oembed', plugin_dir_url( dirname( __FILE__ ) ) . 'scripts/frontend.js', array(), '0.9.0-' . date( 'Ymd' ) );
+	wp_enqueue_script( 'wp-oembed' );
 }
 
 
 /**
- * Get the URL to embed a specific post, for example in an iframe.
+ * Get the URL to embed a specific post in an iframe.
+ *
+ * @since 4.4.0
  *
  * @param int|WP_Post $post Optional. Post ID or object. Defaults to the current post.
  * @return string|false The post embed URL on success, false if the post doesn't exist.
@@ -54,6 +64,8 @@ function get_post_embed_url( $post = null ) {
 	/**
 	 * Filter the URL to embed a specific post.
 	 *
+	 * @since 4.4.0
+	 *
 	 * @param string  $embed_url The post embed URL.
 	 * @param WP_Post $post      The corresponding post object.
 	 */
@@ -66,8 +78,10 @@ function get_post_embed_url( $post = null ) {
  * Pass an empty string as the first argument
  * to get the endpoint base URL.
  *
- * @param string $permalink Optional. The permalink used for the `url` query arg.
- * @param string $format    Optional. The requested response format. Default is json.
+ * @since 4.4.0
+ *
+ * @param string $permalink Optional. The permalink used for the `url` query arg. Default empty.
+ * @param string $format    Optional. The requested response format. Default 'json'.
  * @return string The oEmbed endpoint URL.
  */
 function get_oembed_endpoint_url( $permalink = '', $format = 'json' ) {
@@ -91,6 +105,8 @@ function get_oembed_endpoint_url( $permalink = '', $format = 'json' ) {
 	/**
 	 * Filter the oEmbed endpoint URL.
 	 *
+	 * @since 4.4.0
+	 *
 	 * @param string $url       The URL to the oEmbed endpoint.
 	 * @param string $permalink The permalink used for the `url` query arg.
 	 * @param string $format    The requested response format.
@@ -101,7 +117,9 @@ function get_oembed_endpoint_url( $permalink = '', $format = 'json' ) {
 /**
  * Get the embed code for a specific post.
  *
- * @param int|WP_Post $post   Optional. Post ID or object. Defaults to the current post.
+ * @since 4.4.0
+ *
+ * @param int|WP_Post $post   Optional. Post ID or object. Default is global `$post`.
  * @param int         $width  The width for the response.
  * @param int         $height The height for the response.
  * @return string|false Embed code on success, false if post doesn't exist.
@@ -130,6 +148,8 @@ function get_post_embed_html( $post = null, $width, $height ) {
 	/**
 	 * Filters the oEmbed HTML output.
 	 *
+	 * @since 4.4.0
+	 *
 	 * @param string  $output The default HTML.
 	 * @param WP_Post $post   Current post object.
 	 * @param int     $width  Width of the response.
@@ -139,9 +159,11 @@ function get_post_embed_html( $post = null, $width, $height ) {
 }
 
 /**
- * Get the oEmbed data for a given post.
+ * Get the oEmbed response data for a given post.
  *
- * @param WP_Post|int $post  Optional. Post object or ID. Defaults to the current post.
+ * @since 4.4.0
+ *
+ * @param WP_Post|int $post  Optional. Post object or ID. Default is global `$post`.
  * @param int         $width The requested width.
  * @return array|false Response data on success, false if post doesn't exist.
  */
@@ -192,8 +214,17 @@ function get_oembed_response_data( $post = null, $width ) {
 		'type'          => 'link',
 	);
 
+	$author = get_userdata( $post->post_author );
+
+	if ( $author ) {
+		$data['author_name'] = $author->display_name;
+		$data['author_url']  = get_author_posts_url( $author->ID );
+	}
+
 	/**
 	 * Filter the oEmbed response data.
+	 *
+	 * @since 4.4.0
 	 *
 	 * @param array   $data   The response data.
 	 * @param WP_Post $post   The post object.
@@ -204,25 +235,9 @@ function get_oembed_response_data( $post = null, $width ) {
 }
 
 /**
- * Filters the oEmbed response data to add author information.
- *
- * @param array   $data The response data.
- * @param WP_Post $post The post object.
- * @return array The modified response data.
- */
-function get_oembed_response_data_author( $data, $post ) {
-	$author = get_userdata( $post->post_author );
-
-	if ( $author ) {
-		$data['author_name'] = $author->display_name;
-		$data['author_url']  = get_author_posts_url( $author->ID );
-	}
-
-	return $data;
-}
-
-/**
  * Filters the oEmbed response data to return an iframe embed code.
+ *
+ * @since 4.4.0
  *
  * @param array   $data   The response data.
  * @param WP_Post $post   The post object.
@@ -275,7 +290,7 @@ function wp_oembed_load_textdomain() {
  * Register our scripts.
  */
 function wp_oembed_register_scripts() {
-	wp_register_script( 'autoembed', plugins_url( 'scripts/frontend.js', dirname( __FILE__ ) ) );
+	wp_register_script( 'wp-oembed', plugin_dir_url( dirname( __FILE__ ) ) . 'scripts/frontend.js', array(), '0.9.0-' . date( 'Ymd' ) );
 }
 
 /**
@@ -285,7 +300,7 @@ function wp_oembed_register_scripts() {
  * @return array The modified list of TinyMCE plugins.
  */
 function wp_oembed_add_mce_plugin( $plugins ) {
-	$plugins['autoembed'] = plugins_url( 'scripts/tinymce-plugin.js', dirname( __FILE__ ) );
+	$plugins['wp-oembed'] = plugins_url( 'scripts/tinymce-plugin.js', dirname( __FILE__ ) );
 
 	return $plugins;
 }
@@ -298,20 +313,20 @@ function wp_oembed_add_mce_plugin( $plugins ) {
  */
 function wp_oembed_load_mce_script( $opts ) {
 	if ( array_key_exists( 'tinymce', $opts ) && $opts['tinymce'] ) {
-		wp_enqueue_script( 'autoembed' );
+		wp_enqueue_script( 'wp-oembed' );
 	}
 }
 
 /**
- * Ensures that the specified format is either JSON or XML.
+ * Ensures that the specified format is either 'json' or 'xml'.
  *
- * Returns JSON if something else is provided.
+ * @since 4.4.0
  *
- * @param string $format The given oEmbed response format.
- * @return string The format, either XML or JSON.
+ * @param string $format The oEmbed response format. Accepts 'json', 'xml'.
+ * @return string The format, either 'xml' or 'json'. Default 'json'.
  */
 function wp_oembed_ensure_format( $format ) {
-	if ( ! in_array( $format, array( 'json', 'xml' ) ) ) {
+	if ( ! in_array( $format, array( 'json', 'xml' ), true ) ) {
 		return 'json';
 	}
 
@@ -365,8 +380,9 @@ function _oembed_rest_pre_serve_request( $served, $result, $request, $server ) {
 }
 
 /**
- * Create an XML string from the oEmbed response data.
+ * Creates an XML string from a given array.
  *
+ * @since 4.4.0
  * @access private
  *
  * @param array            $data The original oEmbed response data.
@@ -399,7 +415,13 @@ function _oembed_create_xml( $data, $node = null ) {
 }
 
 /**
- * Add the query vars we need for the legacy controller.
+ * Add the query vars we need for the oEmbed controller.
+ *
+ * 'oembed', 'format', 'url', '_jsonp' and 'maxwidth'
+ * are used for the oEmbed API endpoint.
+ * 'embed' is used for the /embed/ rewrite endpoint.
+ *
+ * @since 4.4.0
  *
  * @param array $query_vars Registered query vars.
  * @return array The modified query vars array.
@@ -409,7 +431,12 @@ function wp_oembed_add_query_vars( $query_vars ) {
 }
 
 /**
- * Returns the path to our oEmbed template.
+ * Returns the path to the post embed template.
+ *
+ * This template is used for displaying a post inside an iframe.
+ * Themes can override this if necessary.
+ *
+ * @since 4.4.0
  *
  * @param string $template The path of the template to include.
  * @return string The filtered template.
@@ -425,6 +452,8 @@ function wp_oembed_include_template( $template ) {
 /**
  * Is the query for an embedded post?
  *
+ * @since 4.4.0
+ *
  * @return bool Whether we're in an embedded post or not.
  */
 function is_embed() {
@@ -436,6 +465,10 @@ function is_embed() {
  *
  * If the $url isn't on the trusted providers list,
  * we need to filter the HTML heavily for security.
+ *
+ * Only filters 'rich' and 'html' response types.
+ *
+ * @since 4.4.0
  *
  * @param string $return The returned oEmbed HTML.
  * @param object $data   A data object result from an oEmbed provider.
@@ -492,7 +525,9 @@ function wp_filter_oembed_result( $return, $data, $url ) {
 }
 
 /**
- * Filter the string in the "more" link displayed after a trimmed excerpt.
+ * Filters the string in the "more" link displayed after a trimmed excerpt.
+ *
+ * @since 4.4.0
  *
  * @param string $more_string The string shown within the more link.
  * @return string The modified excerpt.
@@ -514,9 +549,12 @@ function wp_oembed_excerpt_more( $more_string ) {
 
 /**
  * Display the post excerpt for the embed template.
+ *
+ * @since 4.4.0
  */
 function the_excerpt_embed() {
 	$output = get_the_excerpt();
+
 	/**
 	 * Filter the post excerpt for the embed template.
 	 *
@@ -529,6 +567,8 @@ function the_excerpt_embed() {
  * Filters the post excerpt for the embed template.
  *
  * Shows players for video and audio attachments.
+ *
+ * @since 4.4.0
  *
  * @param string $content The current post excerpt.
  * @return string The modified post excerpt.

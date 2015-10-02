@@ -7,7 +7,9 @@
  * give you the priority for which to use to remove the
  * hook.
  *
- * @package WP_oEmbed
+ * @package WordPress
+ * @subpackage oEmbed
+ * @since 4.4.0
  */
 
 // Load the plugin textdomain.
@@ -22,13 +24,13 @@ add_action( 'parse_query', 'wp_oembed_disable_admin_bar' );
 // Load fallback if REST API isn't available.
 if ( ! defined( 'REST_API_VERSION' ) || ! version_compare( REST_API_VERSION, '2.0-beta3', '>=' ) ) {
 	// Pull in the required class.
-	require_once( dirname( dirname( __FILE__ ) ) . '/includes/class-wp-legacy-oembed-controller.php' );
+	require_once( dirname( dirname( __FILE__ ) ) . '/includes/class-wp-oembed-controller.php' );
 
 	// Add needed query vars.
 	add_filter( 'query_vars', 'wp_oembed_add_query_vars' );
 
 	// Hook into parse_query.
-	add_action( 'parse_query', array( new WP_Legacy_oEmbed_Controller(), 'parse_query' ) );
+	add_action( 'parse_query', array( new WP_oEmbed_Controller(), 'parse_query' ) );
 } else {
 	// Pull in the required class.
 	require_once( dirname( dirname( __FILE__ ) ) . '/includes/class-wp-rest-oembed-controller.php' );
@@ -77,5 +79,4 @@ add_filter( 'the_excerpt_embed', 'wpautop' );
 add_filter( 'the_excerpt_embed', 'shortcode_unautop' );
 add_filter( 'the_excerpt_embed', 'wp_oembed_excerpt_attachment' );
 
-add_filter( 'oembed_response_data', 'get_oembed_response_data_author', 10, 2, 4 );
 add_filter( 'oembed_response_data', 'get_oembed_response_data_rich', 10, 4 );

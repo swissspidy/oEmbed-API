@@ -1,11 +1,13 @@
 <?php
 /**
- * Contains the template for an oEmbed response.
+ * Contains the post embed template.
  *
- * When a post is embedded, this file is used to
+ * When a post is embedded in an iframe, this file is used to
  * create the output.
  *
- * @package WP_oEmbed
+ * @package WordPress
+ * @subpackage oEmbed
+ * @since 4.4.0
  */
 
 if ( ! headers_sent() ) {

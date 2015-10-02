@@ -20,7 +20,7 @@ class WP_Legacy_oEmbed_Test_Controller extends WP_UnitTestCase {
 			'maxwidth' => 600,
 		);
 
-		$legacy_controller = new WP_Legacy_oEmbed_Controller();
+		$legacy_controller = new WP_oEmbed_Controller();
 
 		$this->assertEquals( 'Invalid URL.', $legacy_controller->dispatch( $request ) );
 	}
@@ -46,7 +46,7 @@ class WP_Legacy_oEmbed_Test_Controller extends WP_UnitTestCase {
 			'oembed'   => true,
 		);
 
-		$legacy_controller = new WP_Legacy_oEmbed_Controller();
+		$legacy_controller = new WP_oEmbed_Controller();
 
 		$data = json_decode( $legacy_controller->dispatch( $request ), true );
 
@@ -90,7 +90,7 @@ class WP_Legacy_oEmbed_Test_Controller extends WP_UnitTestCase {
 			'callback' => 'mycallback',
 		);
 
-		$legacy_controller = new WP_Legacy_oEmbed_Controller();
+		$legacy_controller = new WP_oEmbed_Controller();
 
 		$data = $legacy_controller->dispatch( $request );
 
@@ -116,7 +116,7 @@ class WP_Legacy_oEmbed_Test_Controller extends WP_UnitTestCase {
 			'callback' => array( 'foo', 'bar' ),
 		);
 
-		$legacy_controller = new WP_Legacy_oEmbed_Controller();
+		$legacy_controller = new WP_oEmbed_Controller();
 
 		$data = $legacy_controller->dispatch( $request );
 
@@ -131,7 +131,7 @@ class WP_Legacy_oEmbed_Test_Controller extends WP_UnitTestCase {
 			'callback' => '',
 		);
 
-		$legacy_controller = new WP_Legacy_oEmbed_Controller();
+		$legacy_controller = new WP_oEmbed_Controller();
 
 		$this->assertEquals( 'Not implemented',  $legacy_controller->json_response( null, $request ) );
 		$this->assertEquals( 'Not implemented',  $legacy_controller->json_response( 123, $request ) );
@@ -157,7 +157,7 @@ class WP_Legacy_oEmbed_Test_Controller extends WP_UnitTestCase {
 			'callback' => '',
 		);
 
-		$legacy_controller = new WP_Legacy_oEmbed_Controller();
+		$legacy_controller = new WP_oEmbed_Controller();
 
 		$data = $legacy_controller->dispatch( $request );
 
@@ -189,7 +189,7 @@ class WP_Legacy_oEmbed_Test_Controller extends WP_UnitTestCase {
 	 * Test getting the XML response with invalid data.
 	 */
 	function test_request_xml_invalid_data() {
-		$legacy_controller = new WP_Legacy_oEmbed_Controller();
+		$legacy_controller = new WP_oEmbed_Controller();
 
 		$this->assertEquals( 'Not implemented',  $legacy_controller->xml_response( null ) );
 		$this->assertEquals( 'Not implemented',  $legacy_controller->xml_response( 123 ) );
@@ -221,7 +221,7 @@ class WP_Legacy_oEmbed_Test_Controller extends WP_UnitTestCase {
 			'callback' => '',
 		);
 
-		$legacy_controller = new WP_Legacy_oEmbed_Controller();
+		$legacy_controller = new WP_oEmbed_Controller();
 
 		$data = json_decode( $legacy_controller->dispatch( $request ), true );
 

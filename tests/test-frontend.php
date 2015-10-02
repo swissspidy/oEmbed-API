@@ -376,11 +376,11 @@ EOD;
 	 * Test if registering our script works.
 	 */
 	function test_register_scripts() {
-		wp_scripts()->remove( 'autoembed' );
-		$this->assertFalse( wp_script_is( 'autoembed', 'registered' ) );
+		wp_scripts()->remove( 'wp-oembed' );
+		$this->assertFalse( wp_script_is( 'wp-oembed', 'registered' ) );
 
 		wp_oembed_register_scripts();
-		$this->assertTrue( wp_script_is( 'autoembed', 'registered' ) );
+		$this->assertTrue( wp_script_is( 'wp-oembed', 'registered' ) );
 	}
 
 	/**
@@ -389,18 +389,7 @@ EOD;
 	function test_add_mce_plugin() {
 		$actual = wp_oembed_add_mce_plugin( array() );
 
-		$this->assertEquals( array( 'autoembed' => plugins_url( 'scripts/tinymce-plugin.js', dirname( __FILE__ ) ) ), $actual );
-	}
-
-	/**
-	 * Test loading our TinyMCE script.
-	 */
-	function test_load_mce_script() {
-		wp_oembed_load_mce_script( array() );
-		$this->assertFalse( wp_script_is( 'autoembed' ) );
-
-		wp_oembed_load_mce_script( array( 'tinymce' => true ) );
-		$this->assertTrue( wp_script_is( 'autoembed' ) );
+		$this->assertEquals( array( 'wp-oembed' => plugins_url( 'scripts/tinymce-plugin.js', dirname( __FILE__ ) ) ), $actual );
 	}
 
 	/**

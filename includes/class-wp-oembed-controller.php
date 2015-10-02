@@ -1,27 +1,31 @@
 <?php
 /**
- * Default oEmbed API endpoint configuration.
+ * WP_oEmbed_Controller class, used to provide an oEmbed endpoint.
  *
- * Used when the REST API isn't available.
- *
- * @package WP_oEmbed_Plugin
+ * @package WordPress
+ * @subpackage Embeds
+ * @since 4.4.0
  */
 
 /**
- * Class WP_Legacy_oEmbed_Controller
+ * oEmbed API endpoint controller.
+ *
+ * Parses the oEmbed API requests and delivers
+ * XML and JSON responses.
+ *
+ * @since 4.4.0
  */
-class WP_Legacy_oEmbed_Controller {
+final class WP_oEmbed_Controller {
 	/**
 	 * Hook into the query parsing to detect oEmbed requests.
 	 *
 	 * If an oEmbed request is made, trigger the output.
 	 *
-	 * @codeCoverageIgnore
+	 * @since 4.4.0
 	 *
 	 * @param WP_Query $wp_query The WP_Query instance (passed by reference).
 	 */
 	public function parse_query( $wp_query ) {
-		// Check for required params.
 		if ( false === $wp_query->get( 'oembed', false ) ) {
 			return;
 		}
@@ -32,12 +36,6 @@ class WP_Legacy_oEmbed_Controller {
 			exit;
 		}
 
-		/**
-		 * Check for the allowed query vars and set defaults.
-		 *
-		 * @see WP_REST_oEmbed_Controller::register_routes()
-		 */
-
 		$url = esc_url_raw( get_query_var( 'url' ) );
 
 		$format = wp_oembed_ensure_format( get_query_var( 'format' ) );
@@ -45,7 +43,9 @@ class WP_Legacy_oEmbed_Controller {
 		/**
 		 * Filter the maxwidth oEmbed parameter.
 		 *
-		 * @param int $maxwidth Maximum allowed width. Defaults to 600.
+		 * @since 4.4.0
+		 *
+		 * @param int $maxwidth Maximum allowed width. Default 600.
 		 */
 		$maxwidth = apply_filters( 'oembed_default_width', 600 );
 		$maxwidth = absint( get_query_var( 'maxwidth', $maxwidth ) );
@@ -66,6 +66,8 @@ class WP_Legacy_oEmbed_Controller {
 	/**
 	 * Handle the whole request and print the response.
 	 *
+	 * @since 4.4.0
+	 *
 	 * @param array $request The request arguments.
 	 * @return string The oEmbed API response.
 	 */
@@ -74,6 +76,8 @@ class WP_Legacy_oEmbed_Controller {
 
 		/**
 		 * Filter the determined post id.
+		 *
+		 * @since 4.4.0
 		 *
 		 * @param int    $post_id The post ID.
 		 * @param string $url     The requestd URL.
@@ -95,7 +99,9 @@ class WP_Legacy_oEmbed_Controller {
 	}
 
 	/**
-	 * Print the JSON response.
+	 * Print the oEmbed JSON response.
+	 *
+	 * @since 4.4.0
 	 *
 	 * @param array $data     The oEmbed response data.
 	 * @param array $request  The request arguments.
@@ -128,7 +134,9 @@ class WP_Legacy_oEmbed_Controller {
 	}
 
 	/**
-	 * Print the XML response.
+	 * Print the oEmbed XML response.
+	 *
+	 * @since 4.4.0
 	 *
 	 * @param array $data The oEmbed response data.
 	 * @return string The XML response data.

@@ -30,7 +30,7 @@ class WP_oEmbed_Test_HTTP_Headers extends WP_UnitTestCase {
 			'callback' => '',
 		);
 
-		$legacy_controller = new WP_Legacy_oEmbed_Controller();
+		$legacy_controller = new WP_oEmbed_Controller();
 		$legacy_controller->dispatch( $request );
 
 		$headers = xdebug_get_headers();
@@ -66,7 +66,7 @@ class WP_oEmbed_Test_HTTP_Headers extends WP_UnitTestCase {
 			'maxwidth' => 600,
 		);
 
-		$legacy_controller = new WP_Legacy_oEmbed_Controller();
+		$legacy_controller = new WP_oEmbed_Controller();
 		$legacy_controller->dispatch( $request );
 
 		$headers = xdebug_get_headers();
