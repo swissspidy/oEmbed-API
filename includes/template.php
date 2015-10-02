@@ -535,58 +535,57 @@ wp_enqueue_style( 'open-sans' );
 	?>
 </head>
 <body <?php body_class(); ?>>
-<div <?php post_class( 'wp-embed' ); ?>>
-	<?php
-	if ( have_posts() ) :
-		while ( have_posts() ) : the_post();
-			// Add post thumbnail to response if available.
-			$thumbnail_id = false;
+<?php
+if ( have_posts() ) :
+	while ( have_posts() ) : the_post();
+		// Add post thumbnail to response if available.
+		$thumbnail_id = false;
 
-			if ( has_post_thumbnail() ) {
-				$thumbnail_id = get_post_thumbnail_id();
-			}
+		if ( has_post_thumbnail() ) {
+			$thumbnail_id = get_post_thumbnail_id();
+		}
 
-			if ( 'attachment' === get_post_type() && wp_attachment_is_image() ) {
-				$thumbnail_id = get_the_ID();
-			}
+		if ( 'attachment' === get_post_type() && wp_attachment_is_image() ) {
+			$thumbnail_id = get_the_ID();
+		}
 
-			if ( $thumbnail_id ) {
-				$aspect_ratio = 1;
-				$measurements = array( 1, 1 );
-				$image_size   = 'full'; // Fallback.
+		if ( $thumbnail_id ) {
+			$aspect_ratio = 1;
+			$measurements = array( 1, 1 );
+			$image_size   = 'full'; // Fallback.
 
-				$meta = wp_get_attachment_metadata( $thumbnail_id );
-				if ( is_array( $meta ) ) {
-					foreach ( $meta['sizes'] as $size => $data ) {
-						if ( $data['width'] / $data['height'] > $aspect_ratio ) {
-							$aspect_ratio = $data['width'] / $data['height'];
-							$measurements = array( $data['width'], $data['height'] );
-							$image_size   = $size;
-						}
+			$meta = wp_get_attachment_metadata( $thumbnail_id );
+			if ( is_array( $meta ) ) {
+				foreach ( $meta['sizes'] as $size => $data ) {
+					if ( $data['width'] / $data['height'] > $aspect_ratio ) {
+						$aspect_ratio = $data['width'] / $data['height'];
+						$measurements = array( $data['width'], $data['height'] );
+						$image_size   = $size;
 					}
 				}
-
-				/**
-				 * Filter the thumbnail image size for use in the embed template.
-				 *
-				 * @param string $image_size Thumbnail image size.
-				 */
-				$image_size = apply_filters( 'oembed_thumbnail_image_size', $image_size );
-
-				$shape = $measurements[0] / $measurements[1] >= 1.75 ? 'rectangular' : 'square';
-
-				/**
-				 * Filter the thumbnail shape for use in the embed template.
-				 *
-				 * Rectangular images are shown above the title
-				 * while square images are shown next to the content.
-				 *
-				 * @param string $shape Thumbnail image shape. Either 'rectangular' or 'square'.
-				 */
-				$shape = apply_filters( 'oembed_thumbnail_image_shape', $shape );
 			}
-			?>
 
+			/**
+			 * Filter the thumbnail image size for use in the embed template.
+			 *
+			 * @param string $image_size Thumbnail image size.
+			 */
+			$image_size = apply_filters( 'oembed_thumbnail_image_size', $image_size );
+
+			$shape = $measurements[0] / $measurements[1] >= 1.75 ? 'rectangular' : 'square';
+
+			/**
+			 * Filter the thumbnail shape for use in the embed template.
+			 *
+			 * Rectangular images are shown above the title
+			 * while square images are shown next to the content.
+			 *
+			 * @param string $shape Thumbnail image shape. Either 'rectangular' or 'square'.
+			 */
+			$shape = apply_filters( 'oembed_thumbnail_image_shape', $shape );
+		}
+		?>
+		<div <?php post_class( 'wp-embed' ); ?>>
 			<?php if ( $thumbnail_id && 'rectangular' === $shape ) : ?>
 				<div class="wp-embed-featured-image rectangular">
 					<a href="<?php the_permalink(); ?>" target="_top">
@@ -695,10 +694,12 @@ wp_enqueue_style( 'open-sans' );
 					</button>
 				</div>
 			</div>
-			<?php
-		endwhile;
-	else :
-		?>
+		</div>
+		<?php
+	endwhile;
+else :
+	?>
+	<div class="wp-embed">
 		<p class="wp-embed-heading"><?php _e( 'Page not found', 'oembed-api' ); ?></p>
 
 		<div class="wp-embed-excerpt">
@@ -730,9 +731,10 @@ wp_enqueue_style( 'open-sans' );
 				?>
 			</div>
 		</div>
-	<?php endif; ?>
-</div>
-<?php
+	</div>
+	<?php
+endif;
+
 /**
  * Print scripts or data before the closing body tag.
  */
