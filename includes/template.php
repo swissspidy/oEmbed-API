@@ -610,6 +610,13 @@ if ( have_posts() ) :
 
 			<div class="wp-embed-excerpt"><?php the_excerpt_embed(); ?></div>
 
+			<?php
+			/**
+			 * Print additional content after the embed excerpt.
+			 */
+			do_action( 'oembed_content' );
+			?>
+
 			<div class="wp-embed-meta">
 				<div class="wp-embed-site-title">
 					<?php
