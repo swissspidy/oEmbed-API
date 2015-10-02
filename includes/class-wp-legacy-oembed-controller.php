@@ -106,15 +106,10 @@ class WP_Legacy_oEmbed_Controller {
 			$request['callback'] = false;
 		}
 
-		if ( ! is_array( $data ) || empty( $data ) ) {
-			status_header( 501 );
-			return 'Not implemented';
-		}
-
 		$result = wp_json_encode( $data );
 
 		// Bail if the result couldn't be JSON encoded.
-		if ( ! $result ) {
+		if ( ! $result || ! is_array( $data ) || empty( $data ) ) {
 			status_header( 501 );
 			return 'Not implemented';
 		}
