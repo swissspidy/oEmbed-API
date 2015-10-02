@@ -12,28 +12,6 @@
  */
 class WP_oEmbed_Test_HTTP_Headers extends WP_UnitTestCase {
 	/**
-	 * Test request for a normal post.
-	 */
-	function test_request_json_not_implemented() {
-		$post = $this->factory->post->create_and_get( array(
-			'post_title'  => 'Hello World',
-		) );
-
-		$request = array(
-			'url'      => get_permalink( $post->ID ),
-			'format'   => 'json',
-			'maxwidth' => 600,
-			'callback' => '',
-		);
-
-		$legacy_controller = new WP_Legacy_oEmbed_Controller();
-
-		add_filter( 'oembed_json_response', '__return_false' );
-
-		$this->assertEquals( 'Not implemented', $legacy_controller->dispatch( $request ) );
-	}
-
-	/**
 	 * Test the HTTP headers set by the json_response method.
 	 */
 	function test_request_json_response_headers() {

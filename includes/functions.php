@@ -347,12 +347,7 @@ function _oembed_rest_pre_serve_request( $served, $result, $request, $server ) {
 		$data = $data[0];
 	}
 
-	/**
-	 * Filter the XML response.
-	 *
-	 * @param array $data The original oEmbed response data.
-	 */
-	$result = apply_filters( 'oembed_xml_response', $data );
+	$result = _oembed_create_xml( $data );
 
 	// Bail if there's no XML.
 	if ( ! is_string( $result ) ) {

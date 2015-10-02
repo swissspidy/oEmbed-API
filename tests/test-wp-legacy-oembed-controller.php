@@ -179,28 +179,6 @@ class WP_Legacy_oEmbed_Test_Controller extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test request for a normal post.
-	 */
-	function test_request_xml_not_implemented() {
-		$post = $this->factory->post->create_and_get( array(
-			'post_title'  => 'Hello World',
-		) );
-
-		$request = array(
-			'url'	  => get_permalink( $post->ID ),
-			'format'   => 'xml',
-			'maxwidth' => 600,
-			'callback' => '',
-		);
-
-		add_filter( 'oembed_xml_response', '__return_false' );
-
-		$legacy_controller = new WP_Legacy_oEmbed_Controller();
-
-		$this->assertEquals( 'Not implemented',  $legacy_controller->dispatch( $request ) );
-	}
-
-	/**
 	 * Test request for a child blog post embed in root blog.
 	 *
 	 * @group multisite

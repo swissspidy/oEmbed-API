@@ -138,8 +138,7 @@ class WP_Legacy_oEmbed_Controller {
 	 * @return string The XML response data.
 	 */
 	public function xml_response( $data ) {
-		/** This filter is documented in includes/functions.php */
-		$result = apply_filters( 'oembed_xml_response', $data );
+		$result = _oembed_create_xml( $data );
 
 		// Bail if there's no XML.
 		if ( ! is_string( $result ) ) {
