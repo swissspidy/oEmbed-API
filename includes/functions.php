@@ -115,7 +115,21 @@ function get_post_embed_html( $post = null, $width, $height ) {
 
 	$embed_url = get_post_embed_url( $post );
 
-	$output = "<script type='text/javascript'>\n";
+	// Get the post excerpt for the given post. This requires setting up the
+	// global data.
+	$previous_post = $GLOBALS['post'];
+	$GLOBALS['post'] = $post;
+	setup_postdata( $GLOBALS['post'] );
+
+	$output = '<noscript>' . get_the_excerpt_embed() . "</noscript>\n";
+
+	// Restore to the previous post.
+	$GLOBALS['post'] = $previous_post;
+	if ( $previous_post ) {
+		setup_postdata( $GLOBALS['post'] );
+	}
+
+	$output .= "<script type='text/javascript'>\n";
 	$output .= file_get_contents( dirname( dirname( __FILE__ ) ) . '/scripts/frontend.js' );
 	$output .= "\n</script>";
 
@@ -513,16 +527,25 @@ function wp_oembed_excerpt_more( $more_string ) {
 }
 
 /**
- * Display the post excerpt for the embed template.
+ * Retrieve the post excerpt for the embed template.
+ *
+ * @return string Post excerpt.
  */
-function the_excerpt_embed() {
+function get_the_excerpt_embed() {
 	$output = get_the_excerpt();
 	/**
 	 * Filter the post excerpt for the embed template.
 	 *
 	 * @param string $output The current post excerpt.
 	 */
-	echo apply_filters( 'the_excerpt_embed', $output );
+	return apply_filters( 'the_excerpt_embed', $output );
+}
+
+/**
+ * Display the post excerpt for the embed template.
+ */
+function the_excerpt_embed() {
+	echo get_the_excerpt_embed();
 }
 
 /**
