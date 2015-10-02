@@ -106,11 +106,7 @@ class WP_Legacy_oEmbed_Controller {
 			$request['callback'] = false;
 		}
 
-		if ( function_exists( 'wp_json_encode' ) ) {
-			$result = wp_json_encode( $data );
-		} else {
-			$result = json_encode( $data );
-		}
+		$result = wp_json_encode( $data );
 
 		// Bail if the result couldn't be JSON encoded.
 		if ( ! $result ) {
