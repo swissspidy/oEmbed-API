@@ -374,6 +374,10 @@ function _oembed_rest_pre_serve_request( $served, $result, $request, $server ) {
  * @return string|false XML string on success, false on error.
  */
 function _oembed_create_xml( $data, $node = null ) {
+	if ( ! is_array( $data ) || empty( $data ) ) {
+		return false;
+	}
+
 	if ( null === $node ) {
 		$node = new SimpleXMLElement( '<oembed></oembed>' );
 	}

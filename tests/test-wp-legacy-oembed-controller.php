@@ -10,14 +10,6 @@
  */
 class WP_Legacy_oEmbed_Test_Controller extends WP_UnitTestCase {
 	/**
-	 * Test our default filters and hooks.
-	 */
-	public function test_filters() {
-		global $wp_filter;
-
-		$this->assertarrayHasKey( 'wp_oembed_add_query_vars', $wp_filter['query_vars'][10] );
-	}
-	/**
 	 * Test a request with a wrong URL.
 	 */
 	function test_request_with_bad_url() {
@@ -132,6 +124,21 @@ class WP_Legacy_oEmbed_Test_Controller extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test getting the JSON response with invalid data.
+	 */
+	function test_request_json_invalid_data() {
+		$request = array(
+			'callback' => '',
+		);
+
+		$legacy_controller = new WP_Legacy_oEmbed_Controller();
+
+		$this->assertEquals( 'Not implemented',  $legacy_controller->json_response( null, $request ) );
+		$this->assertEquals( 'Not implemented',  $legacy_controller->json_response( 123, $request ) );
+		$this->assertEquals( 'Not implemented',  $legacy_controller->json_response( array(), $request ) );
+	}
+
+	/**
 	 * Test request for a normal post.
 	 */
 	function test_request_xml() {
@@ -176,6 +183,17 @@ class WP_Legacy_oEmbed_Test_Controller extends WP_UnitTestCase {
 		$this->assertEquals( $post->post_title, $data['title'] );
 		$this->assertEquals( 'rich', $data['type'] );
 		$this->assertTrue( $data['width'] <= $request['maxwidth'] );
+	}
+
+	/**
+	 * Test getting the XML response with invalid data.
+	 */
+	function test_request_xml_invalid_data() {
+		$legacy_controller = new WP_Legacy_oEmbed_Controller();
+
+		$this->assertEquals( 'Not implemented',  $legacy_controller->xml_response( null ) );
+		$this->assertEquals( 'Not implemented',  $legacy_controller->xml_response( 123 ) );
+		$this->assertEquals( 'Not implemented',  $legacy_controller->xml_response( array() ) );
 	}
 
 	/**
